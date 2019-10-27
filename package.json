@@ -1,6 +1,6 @@
 {
     "name": "@auturge/testing",
-    "version": "0.0.0-PLACEHOLDER",
+    "version": "0.0.2",
     "description": "Auturge - the testing library",
     "main": "./bundles/testing.umd.js",
     "commonjs": "./common/testing.js",
