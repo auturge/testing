@@ -21,7 +21,7 @@ const bundlePath = path.resolve(
 const testsPath = path.resolve(PACKAGE_ROOT, "./tests");
 
 // specify the tsConfig project file to use
-const tsConfig = path.resolve(PACKAGE_ROOT, "./tsconfig.json");
+const tsConfig = path.resolve(PACKAGE_ROOT, "./src/tsconfig.json");
 
 //==========================================================================================
 
