@@ -2,9 +2,9 @@ env:
     global:
         - NODE_VERSION="12.8.1"
         - YARN_VERSION="1.21.1"
-
-braches:
-    only:
+        
+branches:
+    only: 
         - master
 
 language: node_js
