@@ -1,19 +1,37 @@
+env:
+    global:
+        - NODE_VERSION="12.8.1"
+        - YARN_VERSION="1.21.1"
+
+braches:
+    only:
+        - master
+
 language: node_js
+
 node_js:
-    - "12.8.1"
-dist: trusty # needs Ubuntu Trusty
+    - $NODE_VERSION
+
+    dist: trusty # needs Ubuntu Trusty
+
 # Note: if you switch to sudo: false, you'll need to launch Chrome with --no-sandbox.
 # See https://github.com/travis-ci/travis-ci/issues/8836
 sudo: required
+
 addons:
     chrome: stable # have Travis install Chrome stable.
+
 cache:
+    yarn: true
     directories:
         - node_modules
+
 before_install:
     # if "install" is overridden
-    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.21.1-1
+    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
+
 install:
     - yarn
+
 script:
     - yarn test
