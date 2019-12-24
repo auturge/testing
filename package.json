@@ -30,6 +30,7 @@
         "coveralls": "3.0.7",
         "gulp": "4.0.2",
         "gulp-tslint": "8.1.4",
+        "is-valid-path": "0.1.1",
         "jasmine": "3.4.0",
         "jasmine-core": "3.4.0",
         "karma": "4.2.0",
