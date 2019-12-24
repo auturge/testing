@@ -55,13 +55,7 @@
         "tslint-eslint-rules": "5.4.0",
         "typescript": "3.5.3",
         "webpack": "4.39.2",
-        "webpack-cli": "3.3.10",
-        "webpack-merge": "4.2.1"
-    },
-    "deprecated": {
-        "scripts": {
-            "build:0": "pushd \"../..\" && npm run build:testing && popd"
-        }
+        "webpack-cli": "3.3.10"
     },
     "scripts": {
         "build": "npm-run-all check-env clean build:testing",
