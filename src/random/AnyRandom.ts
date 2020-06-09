@@ -7,21 +7,6 @@ export class AnyRandom {
     private static random: RandomObjectGenerator = new AnyRandomImplementation();
 
     /**
-     * Returns a random `Date` between `01-JAN-1970` and `now`.
-     */
-    static date(): Date;
-
-    /**
-     * Returns a random `Date` within the range defined by `earliest` and `latest`.
-     * @param {Date} earliest The earliest date that the result could take.
-     * @param {number} latest The latest date that the result could take.
-     */
-    static date(earliest: Date, latest: Date): Date;
-    static date(earliest?: Date, latest?: Date): Date {
-        return this.random.date(earliest, latest);
-    }
-
-    /**
      * Returns a random boolean value (`true` or `false`).
      */
     static bool(): boolean {
@@ -39,6 +24,21 @@ export class AnyRandom {
     static sign(includeZero: boolean): number;
     static sign(includeZero?: boolean): number {
         return this.random.sign(includeZero);
+    }
+
+    /**
+     * Returns a random `Date` between `01-JAN-1970` and `now`.
+     */
+    static date(): Date;
+
+    /**
+     * Returns a random `Date` within the range defined by `earliest` and `latest`.
+     * @param {Date} earliest The earliest date that the result could take.
+     * @param {number} latest The latest date that the result could take.
+     */
+    static date(earliest: Date, latest: Date): Date;
+    static date(earliest?: Date, latest?: Date): Date {
+        return this.random.date(earliest, latest);
     }
 
     /** 8-bit integers */

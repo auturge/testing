@@ -13,7 +13,7 @@ module.exports = (gulp) => () => {
     // Built-in rules are at https://palantir.github.io/tslint/rules/
     const path = require("path");
 
-    const configPath = path.resolve(__dirname, "./conf/tslint.jsonc");
+    const configPath = path.resolve(__dirname, "./tslint.jsonc");
 
     console.log(" ");
     console.log("tslint config file:", configPath);
@@ -31,8 +31,8 @@ module.exports = (gulp) => () => {
             // Ignore node_modules directories
             "!**/node_modules/**",
 
-            // Ignore built files directories
-            "!**/built/**",
+            // Ignore build files directories
+            "!**/build/**",
             "!**/dist/**",
 
             // Ignore special files
@@ -40,12 +40,12 @@ module.exports = (gulp) => () => {
 
             // Ignore generated files due to lack of copyright header
             "!**/*.d.ts",
-            "!**/*.ngfactory.ts"
+            "!**/*.ngfactory.ts",
         ])
         .pipe(
             tslint({
                 configuration: configPath,
-                formatter: "prose"
+                formatter: "prose",
             })
         )
         .pipe(tslint.report({ emitError: true }));

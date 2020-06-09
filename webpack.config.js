@@ -6,18 +6,18 @@ const path = require("path");
 //==========================================================================================
 
 const LIBRARY_NAME = "testing";
-const PROJECT_ROOT = path.resolve(__dirname, "../");
+const PROJECT_ROOT = path.resolve(__dirname, "./");
 
 // Specify where webpack should start the bundling process
 const entryPath = path.resolve(PROJECT_ROOT, "./src/index.ts");
 
 // Specify where webpack should place the built bundles
-const bundlePath = path.resolve(PROJECT_ROOT, `./built/bundles`);
+const bundlePath = path.resolve(PROJECT_ROOT, `./build/bundles`);
 
-const testsPath = path.resolve(PROJECT_ROOT, "./tests");
+const testsPath = path.resolve(PROJECT_ROOT, "./test");
 
 // specify the tsConfig project file to use
-const tsConfig = path.resolve(PROJECT_ROOT, "./src/tsconfig.json");
+const tsConfig = path.resolve(PROJECT_ROOT, "./tsconfig.json");
 
 //==========================================================================================
 
@@ -26,7 +26,7 @@ var PATHS = {
     entryPoint: entryPath,
     bundles: bundlePath,
     tsConfig: tsConfig,
-    tests: testsPath
+    tests: testsPath,
 };
 
 let entry = {};
@@ -70,8 +70,8 @@ let config = {
         lodash: {
             commonjs: "lodash",
             amd: "lodash",
-            root: "_" // indicates global variable
-        }
+            root: "_", // indicates global variable
+        },
     },
 
     mode: "production",
@@ -90,11 +90,11 @@ let config = {
                     // folder since it wouldn't be of any use and the source
                     // map already include everything for debugging
                     declaration: false,
-                    configFileName: PATHS.tsConfig
+                    configFileName: PATHS.tsConfig,
                 },
-                exclude: [/node_modules/]
-            }
-        ]
+                exclude: [/node_modules/],
+            },
+        ],
     },
 
     optimization: {
@@ -117,11 +117,11 @@ let config = {
                     ie8: false,
                     keep_classnames: undefined,
                     keep_fnames: false,
-                    safari10: false
-                }
-            })
+                    safari10: false,
+                },
+            }),
         ],
-        noEmitOnErrors: true
+        noEmitOnErrors: true,
     },
 
     // The output defines how and where we want the bundles. The special
@@ -135,7 +135,7 @@ let config = {
         filename: "[name].js",
         libraryTarget: "umd",
         library: LIBRARY_NAME,
-        umdNamedDefine: true
+        umdNamedDefine: true,
     },
 
     plugins: [new CheckerPlugin()],
@@ -145,8 +145,8 @@ let config = {
         // only look for common JavaScript file extension (.js)
         extensions: [".ts", ".tsx", ".js", ".jsx"],
 
-        plugins: [new TsconfigPathsPlugin({ configFile: PATHS.tsConfig })]
-    }
+        plugins: [new TsconfigPathsPlugin({ configFile: PATHS.tsConfig })],
+    },
 };
 
 function describePackJob() {

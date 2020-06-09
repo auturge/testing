@@ -23,7 +23,7 @@ require("./scripts/check-env/check-environment")(
     {
         requiredNodeVersion: engines.node,
         requiredNpmVersion: engines.npm,
-        requiredYarnVersion: engines.yarn
+        requiredYarnVersion: engines.yarn,
     },
     logOutput,
     purgeIfStale

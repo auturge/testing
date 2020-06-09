@@ -12,16 +12,6 @@ export class Double extends RandomScaledNumber {
     public readonly MAX_VALUE: number = Number.POSITIVE_INFINITY;
 
     protected validateRange(minValue: number, maxValue: number): void {
-        if (minValue < this.MIN_VALUE) {
-            throw new Error(
-                `maxValue must be in the interval [${this.MIN_VALUE}, ${this.MAX_VALUE}].`
-            );
-        }
-        if (maxValue > this.MAX_VALUE) {
-            throw new Error(
-                `maxValue must be in the interval [${this.MIN_VALUE}, ${this.MAX_VALUE}].`
-            );
-        }
         if (minValue > maxValue) {
             throw new Error("minValue must be less than (or equal to) maxValue.");
         }
@@ -98,14 +88,16 @@ export class Double extends RandomScaledNumber {
         if (
             !Number.isFinite(minValue) &&
             minValue < 0 &&
-            !Number.isFinite(maxValue) && maxValue < 0
+            !Number.isFinite(maxValue) &&
+            maxValue < 0
         ) {
             return false;
         }
         if (
             !Number.isFinite(minValue) &&
             minValue > 0 &&
-            !Number.isFinite(maxValue) && maxValue > 0
+            !Number.isFinite(maxValue) &&
+            maxValue > 0
         ) {
             return false;
         }

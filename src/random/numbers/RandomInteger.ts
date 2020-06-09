@@ -57,11 +57,11 @@ export abstract class RandomInteger extends RandomNumber {
 
         // Use & to apply the mask and reduce the number of recursive lookups
         rval = rval & mask;
-
         if (rval >= max_range) {
             // Integer out of acceptable range
             return this.getRandomValueInRange(minValue, maxValue);
         }
+
         // Return an integer that falls within the range
         return minValue + rval;
     }
