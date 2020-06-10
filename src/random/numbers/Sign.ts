@@ -11,7 +11,7 @@ export class Sign {
         return Math.sign(Int8.next(-1, 1));
     }
 
-    public static next(includeZero: boolean = false): number {
+    public static next(includeZero = false): number {
         return this.singleton.next(includeZero);
     }
 }

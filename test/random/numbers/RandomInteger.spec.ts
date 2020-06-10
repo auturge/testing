@@ -13,19 +13,14 @@ class FakeInt32 extends RandomInteger {
 }
 
 describe("RandomInteger", () => {
-    let generator: RandomInteger;
-
-    function setupTestSuite() {
-        generator = new FakeInt32();
-    }
+    const generator: RandomInteger = new FakeInt32();
 
     describe("getRandomValueInRange", () => {
-        beforeEach(setupTestSuite);
         it("getRandomValueInRange - throws an error if you try to generate a number larger than 53 bits", () => {
-            let maxValue = Number.MAX_SAFE_INTEGER + 25;
-            let minValue = 0;
-            let range = maxValue - minValue + 1;
-            let bits_needed = Math.ceil(Math.log2(range));
+            const maxValue = Number.MAX_SAFE_INTEGER + 25;
+            const minValue = 0;
+            const range = maxValue - minValue + 1;
+            const bits_needed = Math.ceil(Math.log2(range));
 
             expect(bits_needed).to.be.greaterThan(53);
             expect(() => {
@@ -34,11 +29,11 @@ describe("RandomInteger", () => {
         });
 
         it("getRandomValueInRange - recurses", () => {
-            let minValue = -100;
-            let maxValue = 100;
+            const minValue = -100;
+            const maxValue = 100;
 
             for (let index = 0; index < 1000; index++) {
-                let result = generator["getRandomValueInRange"](minValue, maxValue);
+                const result = generator["getRandomValueInRange"](minValue, maxValue);
 
                 expect(result).to.be.gte(minValue);
                 expect(result).to.be.lte(maxValue);

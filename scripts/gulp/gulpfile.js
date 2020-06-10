@@ -21,13 +21,12 @@ const SCRIPTS_FOLDER = path.resolve(PROJECT_ROOT, "./scripts");
 const packageFile = path.resolve(PROJECT_ROOT, "package.json");
 const check_env = path.resolve(SCRIPTS_FOLDER, "./check-env/check-environment");
 
-
 const engines = require(packageFile).engines;
 require(check_env)(
     {
         requiredNodeVersion: engines.node,
         requiredNpmVersion: engines.npm,
-        requiredYarnVersion: engines.yarn
+        requiredYarnVersion: engines.yarn,
     },
     logOutput,
     purgeIfStale
@@ -46,13 +45,6 @@ function loadTask(fileName, taskName) {
 }
 
 gulp.task("validate-commit-messages", loadTask("validate-commit-message"));
-
-gulp.task("tslint", (done) => {
-    loadTask("lint");
-    done();
-});
-
-gulp.task("lint", gulp.series(["validate-commit-messages", "tslint"]));
 
 gulp.task("check-env", (done) => {
     /* this is a noop because the env test ran already above */

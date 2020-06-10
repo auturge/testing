@@ -5,7 +5,7 @@ import { CharacterSet } from "@testing/random/strings/CharacterSets";
 import { Scale } from "@testing/random/numbers/Scale";
 
 function getSubInterval(min, max) {
-    let range = max - min + 1;
+    const range = max - min + 1;
     let minimum = min + Math.floor(Math.random() * range);
     let maximum = min + Math.floor(Math.random() * range);
 
@@ -19,7 +19,7 @@ function getSubInterval(min, max) {
 describe("AnyRandom Implementation", () => {
     describe("boolean", () => {
         it("boolean - returns either true or false", () => {
-            let result = AnyRandom.boolean();
+            const result = AnyRandom.boolean();
 
             expect(result).not.to.be.null;
             expect(result).not.to.be.undefined;
@@ -27,7 +27,7 @@ describe("AnyRandom Implementation", () => {
         });
 
         it("bool - returns either true or false", () => {
-            let result = AnyRandom.bool();
+            const result = AnyRandom.bool();
 
             expect(result).not.to.be.null;
             expect(result).not.to.be.undefined;
@@ -37,12 +37,12 @@ describe("AnyRandom Implementation", () => {
 
     describe("date", () => {
         it("date - given no dates, will return a date between 01-01-1970 and today", () => {
-            let earliest = new Date("01-01-1970");
-            let latest = new Date(Date.now());
+            const earliest = new Date("01-01-1970");
+            const latest = new Date(Date.now());
 
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1; int++) {
-                let result = AnyRandom.date();
+                const result = AnyRandom.date();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -54,13 +54,13 @@ describe("AnyRandom Implementation", () => {
         });
 
         it("date - returns a date between two provided dates", () => {
-            let earliest: Date = new Date();
-            let latest: Date = new Date();
+            const earliest: Date = new Date();
+            const latest: Date = new Date();
             latest.setFullYear(earliest.getFullYear() + 1);
 
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1; int++) {
-                let result = AnyRandom.date(earliest, latest);
+                const result = AnyRandom.date(earliest, latest);
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -72,11 +72,11 @@ describe("AnyRandom Implementation", () => {
         });
 
         it("date - if earliest and latest are the same, returns that date", () => {
-            let earliest: Date = new Date();
+            const earliest: Date = new Date();
 
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1; int++) {
-                let result = AnyRandom.date(earliest, earliest);
+                const result = AnyRandom.date(earliest, earliest);
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -91,7 +91,7 @@ describe("AnyRandom Implementation", () => {
         it("sign - returns either +1 or -1", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.sign();
+                const result = AnyRandom.sign();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -103,7 +103,7 @@ describe("AnyRandom Implementation", () => {
         it("sign - when includeZero is true, returns either +1, zero, or -1", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.sign(true);
+                const result = AnyRandom.sign(true);
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -117,9 +117,9 @@ describe("AnyRandom Implementation", () => {
         it("sbyte - when provided a range, returns an integer in that interval", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let [min, max] = getSubInterval(-128, 127);
+                const [min, max] = getSubInterval(-128, 127);
 
-                let result = AnyRandom.sbyte(min, max);
+                const result = AnyRandom.sbyte(min, max);
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -131,7 +131,7 @@ describe("AnyRandom Implementation", () => {
         it("sbyte - returns n signed int8 on the interval [-128, 127]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 100; int++) {
-                let result = AnyRandom.sbyte();
+                const result = AnyRandom.sbyte();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -164,9 +164,9 @@ describe("AnyRandom Implementation", () => {
         it("int8 - when provided a range, returns an integer in that interval", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let [min, max] = getSubInterval(-128, 127);
+                const [min, max] = getSubInterval(-128, 127);
 
-                let result = AnyRandom.int8(min, max);
+                const result = AnyRandom.int8(min, max);
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -178,7 +178,7 @@ describe("AnyRandom Implementation", () => {
         it("int8 - returns n signed int8 on the interval [-128, 127]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 100; int++) {
-                let result = AnyRandom.int8();
+                const result = AnyRandom.int8();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -212,9 +212,9 @@ describe("AnyRandom Implementation", () => {
         it("byte - when provided a range, returns an integer in that interval", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let [min, max] = getSubInterval(0, 255);
+                const [min, max] = getSubInterval(0, 255);
 
-                let result = AnyRandom.byte(min, max);
+                const result = AnyRandom.byte(min, max);
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -226,7 +226,7 @@ describe("AnyRandom Implementation", () => {
         it("byte - returns an integer on the interval [0, 255]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.byte();
+                const result = AnyRandom.byte();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -259,9 +259,9 @@ describe("AnyRandom Implementation", () => {
         it("uint8 - when provided a range, returns an integer in that interval", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let [min, max] = getSubInterval(0, 255);
+                const [min, max] = getSubInterval(0, 255);
 
-                let result = AnyRandom.uint8(min, max);
+                const result = AnyRandom.uint8(min, max);
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -273,7 +273,7 @@ describe("AnyRandom Implementation", () => {
         it("uint8 - returns an integer on the interval [0, 255]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.uint8();
+                const result = AnyRandom.uint8();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -308,7 +308,7 @@ describe("AnyRandom Implementation", () => {
         it("short - returns n signed int16 on the interval [-32768, 32767]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.short();
+                const result = AnyRandom.short();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -346,7 +346,7 @@ describe("AnyRandom Implementation", () => {
         it("int16 - returns n signed int16 on the interval [-32768, 32767]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.int16();
+                const result = AnyRandom.int16();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -385,7 +385,7 @@ describe("AnyRandom Implementation", () => {
         it("ushort - returns an unsigned int16 on the interval [0, 65535]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.ushort();
+                const result = AnyRandom.ushort();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -418,7 +418,7 @@ describe("AnyRandom Implementation", () => {
         it("uint16 - returns an unsigned int16 on the interval [0, 65535]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.uint16();
+                const result = AnyRandom.uint16();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -453,7 +453,7 @@ describe("AnyRandom Implementation", () => {
         it("int - returns a signed int32 on the interval [-2147483648, 2147483647]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.int();
+                const result = AnyRandom.int();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -486,7 +486,7 @@ describe("AnyRandom Implementation", () => {
         it("int32 - returns a signed int32 on the interval [-2147483648, 2147483647]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.int32();
+                const result = AnyRandom.int32();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -520,7 +520,7 @@ describe("AnyRandom Implementation", () => {
         it("uint - returns an unsigned int32 on the interval [0, 4294967295]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.uint();
+                const result = AnyRandom.uint();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -553,7 +553,7 @@ describe("AnyRandom Implementation", () => {
         it("uint32 - returns an unsigned int32 on the interval [0, 4294967295]", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.uint32();
+                const result = AnyRandom.uint32();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -588,7 +588,7 @@ describe("AnyRandom Implementation", () => {
         it("number - returns a 64-bit floating point number", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.number();
+                const result = AnyRandom.number();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -604,7 +604,7 @@ describe("AnyRandom Implementation", () => {
         });
         it("number - returns a number when Unscaled", () => {
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.number(0, Number.MAX_VALUE, Scale.Unscaled);
+                const result = AnyRandom.number(0, Number.MAX_VALUE, Scale.Unscaled);
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -617,7 +617,7 @@ describe("AnyRandom Implementation", () => {
         it("double - returns a 64-bit floating point number", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.double();
+                const result = AnyRandom.double();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -636,7 +636,7 @@ describe("AnyRandom Implementation", () => {
         it("float - returns a single-precision 32-bit floating point number", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.float();
+                const result = AnyRandom.float();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -648,7 +648,7 @@ describe("AnyRandom Implementation", () => {
         it("single - returns a single-precision 32-bit floating point number", () => {
             // do this 1000 times, to be sure!
             for (let int = 0; int < 1000; int++) {
-                let result = AnyRandom.single();
+                const result = AnyRandom.single();
 
                 expect(result).not.to.be.null;
                 expect(result).not.to.be.undefined;
@@ -661,7 +661,7 @@ describe("AnyRandom Implementation", () => {
 
     describe("char", () => {
         it(`char - given no inputs, returns a single character from the ATOM CharacterSet`, () => {
-            let result = AnyRandom.char();
+            const result = AnyRandom.char();
 
             expect(result).not.to.be.false;
             expect(typeof result === "string").to.be.true;
@@ -688,9 +688,9 @@ describe("AnyRandom Implementation", () => {
             { key: "url-safe symbols", value: CharacterSet.SYMBOLS.toString() },
         ].forEach(({ key, value }) => {
             it(`char - given a string input composed of ${key}, returns a single character from that string`, () => {
-                let characterSet: string = value;
+                const characterSet: string = value;
 
-                let result = AnyRandom.char(characterSet);
+                const result = AnyRandom.char(characterSet);
 
                 expect(result).not.to.be.false;
                 expect(typeof result === "string").to.be.true;
@@ -707,9 +707,9 @@ describe("AnyRandom Implementation", () => {
             { key: "SYMBOLS", set: CharacterSet.SYMBOLS },
         ].forEach(({ key, set }) => {
             it(`char - given the CharacterSet [${key}], returns a single character from that CharacterSet`, () => {
-                let characterSet: CharacterSet = set;
+                const characterSet: CharacterSet = set;
 
-                let result = AnyRandom.char(characterSet);
+                const result = AnyRandom.char(characterSet);
 
                 expect(result).not.to.be.false;
                 expect(typeof result === "string").to.be.true;
@@ -721,45 +721,45 @@ describe("AnyRandom Implementation", () => {
 
     describe("charArray", () => {
         it(`charArray - given no inputs, returns an array of characters, between 0 and 32 characters long, taken from the ATOM CharacterSet`, () => {
-            let result = AnyRandom.charArray();
+            const result = AnyRandom.charArray();
 
             expect(result).not.to.be.false;
             expect(result instanceof Array).to.be.true;
             expect(result.length).to.be.gte(0);
             expect(result.length).to.be.lte(32);
 
-            let goodChars = result.filter((it) => CharacterSet.ATOM.includes(it));
+            const goodChars = result.filter((it) => CharacterSet.ATOM.includes(it));
             expect(goodChars.length).to.equal(result.length);
         });
 
         it(`charArray - given a range of lengths, returns an array of characters, some length in the given range, taken from the ATOM CharacterSet`, () => {
-            let minLength = Math.floor(Math.random() * 32);
-            let maxLength = minLength + Math.floor(Math.random() * 32);
+            const minLength = Math.floor(Math.random() * 32);
+            const maxLength = minLength + Math.floor(Math.random() * 32);
 
-            let result = AnyRandom.charArray(minLength, maxLength);
+            const result = AnyRandom.charArray(minLength, maxLength);
 
             expect(result).not.to.be.false;
             expect(result instanceof Array).to.be.true;
             expect(result.length).to.be.gte(minLength);
             expect(result.length).to.be.lte(maxLength);
 
-            let goodChars = result.filter((it) => CharacterSet.ATOM.includes(it));
+            const goodChars = result.filter((it) => CharacterSet.ATOM.includes(it));
             expect(goodChars.length).to.equal(result.length);
         });
 
         it(`charArray - given a range of lengths, and a string of characters, returns an array of characters, some length in the given range, taken from the given string`, () => {
-            let characterSet = "Mexico!";
-            let minLength = Math.floor(Math.random() * 32);
-            let maxLength = minLength + Math.floor(Math.random() * 32);
+            const characterSet = "Mexico!";
+            const minLength = Math.floor(Math.random() * 32);
+            const maxLength = minLength + Math.floor(Math.random() * 32);
 
-            let result = AnyRandom.charArray(minLength, maxLength, characterSet);
+            const result = AnyRandom.charArray(minLength, maxLength, characterSet);
 
             expect(result).not.to.be.false;
             expect(result instanceof Array).to.be.true;
             expect(result.length).to.be.gte(minLength);
             expect(result.length).to.be.lte(maxLength);
 
-            let goodChars = result.filter((it) => characterSet.includes(it));
+            const goodChars = result.filter((it) => characterSet.includes(it));
             expect(goodChars.length).to.equal(result.length);
         });
 
@@ -771,18 +771,18 @@ describe("AnyRandom Implementation", () => {
             { key: "SYMBOLS", set: CharacterSet.SYMBOLS },
         ].forEach(({ key, set }) => {
             it(`charArray - given a range of lengths, and the CharacterSet ${key}, returns an array of characters, some length in the given range, taken from the given CharacterSet`, () => {
-                let characterSet = set;
-                let minLength = Math.floor(Math.random() * 32);
-                let maxLength = minLength + Math.floor(Math.random() * 32);
+                const characterSet = set;
+                const minLength = Math.floor(Math.random() * 32);
+                const maxLength = minLength + Math.floor(Math.random() * 32);
 
-                let result = AnyRandom.charArray(minLength, maxLength, characterSet);
+                const result = AnyRandom.charArray(minLength, maxLength, characterSet);
 
                 expect(result).not.to.be.false;
                 expect(result instanceof Array).to.be.true;
                 expect(result.length).to.be.gte(minLength);
                 expect(result.length).to.be.lte(maxLength);
 
-                let goodChars = result.filter((it) => characterSet.includes(it));
+                const goodChars = result.filter((it) => characterSet.includes(it));
                 expect(goodChars.length).to.equal(result.length);
             });
         });
@@ -790,44 +790,44 @@ describe("AnyRandom Implementation", () => {
 
     describe("string", () => {
         it(`string - given no inputs, returns a string, between 0 and 32 characters long, taken from the ATOM CharacterSet`, () => {
-            let result = AnyRandom.string();
+            const result = AnyRandom.string();
 
             expect(result == null).to.be.false;
             expect(typeof result === "string").to.be.true;
             expect(result.length).to.be.gte(0);
             expect(result.length).to.be.lte(32);
-            for (var i = 0; i < result.length; i++) {
+            for (let i = 0; i < result.length; i++) {
                 expect(CharacterSet.ATOM.includes(result[i]));
             }
         });
 
         it(`string - given a range of lengths, returns a string, some length in the given range, taken from the ATOM CharacterSet`, () => {
-            let minLength = Math.floor(Math.random() * 32);
-            let maxLength = minLength + Math.floor(Math.random() * 32);
+            const minLength = Math.floor(Math.random() * 32);
+            const maxLength = minLength + Math.floor(Math.random() * 32);
 
-            let result = AnyRandom.string(minLength, maxLength);
+            const result = AnyRandom.string(minLength, maxLength);
 
             expect(result == null).to.be.false;
             expect(typeof result === "string").to.be.true;
             expect(result.length).to.be.gte(minLength);
             expect(result.length).to.be.lte(maxLength);
-            for (var i = 0; i < result.length; i++) {
+            for (let i = 0; i < result.length; i++) {
                 expect(CharacterSet.ATOM.includes(result[i]));
             }
         });
 
         it(`string - given a range of lengths, and a string of characters, returns a string, some length in the given range, taken from the given string`, () => {
-            let characterSet = "Mexico!";
-            let minLength = Math.floor(Math.random() * 32);
-            let maxLength = minLength + Math.floor(Math.random() * 32);
+            const characterSet = "Mexico!";
+            const minLength = Math.floor(Math.random() * 32);
+            const maxLength = minLength + Math.floor(Math.random() * 32);
 
-            let result = AnyRandom.string(minLength, maxLength, characterSet);
+            const result = AnyRandom.string(minLength, maxLength, characterSet);
 
             expect(result == null).to.be.false;
             expect(typeof result === "string").to.be.true;
             expect(result.length).to.be.gte(minLength);
             expect(result.length).to.be.lte(maxLength);
-            for (var i = 0; i < result.length; i++) {
+            for (let i = 0; i < result.length; i++) {
                 expect(characterSet.includes(result[i]));
             }
         });
@@ -840,17 +840,17 @@ describe("AnyRandom Implementation", () => {
             { key: "SYMBOLS", set: CharacterSet.SYMBOLS },
         ].forEach(({ key, set }) => {
             it(`string - given a range of lengths, and the CharacterSet ${key}, returns a string, some length in the given range, taken from the given CharacterSet`, () => {
-                let characterSet = set;
-                let minLength = Math.floor(Math.random() * 32);
-                let maxLength = minLength + Math.floor(Math.random() * 32);
+                const characterSet = set;
+                const minLength = Math.floor(Math.random() * 32);
+                const maxLength = minLength + Math.floor(Math.random() * 32);
 
-                let result = AnyRandom.string(minLength, maxLength, characterSet);
+                const result = AnyRandom.string(minLength, maxLength, characterSet);
 
                 expect(result == null).to.be.false;
                 expect(typeof result === "string").to.be.true;
                 expect(result.length).to.be.gte(minLength);
                 expect(result.length).to.be.lte(maxLength);
-                for (var i = 0; i < result.length; i++) {
+                for (let i = 0; i < result.length; i++) {
                     expect(characterSet.includes(result[i]));
                 }
             });

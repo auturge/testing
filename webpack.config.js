@@ -12,9 +12,10 @@ const PROJECT_ROOT = path.resolve(__dirname, "./");
 const entryPath = path.resolve(PROJECT_ROOT, "./src/index.ts");
 
 // Specify where webpack should place the built bundles
-const bundlePath = path.resolve(PROJECT_ROOT, `./build/bundles`);
+const bundlePath = path.resolve(PROJECT_ROOT, `./dist/bundles`);
 
-const testsPath = path.resolve(PROJECT_ROOT, "./test");
+// specify the path where the tests live
+// const testsPath = path.resolve(PROJECT_ROOT, "./test");
 
 // specify the tsConfig project file to use
 const tsConfig = path.resolve(PROJECT_ROOT, "./tsconfig.json");
@@ -22,11 +23,11 @@ const tsConfig = path.resolve(PROJECT_ROOT, "./tsconfig.json");
 //==========================================================================================
 
 // identify paths
-var PATHS = {
+let PATHS = {
     entryPoint: entryPath,
     bundles: bundlePath,
     tsConfig: tsConfig,
-    tests: testsPath,
+    // tests: testsPath,
 };
 
 let entry = {};

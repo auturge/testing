@@ -80,11 +80,15 @@
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
         "**/node_modules/**": true,
-        "**/build/**": true
+        "**/build/**": true,
+        "**/dist": true,
+        "**/temp/**": true
     },
     "search.exclude": {
         "**/node_modules": true,
-        "**/build": true
+        "**/build": true,
+        "**/dist": true,
+        "**/temp/**": true
     },
 
     //
@@ -141,5 +145,37 @@
     "prettier.semi": true,
     "prettier.bracketSpacing": true,
     "prettier.arrowParens": "always",
-    "prettier.endOfLine": "auto"
+    "prettier.endOfLine": "auto",
+
+    //
+    // VSCode Action Buttons
+    // ======================================================================================================
+    "actionButtons": {
+        "defaultColor": "#ffffff", // Can also use string color names.
+        "loadNpmCommands": false, // Disables automatic generation of actions for npm commands.
+        "reloadButton": "♻️", // Custom reload button text or icon (default ↻). null value enables automatic reload on configuration change
+        "commands": [
+            {
+                "name": "Clean",
+                "color": "pink",
+                "command": "yarn clean"
+            },
+            {
+                "name": "Build",
+                "color": "lightgreen",
+                "singleInstance": true,
+                "command": "yarn build"
+            },
+            {
+                "name": "Lint",
+                "color": "white",
+                "command": "yarn lint"
+            },
+            {
+                "name": "Test",
+                "color": "lightgreen",
+                "command": "yarn test"
+            }
+        ]
+    }
 }

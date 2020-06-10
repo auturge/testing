@@ -18,6 +18,12 @@ export class Double extends RandomScaledNumber {
     }
 
     protected getRandomValueInRange(minValue: number, maxValue: number, scale: Scale): number {
+        let minScale = Math.log10(minValue);
+        let maxScale = Math.log10(maxValue);
+        const sign = this.getSign(minValue, maxValue);
+        const exponent = this.randomDouble(minScale, maxScale);
+        const output = sign * Math.pow(10, exponent);
+
         switch (scale) {
             default:
                 return this.randomDouble(minValue, maxValue);
@@ -28,9 +34,6 @@ export class Double extends RandomScaledNumber {
                 if (Math.abs(minValue - maxValue) < Number.EPSILON) {
                     return minValue;
                 }
-
-                let minScale = Math.log10(minValue);
-                let maxScale = Math.log10(maxValue);
 
                 if (Number.isNaN(minScale) || minScale == Number.NEGATIVE_INFINITY) {
                     minScale = -100;
@@ -43,10 +46,6 @@ export class Double extends RandomScaledNumber {
                 ) {
                     maxScale = 308;
                 }
-
-                let sign = this.getSign(minValue, maxValue);
-                let exponent = this.randomDouble(minScale, maxScale);
-                let output = sign * Math.pow(10, exponent);
 
                 if (this.validValue(minValue, maxValue, output)) {
                     return output;
@@ -69,10 +68,10 @@ export class Double extends RandomScaledNumber {
             minValue = Number.MAX_VALUE;
         }
 
-        var scalar = Math.random();
-        var p1 = scalar * maxValue;
-        var p2 = scalar * minValue;
-        var output = minValue + p1 - p2;
+        const scalar = Math.random();
+        const p1 = scalar * maxValue;
+        const p2 = scalar * minValue;
+        let output = minValue + p1 - p2;
 
         if (!Number.isFinite(output) && output < 0) {
             output = Number.MIN_VALUE;
@@ -121,10 +120,10 @@ export class Double extends RandomScaledNumber {
     }
 
     private getSign(minValue: number, maxValue: number): number {
-        var signMax = Math.sign(maxValue);
-        var signMin = Math.sign(minValue);
-        var difference = signMax - signMin;
-        var sum = signMax + signMin;
+        const signMax = Math.sign(maxValue);
+        const signMin = Math.sign(minValue);
+        const difference = signMax - signMin;
+        const sum = signMax + signMin;
 
         switch (difference) {
             case 0: // same sign

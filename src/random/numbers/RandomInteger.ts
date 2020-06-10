@@ -38,19 +38,19 @@ export abstract class RandomInteger extends RandomNumber {
     }
 
     protected getRandomValueInRange(minValue: number, maxValue: number): number {
-        var rval = 0;
-        var max_range = maxValue - minValue + 1;
+        let rval = 0;
+        const max_range = maxValue - minValue + 1;
 
-        var bits_needed = Math.ceil(Math.log2(max_range));
+        const bits_needed = Math.ceil(Math.log2(max_range));
         if (bits_needed > 53) {
             throw new Error("We cannot generate numbers larger than 53 bits.");
         }
 
-        var bytes_needed = Math.ceil(bits_needed / 8);
-        var mask = Math.pow(2, bits_needed) - 1;
+        const bytes_needed = Math.ceil(bits_needed / 8);
+        const mask = Math.pow(2, bits_needed) - 1;
 
-        var p = (bytes_needed - 1) * 8;
-        for (var i = 0; i < bytes_needed; i++) {
+        let p = (bytes_needed - 1) * 8;
+        for (let i = 0; i < bytes_needed; i++) {
             rval += this.BYTE_ARRAY[i] * Math.pow(2, p);
             p -= 8;
         }

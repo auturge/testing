@@ -11,17 +11,17 @@ export abstract class RandomChar {
             throw new Error("Argument [characterSet] has zero length (no characters).");
         }
 
-        let index = Int32.next(0, characterSet.length - 1);
+        const index = Int32.next(0, characterSet.length - 1);
         return characterSet[index];
     }
 
     public static charArray(
-        minLength: number = 0,
-        maxLength: number = 32,
+        minLength = 0,
+        maxLength = 32,
         characterSet: string | CharacterSet = CharacterSet.ATOM
     ): string[] {
-        var arrayLength = Int32.next(minLength, maxLength);
-        var result = new Array<string>(arrayLength);
+        const arrayLength = Int32.next(minLength, maxLength);
+        const result = new Array<string>(arrayLength);
         for (let index = 0; index < arrayLength; index++) {
             result[index] = this.char(characterSet);
         }

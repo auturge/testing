@@ -10,8 +10,9 @@
         "davidanson.vscode-markdownlint", // markdownlint
         "eg2.vscode-npm-script", // npm
         "esbenp.prettier-vscode", // Prettier
-        "wayou.vscode-todo-highlight", // TODO Highlight
+        "wayou.vscode-todo-highlight", // "TODO" Highlight
         "gruntfuggly.todo-tree", // Todo Tree
-        "ms-vscode.vscode-typescript-tslint-plugin" // TSLint
+        "ms-vscode.vscode-typescript-tslint-plugin", // TSLint
+        "seunlanlege.action-buttons" // VSCode action buttons
     ]
 }
