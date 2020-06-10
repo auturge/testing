@@ -22,3 +22,6 @@ install:
 
 script:
     - yarn test
+
+after_success:
+    - yarn test:report
