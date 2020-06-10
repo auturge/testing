@@ -222,7 +222,7 @@ Returns a random 32-bit single-precision floating-point number within the range 
   </tr>
   <tr>
     <td>CharacterSet.SYMBOL</td>
-    <td> ! # $ % & ' * + - / = ? ^ _ ` { | } ~ </td>
+    <td> ! # $ % & ' \* + - / = ? ^ \_ ` { | } ~ </td>
   </tr>
   <tr>
     <td>CharacterSet.ALPHANUMERIC</td>
