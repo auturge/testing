@@ -6,9 +6,9 @@ This folder contains opt-in [Workspace Settings](https://code.visualstudio.com/d
 
 To use the recommended configurations follow the steps below:
 
-- install the recommneded extensions in `.vscode/extensions.json`
-- copy (or link) `.vscode/recommended-settings.jsonc` to `.vscode/settings.json`
-- restart the editor
+-   install the recommended extensions in `.vscode/extensions.jsonc`
+-   copy (or link) `.vscode/recommended-settings.jsonc` to `.vscode/settings.json`
+-   restart the editor
 
 If you already have your custom workspace settings you should instead manually merge the file contents.
 

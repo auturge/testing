@@ -4,10 +4,16 @@
         "target": "es5",
         "module": "commonjs",
         "moduleResolution": "node",
-        "sourceMap": true,
         "lib": ["es2015", "dom"],
+        "sourceMap": true,
         "declaration": true,
-        "removeComments": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "allowJs": false,
+        "checkJs": false,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
         "baseUrl": "./",
         "paths": {
             "@testing/*": ["./src/*"]
@@ -15,5 +21,5 @@
         "types": ["mocha"]
     },
     "include": ["./src/**/*.ts", "./test/**/*.ts"],
-    "exclude": ["node_modules", "**/*.d.ts", "temp/**/*"]
+    "exclude": ["node_modules", "**/*.d.ts", "temp/**/*", "build/**/*"]
 }

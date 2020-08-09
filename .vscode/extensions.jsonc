@@ -13,6 +13,7 @@
         "wayou.vscode-todo-highlight", // "TODO" Highlight
         "gruntfuggly.todo-tree", // Todo Tree
         "ms-vscode.vscode-typescript-tslint-plugin", // TSLint
-        "seunlanlege.action-buttons" // VSCode action buttons
+        "seunlanlege.action-buttons", // VSCode action buttons
+        "coenraads.bracket-pair-colorizer" // bracket pair colorizer
     ]
 }

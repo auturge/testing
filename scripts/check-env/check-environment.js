@@ -64,6 +64,11 @@ if (require.main === module) {
     // the root package.json
 
     let engines = require(packageFile).engines;
+    if (!engines) {
+        issues.push(
+            "Looks like your package.json is missing the 'engines' declaration. Please add this."
+        );
+    }
     checkEnvironment(
         {
             requiredNodeVersion: engines.node,

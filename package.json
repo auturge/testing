@@ -2,32 +2,41 @@
     "name": "@auturge/testing",
     "version": "0.0.8",
     "description": "Auturge - the testing library",
-    "main": "./bundles/testing.umd.js",
-    "commonjs": "./common/index.js",
-    "es6": "./es6/index.js",
-    "types": "./testing.d.ts",
     "author": "auturge",
     "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/auturge/testing/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/auturge/testing.git"
+    },
+    "homepage": "https://github.com/auturge/testing",
+    "main": "./testing.cjs.js",
+    "module": "./testing.esm.js",
+    "files": [
+        "testing.cjs.js",
+        "testing.cjs.d.ts",
+        "testing.esm.js",
+        "testing.esm.d.ts",
+        "readme.md"
+    ],
     "engines": {
         "node": ">=12.8.1",
         "yarn": ">=1.21.1",
         "npm": ">=6.10.2"
-    },
-    "files": [
-        "commonjs/**",
-        "es6/**",
-        "readme.md",
-        "testing.d.ts"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/auturge/testing.git"
     },
     "devDependencies": {
         "@types/chai": "4.2.11",
         "@types/mocha": "7.0.2",
         "@typescript-eslint/eslint-plugin": "3.2.0",
         "@typescript-eslint/parser": "3.2.0",
+        "rollup": "2.23.1",
+        "@rollup/plugin-node-resolve": "8.4.0",
+        "@rollup/plugin-commonjs": "14.0.0",
+        "rollup-plugin-terser": "7.0.0",
+        "rollup-plugin-ts-paths": "1.0.5",
+        "@wessberg/rollup-plugin-ts": "1.3.2",
         "awesome-typescript-loader": "5.2.1",
         "chai": "4.2.0",
         "coveralls": "3.1.0",
@@ -43,36 +52,31 @@
         "shx": "0.3.2",
         "source-map": "0.7.3",
         "source-map-support": "0.5.19",
-        "terser-webpack-plugin": "3.0.3",
         "tsconfig-paths": "3.9.0",
-        "tsconfig-paths-webpack-plugin": "3.2.0",
+        "tslib": "",
         "ts-mocha": "7.0.0",
         "ts-node": "8.10.2",
-        "typescript": "3.9.5",
-        "webpack": "4.43.0",
-        "webpack-cli": "3.3.11"
+        "typescript": "3.9.5"
     },
     "scripts": {
         "build": "npm-run-all check-env clean build:testing",
-        "build:testing": "npm-run-all build:testing:bundles build:testing:common build:testing:es6 copy:package:json:testing copy:readme:testing copy:typings:testing",
-        "build:testing:bundles": "webpack --config ./webpack.config.js --display-error-details --progress",
-        "build:testing:common": "tsc -p ./tsconfig.json -m commonjs --outdir ./dist/commonjs",
-        "build:testing:es6": "tsc -p ./tsconfig.json -m es6 --outDir ./dist/es6",
+        "build:testing": "npm-run-all rollup copy:package:json:testing copy:readme:testing",
         "check-env": "node ./scripts/check-env/check-environment.js",
         "clean": "shx rm -rf dist build",
         "copy:package:json:testing": "node ./scripts/copy-package-json/copy-trimmed-package-json.js ./package.json ./dist",
         "copy:readme:testing": "shx cp ./README.md ./dist",
-        "copy:typings:testing": "shx cp ./src/testing.d.ts ./dist",
         "lint": "yarn eslint . --ext .ts,.tsx",
+        "package": "npm-run-all pack:clean pack:cp:commonjs pack:cp:es6 pack:cp:root",
+        "pack:clean": "shx rm -rf dist && shx mkdir -p ./dist",
         "preinstall": "node ./scripts/yarn/check-yarn.js",
         "prepare": "npm-run-all build test",
         "prepublishOnly": "cd ./dist",
         "publish": "npm publish --access public",
         "postpublish": "git push origin --all; git push origin --tags",
+        "rollup": "rollup -c",
         "test": "yarn test:clean && yarn test:run",
         "test:clean": "shx rm -rf coverage",
         "test:run": "nyc ts-mocha --paths -p ./tsconfig.json ./test/**/*.spec.ts",
         "test:report": "nyc report --reporter=text-lcov | coveralls"
-    },
-    "sideEffects": false
+    }
 }

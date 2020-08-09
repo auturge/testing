@@ -6,7 +6,7 @@ export class RandomDate {
         const date2 = latest || new Date(Date.now());
 
         if (date1 == date2) {
-            return earliest;
+            return date1;
         }
 
         const lhs = new Date(date1).getTime();

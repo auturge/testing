@@ -3,6 +3,9 @@ import { RandomObjectGenerator } from "@testing/random/RandomObjectGenerator";
 import { CharacterSet } from "@testing/random/strings/CharacterSets";
 import { Scale } from "@testing/random/numbers/Scale";
 
+/**
+ * Generates pseudo-random entities for testing purposes.
+ */
 export class AnyRandom {
     private static random: RandomObjectGenerator = new AnyRandomImplementation();
 
@@ -22,7 +25,7 @@ export class AnyRandom {
 
     static sign(): number;
     static sign(includeZero: boolean): number;
-    static sign(includeZero?: boolean): number {
+    static sign(includeZero: boolean = false): number {
         return this.random.sign(includeZero);
     }
 
@@ -37,7 +40,10 @@ export class AnyRandom {
      * @param {number} latest The latest date that the result could take.
      */
     static date(earliest: Date, latest: Date): Date;
-    static date(earliest?: Date, latest?: Date): Date {
+    static date(
+        earliest: Date = new Date("01-01-1970"),
+        latest: Date = new Date(Date.now())
+    ): Date {
         return this.random.date(earliest, latest);
     }
 
@@ -57,7 +63,7 @@ export class AnyRandom {
      * @see byte
      * */
     static uint8(minValue: number, maxValue: number): number;
-    static uint8(minValue?: number, maxValue?: number): number {
+    static uint8(minValue: number = 0, maxValue: number = 255): number {
         return this.random.uint8(minValue, maxValue);
     }
 
@@ -75,7 +81,7 @@ export class AnyRandom {
      * @see uint8
      */
     static byte(minValue: number, maxValue: number): number;
-    static byte(minValue?: number, maxValue?: number): number {
+    static byte(minValue: number = 0, maxValue: number = 255): number {
         return this.uint8(minValue, maxValue);
     }
 
@@ -93,7 +99,7 @@ export class AnyRandom {
      * @see sbyte
      */
     static int8(minValue: number, maxValue: number): number;
-    static int8(minValue?: number, maxValue?: number): number {
+    static int8(minValue: number = -128, maxValue: number = 127): number {
         return this.random.int8(minValue, maxValue);
     }
 
@@ -111,7 +117,7 @@ export class AnyRandom {
      * @see int8
      */
     static sbyte(minValue: number, maxValue: number): number;
-    static sbyte(minValue?: number, maxValue?: number): number {
+    static sbyte(minValue: number = -128, maxValue: number = 127): number {
         return this.random.int8(minValue, maxValue);
     }
 
@@ -131,7 +137,7 @@ export class AnyRandom {
      * @see short
      */
     static int16(minValue: number, maxValue: number): number;
-    static int16(minValue?: number, maxValue?: number): number {
+    static int16(minValue: number = -32768, maxValue: number = 32767): number {
         return this.random.int16(minValue, maxValue);
     }
 
@@ -149,7 +155,7 @@ export class AnyRandom {
      * @see ushort
      */
     static uint16(minValue: number, maxValue: number): number;
-    static uint16(minValue?: number, maxValue?: number): number {
+    static uint16(minValue: number = 0, maxValue: number = 65535): number {
         return this.random.uint16(minValue, maxValue);
     }
 
@@ -167,7 +173,7 @@ export class AnyRandom {
      * @see int16
      */
     static short(minValue: number, maxValue: number): number;
-    static short(minValue?: number, maxValue?: number): number {
+    static short(minValue: number = -32768, maxValue: number = 32767): number {
         return this.random.int16(minValue, maxValue);
     }
 
@@ -185,7 +191,7 @@ export class AnyRandom {
      * @see uint16
      */
     static ushort(minValue: number, maxValue: number): number;
-    static ushort(minValue?: number, maxValue?: number): number {
+    static ushort(minValue: number = 0, maxValue: number = 65535): number {
         return this.random.uint16(minValue, maxValue);
     }
 
@@ -205,7 +211,7 @@ export class AnyRandom {
      * @see int
      */
     static int32(minValue: number, maxValue: number): number;
-    static int32(minValue?: number, maxValue?: number): number {
+    static int32(minValue: number = -2147483648, maxValue: number = 2147483647): number {
         return this.random.int32(minValue, maxValue);
     }
 
@@ -223,7 +229,7 @@ export class AnyRandom {
      * @see int
      */
     static int(minValue: number, maxValue: number): number;
-    static int(minValue?: number, maxValue?: number): number {
+    static int(minValue: number = -2147483648, maxValue: number = 2147483647): number {
         return this.random.int32(minValue, maxValue);
     }
 
@@ -241,7 +247,7 @@ export class AnyRandom {
      * @see uint32
      */
     static uint(minValue: number, maxValue: number): number;
-    static uint(minValue?: number, maxValue?: number): number {
+    static uint(minValue: number = 0, maxValue: number = 4294967295): number {
         return this.random.uint32(minValue, maxValue);
     }
 
@@ -259,7 +265,7 @@ export class AnyRandom {
      * @see uint32
      */
     static uint32(minValue: number, maxValue: number): number;
-    static uint32(minValue?: number, maxValue?: number): number {
+    static uint32(minValue: number = 0, maxValue: number = 4294967295): number {
         return this.random.uint32(minValue, maxValue);
     }
 
@@ -273,7 +279,7 @@ export class AnyRandom {
 
     /**
      * Returns a random 64-bit double-precision floating-point number within the range defined by `minValue` and
-     *     `maxValue` (which must both be on the interval [-infinity, infinity]).
+     *     `maxValue` (which must both be on the interval [-Infinity, Infinity]).
      * @param {number} minValue The minimum value that the result could take.
      * @param {number} maxValue The maximum value that the result could take.
      * @see number
@@ -282,14 +288,18 @@ export class AnyRandom {
 
     /**
      * Returns a random 64-bit double-precision floating-point number within the range defined by `minValue` and
-     *     `maxValue` (which must both be on the interval [-infinity, infinity]).
+     *     `maxValue` (which must both be on the interval [-Infinity, Infinity]).
      * @param {number} minValue The minimum value that the result could take.
      * @param {number} maxValue The maximum value that the result could take.
      * @param {Scale} scale The `scale` to apply.
      * @see number
      */
     static double(minValue: number, maxValue: number, scale: Scale): number;
-    static double(minValue?: number, maxValue?: number, scale?: Scale): number {
+    static double(
+        minValue: number = -Infinity,
+        maxValue: number = Infinity,
+        scale: Scale = Scale.Unscaled
+    ): number {
         return this.random.double(minValue, maxValue, scale);
     }
 
@@ -301,7 +311,7 @@ export class AnyRandom {
 
     /**
      * Returns a random 64-bit double-precision floating-point number within the range defined by `minValue` and
-     *     `maxValue` (which must both be on the interval [-infinity, infinity]).
+     *     `maxValue` (which must both be on the interval [-Infinity, Infinity]).
      * @param {number} minValue The minimum value that the result could take.
      * @param {number} maxValue The maximum value that the result could take.
      * @see double
@@ -310,28 +320,32 @@ export class AnyRandom {
 
     /**
      * Returns a random 64-bit double-precision floating-point number within the range defined by `minValue` and
-     *     `maxValue` (which must both be on the interval [-infinity, infinity]).
+     *     `maxValue` (which must both be on the interval [-Infinity, Infinity]).
      * @param {number} minValue The minimum value that the result could take.
      * @param {number} maxValue The maximum value that the result could take.
      * @param {Scale} scale The `scale` to apply.
      * @see double
      */
     static number(minValue: number, maxValue: number, scale: Scale): number;
-    static number(minValue?: number, maxValue?: number, scale?: Scale): number {
+    static number(
+        minValue: number = -Infinity,
+        maxValue: number = Infinity,
+        scale: Scale = Scale.Unscaled
+    ): number {
         return this.random.double(minValue, maxValue, scale);
     }
 
     /** 32-bit single-precision floating-point number */
 
     /**
-     * Returns a random 32-bit single-precision floating-point number on the interval [-infinity, infinity].
+     * Returns a random 32-bit single-precision floating-point number on the interval [-Infinity, Infinity].
      * @see single
      */
     static float(): number;
 
     /**
      * Returns a random 32-bit single-precision floating-point number within the range defined by `minValue` and
-     *     `maxValue` (which must both be on the interval [-infinity, infinity]).
+     *     `maxValue` (which must both be on the interval [-Infinity, Infinity]).
      * @param {number} minValue The minimum value that the result could take.
      * @param {number} maxValue The maximum value that the result could take.
      * @see single
@@ -340,26 +354,30 @@ export class AnyRandom {
 
     /**
      * Returns a random 32-bit single-precision floating-point number within the range defined by `minValue` and
-     *     `maxValue` (which must both be on the interval [-infinity, infinity]).
+     *     `maxValue` (which must both be on the interval [-Infinity, Infinity]).
      * @param {number} minValue The minimum value that the result could take.
      * @param {number} maxValue The maximum value that the result could take.
      * @param {Scale} scale The `scale` to apply.
      * @see single
      */
     static float(minValue: number, maxValue: number, scale: Scale): number;
-    static float(minValue?: number, maxValue?: number, scale?: Scale): number {
+    static float(
+        minValue: number = -Infinity,
+        maxValue: number = Infinity,
+        scale: Scale = Scale.Unscaled
+    ): number {
         return this.random.single(minValue, maxValue, scale);
     }
 
     /**
-     * Returns a random 32-bit single-precision floating-point number on the interval [-infinity, infinity].
+     * Returns a random 32-bit single-precision floating-point number on the interval [-Infinity, Infinity].
      * @see float
      */
     static single(): number;
 
     /**
      * Returns a random 32-bit single-precision floating-point number within the range defined by `minValue` and
-     *     `maxValue` (which must both be on the interval [-infinity, infinity]).
+     *     `maxValue` (which must both be on the interval [-Infinity, Infinity]).
      * @param {number} minValue The minimum value that the result could take.
      * @param {number} maxValue The maximum value that the result could take.
      * @see float
@@ -368,14 +386,18 @@ export class AnyRandom {
 
     /**
      * Returns a random 32-bit single-precision floating-point number within the range defined by `minValue` and
-     *     `maxValue` (which must both be on the interval [-infinity, infinity]).
+     *     `maxValue` (which must both be on the interval [-Infinity, Infinity]).
      * @param {number} minValue The minimum value that the result could take.
      * @param {number} maxValue The maximum value that the result could take.
      * @param {Scale} scale The `scale` to apply.
      * @see float
      */
     static single(minValue: number, maxValue: number, scale: Scale): number;
-    static single(minValue?: number, maxValue?: number, scale?: Scale): number {
+    static single(
+        minValue: number = -Infinity,
+        maxValue: number = Infinity,
+        scale: Scale = Scale.Unscaled
+    ): number {
         return this.random.single(minValue, maxValue, scale);
     }
 
@@ -391,7 +413,7 @@ export class AnyRandom {
      * @param {string | CharacterSet} characterSet The characters from which to sample.
      */
     static char(characterSet: string | CharacterSet): string;
-    static char(characterSet?: string | CharacterSet): string {
+    static char(characterSet: string | CharacterSet = CharacterSet.ATOM): string {
         return this.random.char(characterSet);
     }
 
@@ -421,9 +443,9 @@ export class AnyRandom {
         characterSet: string | CharacterSet
     ): string[];
     static charArray(
-        minLength?: number,
-        maxLength?: number,
-        characterSet?: string | CharacterSet
+        minLength: number = 0,
+        maxLength: number = 32,
+        characterSet: string | CharacterSet = CharacterSet.ATOM
     ): string[] {
         return this.random.charArray(minLength, maxLength, characterSet);
     }
@@ -455,9 +477,9 @@ export class AnyRandom {
         characterSet: string | CharacterSet
     ): string;
     static string(
-        minLength?: number,
-        maxLength?: number,
-        characterSet?: string | CharacterSet
+        minLength: number = 0,
+        maxLength: number = 32,
+        characterSet: string | CharacterSet = CharacterSet.ATOM
     ): string {
         return this.random.string(minLength, maxLength, characterSet);
     }

@@ -1,10 +1,8 @@
 import { expect } from "chai";
 
-import { AnyRandom } from "@testing/random/AnyRandom";
-import { CharacterSet } from "@testing/random/strings/CharacterSets";
-import { Scale } from "@testing/random/numbers/Scale";
+import { AnyRandom, CharacterSet, Scale } from "../../dist";
 
-function getSubInterval(min, max) {
+function getSubInterval(min: number, max: number) {
     const range = max - min + 1;
     let minimum = min + Math.floor(Math.random() * range);
     let maximum = min + Math.floor(Math.random() * range);
@@ -113,474 +111,487 @@ describe("AnyRandom Implementation", () => {
         });
     });
 
-    describe("int8", () => {
-        it("sbyte - when provided a range, returns an integer in that interval", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const [min, max] = getSubInterval(-128, 127);
+    describe("integers", () => {
+        describe("int8", () => {
+            it("sbyte - throws an error if you try to generate a number larger than 53 bits", () => {
+                const maxValue = Number.MAX_SAFE_INTEGER + 25;
+                const minValue = 0;
+                const range = maxValue - minValue + 1;
+                const bits_needed = Math.ceil(Math.log2(range));
+                expect(bits_needed).to.be.greaterThan(53);
+                expect(() => {
+                    AnyRandom.sbyte(Number.MAX_SAFE_INTEGER, maxValue);
+                }).to.throw();
+            });
 
-                const result = AnyRandom.sbyte(min, max);
+            it("sbyte - when provided a range, returns an integer in that interval", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const [min, max] = getSubInterval(-128, 127);
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(min);
-                expect(result).to.be.lte(min);
-            }
-        });
-        it("sbyte - returns n signed int8 on the interval [-128, 127]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 100; int++) {
-                const result = AnyRandom.sbyte();
+                    const result = AnyRandom.sbyte(min, max);
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(-128);
-                expect(result).to.be.lte(127);
-            }
-        });
-        it("sbyte - throws an error if the minValue is less than -128", () => {
-            expect(() => {
-                AnyRandom.sbyte(-129, 20);
-            }).to.throw();
-        });
-        it("sbyte - throws an error if the maxValue is greater than 127", () => {
-            expect(() => {
-                AnyRandom.sbyte(0, 128);
-            }).to.throw();
-        });
-        it("sbyte - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.sbyte(0, 12.5);
-            }).to.throw();
-        });
-        it("sbyte - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.sbyte(3.14, 12);
-            }).to.throw();
-        });
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(min);
+                    expect(result).to.be.lte(min);
+                }
+            });
+            it("sbyte - returns n signed int8 on the interval [-128, 127]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 100; int++) {
+                    const result = AnyRandom.sbyte();
 
-        it("int8 - when provided a range, returns an integer in that interval", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const [min, max] = getSubInterval(-128, 127);
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(-128);
+                    expect(result).to.be.lte(127);
+                }
+            });
+            it("sbyte - throws an error if the minValue is less than -128", () => {
+                expect(() => {
+                    AnyRandom.sbyte(-129, 20);
+                }).to.throw();
+            });
+            it("sbyte - throws an error if the maxValue is greater than 127", () => {
+                expect(() => {
+                    AnyRandom.sbyte(0, 128);
+                }).to.throw();
+            });
+            it("sbyte - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.sbyte(0, 12.5);
+                }).to.throw();
+            });
+            it("sbyte - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.sbyte(3.14, 12);
+                }).to.throw();
+            });
 
-                const result = AnyRandom.int8(min, max);
+            it("int8 - when provided a range, returns an integer in that interval", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const [min, max] = getSubInterval(-128, 127);
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(min);
-                expect(result).to.be.lte(min);
-            }
-        });
-        it("int8 - returns n signed int8 on the interval [-128, 127]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 100; int++) {
-                const result = AnyRandom.int8();
+                    const result = AnyRandom.int8(min, max);
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(-128);
-                expect(result).to.be.lte(127);
-            }
-        });
-        it("int8 - throws an error if the minValue is less than -128", () => {
-            expect(() => {
-                AnyRandom.int8(-129, 20);
-            }).to.throw();
-        });
-        it("int8 - throws an error if the maxValue is greater than 127", () => {
-            expect(() => {
-                AnyRandom.int8(0, 128);
-            }).to.throw();
-        });
-        it("int8 - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.int8(0, 12.5);
-            }).to.throw();
-        });
-        it("int8 - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.int8(3.14, 12);
-            }).to.throw();
-        });
-    });
-    describe("uint8", () => {
-        it("byte - when provided a range, returns an integer in that interval", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const [min, max] = getSubInterval(0, 255);
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(min);
+                    expect(result).to.be.lte(min);
+                }
+            });
+            it("int8 - returns n signed int8 on the interval [-128, 127]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 100; int++) {
+                    const result = AnyRandom.int8();
 
-                const result = AnyRandom.byte(min, max);
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(-128);
+                    expect(result).to.be.lte(127);
+                }
+            });
+            it("int8 - throws an error if the minValue is less than -128", () => {
+                expect(() => {
+                    AnyRandom.int8(-129, 20);
+                }).to.throw();
+            });
+            it("int8 - throws an error if the maxValue is greater than 127", () => {
+                expect(() => {
+                    AnyRandom.int8(0, 128);
+                }).to.throw();
+            });
+            it("int8 - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.int8(0, 12.5);
+                }).to.throw();
+            });
+            it("int8 - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.int8(3.14, 12);
+                }).to.throw();
+            });
+        });
+        describe("uint8", () => {
+            it("byte - when provided a range, returns an integer in that interval", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const [min, max] = getSubInterval(0, 255);
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(min);
-                expect(result).to.be.lte(min);
-            }
-        });
-        it("byte - returns an integer on the interval [0, 255]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.byte();
+                    const result = AnyRandom.byte(min, max);
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(0);
-                expect(result).to.be.lte(255);
-            }
-        });
-        it("byte - throws an error if the minValue is less than zero", () => {
-            expect(() => {
-                AnyRandom.byte(-12, 20);
-            }).to.throw();
-        });
-        it("byte - throws an error if the maxValue is greater than 255", () => {
-            expect(() => {
-                AnyRandom.byte(0, 256);
-            }).to.throw();
-        });
-        it("byte - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.byte(0, 12.5);
-            }).to.throw();
-        });
-        it("byte - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.byte(3.14, 12);
-            }).to.throw();
-        });
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(min);
+                    expect(result).to.be.lte(min);
+                }
+            });
+            it("byte - returns an integer on the interval [0, 255]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.byte();
 
-        it("uint8 - when provided a range, returns an integer in that interval", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const [min, max] = getSubInterval(0, 255);
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(0);
+                    expect(result).to.be.lte(255);
+                }
+            });
+            it("byte - throws an error if the minValue is less than zero", () => {
+                expect(() => {
+                    AnyRandom.byte(-12, 20);
+                }).to.throw();
+            });
+            it("byte - throws an error if the maxValue is greater than 255", () => {
+                expect(() => {
+                    AnyRandom.byte(0, 256);
+                }).to.throw();
+            });
+            it("byte - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.byte(0, 12.5);
+                }).to.throw();
+            });
+            it("byte - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.byte(3.14, 12);
+                }).to.throw();
+            });
 
-                const result = AnyRandom.uint8(min, max);
+            it("uint8 - when provided a range, returns an integer in that interval", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const [min, max] = getSubInterval(0, 255);
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(min);
-                expect(result).to.be.lte(min);
-            }
-        });
-        it("uint8 - returns an integer on the interval [0, 255]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.uint8();
+                    const result = AnyRandom.uint8(min, max);
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(0);
-                expect(result).to.be.lte(255);
-            }
-        });
-        it("uint8 - throws an error if the minValue is less than zero", () => {
-            expect(() => {
-                AnyRandom.uint8(-12, 20);
-            }).to.throw();
-        });
-        it("uint8 - throws an error if the maxValue is greater than 255", () => {
-            expect(() => {
-                AnyRandom.uint8(0, 256);
-            }).to.throw();
-        });
-        it("uint8 - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.uint8(0, 12.5);
-            }).to.throw();
-        });
-        it("uint8 - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.uint8(3.14, 12);
-            }).to.throw();
-        });
-    });
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(min);
+                    expect(result).to.be.lte(min);
+                }
+            });
+            it("uint8 - returns an integer on the interval [0, 255]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.uint8();
 
-    describe("int16", () => {
-        it("short - returns n signed int16 on the interval [-32768, 32767]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.short();
-
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(-32768);
-                expect(result).to.be.lte(32767);
-            }
-        });
-        it("short - throws an error if the minValue is less than -32768", () => {
-            expect(() => {
-                AnyRandom.short(-32769, 20);
-            }).to.throw();
-        });
-        it("short - throws an error if the maxValue is greater than 32767", () => {
-            expect(() => {
-                AnyRandom.short(0, 32768);
-            }).to.throw();
-        });
-        it("short - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.short(0, 12.5);
-            }).to.throw();
-        });
-        it("short - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.short(3.14, 12);
-            }).to.throw();
-        });
-        it("short - throws an error if the minValue is greater than the maxValue", () => {
-            expect(() => {
-                AnyRandom.short(-2, -12);
-            }).to.throw();
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(0);
+                    expect(result).to.be.lte(255);
+                }
+            });
+            it("uint8 - throws an error if the minValue is less than zero", () => {
+                expect(() => {
+                    AnyRandom.uint8(-12, 20);
+                }).to.throw();
+            });
+            it("uint8 - throws an error if the maxValue is greater than 255", () => {
+                expect(() => {
+                    AnyRandom.uint8(0, 256);
+                }).to.throw();
+            });
+            it("uint8 - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.uint8(0, 12.5);
+                }).to.throw();
+            });
+            it("uint8 - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.uint8(3.14, 12);
+                }).to.throw();
+            });
         });
 
-        it("int16 - returns n signed int16 on the interval [-32768, 32767]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.int16();
+        describe("int16", () => {
+            it("short - returns n signed int16 on the interval [-32768, 32767]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.short();
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(-32768);
-                expect(result).to.be.lte(32767);
-            }
-        });
-        it("int16 - throws an error if the minValue is less than -32768", () => {
-            expect(() => {
-                AnyRandom.int16(-32769, 20);
-            }).to.throw();
-        });
-        it("int16 - throws an error if the maxValue is greater than 32767", () => {
-            expect(() => {
-                AnyRandom.int16(0, 32768);
-            }).to.throw();
-        });
-        it("int16 - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.int16(0, 12.5);
-            }).to.throw();
-        });
-        it("int16 - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.int16(3.14, 12);
-            }).to.throw();
-        });
-        it("int16 - throws an error if the minValue is greater than the maxValue", () => {
-            expect(() => {
-                AnyRandom.int16(-2, -12);
-            }).to.throw();
-        });
-    });
-    describe("uint16", () => {
-        it("ushort - returns an unsigned int16 on the interval [0, 65535]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.ushort();
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(-32768);
+                    expect(result).to.be.lte(32767);
+                }
+            });
+            it("short - throws an error if the minValue is less than -32768", () => {
+                expect(() => {
+                    AnyRandom.short(-32769, 20);
+                }).to.throw();
+            });
+            it("short - throws an error if the maxValue is greater than 32767", () => {
+                expect(() => {
+                    AnyRandom.short(0, 32768);
+                }).to.throw();
+            });
+            it("short - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.short(0, 12.5);
+                }).to.throw();
+            });
+            it("short - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.short(3.14, 12);
+                }).to.throw();
+            });
+            it("short - throws an error if the minValue is greater than the maxValue", () => {
+                expect(() => {
+                    AnyRandom.short(-2, -12);
+                }).to.throw();
+            });
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(0);
-                expect(result).to.be.lte(65535);
-            }
-        });
-        it("ushort - throws an error if the minValue is less than zero", () => {
-            expect(() => {
-                AnyRandom.ushort(-12, 20);
-            }).to.throw();
-        });
-        it("ushort - throws an error if the maxValue is greater than 65535", () => {
-            expect(() => {
-                AnyRandom.ushort(0, 65536);
-            }).to.throw();
-        });
-        it("ushort - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.ushort(0, 12.5);
-            }).to.throw();
-        });
-        it("ushort - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.ushort(3.14, 12);
-            }).to.throw();
-        });
+            it("int16 - returns n signed int16 on the interval [-32768, 32767]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.int16();
 
-        it("uint16 - returns an unsigned int16 on the interval [0, 65535]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.uint16();
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(-32768);
+                    expect(result).to.be.lte(32767);
+                }
+            });
+            it("int16 - throws an error if the minValue is less than -32768", () => {
+                expect(() => {
+                    AnyRandom.int16(-32769, 20);
+                }).to.throw();
+            });
+            it("int16 - throws an error if the maxValue is greater than 32767", () => {
+                expect(() => {
+                    AnyRandom.int16(0, 32768);
+                }).to.throw();
+            });
+            it("int16 - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.int16(0, 12.5);
+                }).to.throw();
+            });
+            it("int16 - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.int16(3.14, 12);
+                }).to.throw();
+            });
+            it("int16 - throws an error if the minValue is greater than the maxValue", () => {
+                expect(() => {
+                    AnyRandom.int16(-2, -12);
+                }).to.throw();
+            });
+        });
+        describe("uint16", () => {
+            it("ushort - returns an unsigned int16 on the interval [0, 65535]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.ushort();
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(0);
-                expect(result).to.be.lte(65535);
-            }
-        });
-        it("uint16 - throws an error if the minValue is less than zero", () => {
-            expect(() => {
-                AnyRandom.uint16(-12, 20);
-            }).to.throw();
-        });
-        it("uint16 - throws an error if the maxValue is greater than 65535", () => {
-            expect(() => {
-                AnyRandom.uint16(0, 65536);
-            }).to.throw();
-        });
-        it("uint16 - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.uint16(0, 12.5);
-            }).to.throw();
-        });
-        it("uint16 - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.uint16(3.14, 12);
-            }).to.throw();
-        });
-    });
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(0);
+                    expect(result).to.be.lte(65535);
+                }
+            });
+            it("ushort - throws an error if the minValue is less than zero", () => {
+                expect(() => {
+                    AnyRandom.ushort(-12, 20);
+                }).to.throw();
+            });
+            it("ushort - throws an error if the maxValue is greater than 65535", () => {
+                expect(() => {
+                    AnyRandom.ushort(0, 65536);
+                }).to.throw();
+            });
+            it("ushort - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.ushort(0, 12.5);
+                }).to.throw();
+            });
+            it("ushort - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.ushort(3.14, 12);
+                }).to.throw();
+            });
 
-    describe("int32", () => {
-        it("int - returns a signed int32 on the interval [-2147483648, 2147483647]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.int();
+            it("uint16 - returns an unsigned int16 on the interval [0, 65535]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.uint16();
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(-2147483648);
-                expect(result).to.be.lte(2147483647);
-            }
-        });
-        it("int - throws an error if the minValue is less than -2147483648", () => {
-            expect(() => {
-                AnyRandom.int(-2147483649, 20);
-            }).to.throw();
-        });
-        it("int - throws an error if the maxValue is greater than 2147483647", () => {
-            expect(() => {
-                AnyRandom.int(0, 2147483648);
-            }).to.throw();
-        });
-        it("int - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.int(0, 12.5);
-            }).to.throw();
-        });
-        it("int - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.int(3.14, 12);
-            }).to.throw();
-        });
-
-        it("int32 - returns a signed int32 on the interval [-2147483648, 2147483647]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.int32();
-
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(-2147483648);
-                expect(result).to.be.lte(2147483647);
-            }
-        });
-        it("int32 - throws an error if the minValue is less than -2147483648", () => {
-            expect(() => {
-                AnyRandom.int32(-2147483649, 20);
-            }).to.throw();
-        });
-        it("int32 - throws an error if the maxValue is greater than 2147483647", () => {
-            expect(() => {
-                AnyRandom.int32(0, 2147483648);
-            }).to.throw();
-        });
-        it("int32 - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.int32(0, 12.5);
-            }).to.throw();
-        });
-        it("int32 - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.int32(3.14, 12);
-            }).to.throw();
-        });
-    });
-    describe("uint32", () => {
-        it("uint - returns an unsigned int32 on the interval [0, 4294967295]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.uint();
-
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(0);
-                expect(result).to.be.lte(4294967295);
-            }
-        });
-        it("uint - throws an error if the minValue is less than zero", () => {
-            expect(() => {
-                AnyRandom.uint(-1, 20);
-            }).to.throw();
-        });
-        it("uint - throws an error if the maxValue is greater than 4294967295", () => {
-            expect(() => {
-                AnyRandom.uint(0, 4294967296);
-            }).to.throw();
-        });
-        it("uint - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.uint(0, 12.5);
-            }).to.throw();
-        });
-        it("uint - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.uint(3.14, 12);
-            }).to.throw();
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(0);
+                    expect(result).to.be.lte(65535);
+                }
+            });
+            it("uint16 - throws an error if the minValue is less than zero", () => {
+                expect(() => {
+                    AnyRandom.uint16(-12, 20);
+                }).to.throw();
+            });
+            it("uint16 - throws an error if the maxValue is greater than 65535", () => {
+                expect(() => {
+                    AnyRandom.uint16(0, 65536);
+                }).to.throw();
+            });
+            it("uint16 - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.uint16(0, 12.5);
+                }).to.throw();
+            });
+            it("uint16 - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.uint16(3.14, 12);
+                }).to.throw();
+            });
         });
 
-        it("uint32 - returns an unsigned int32 on the interval [0, 4294967295]", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.uint32();
+        describe("int32", () => {
+            it("int - returns a signed int32 on the interval [-2147483648, 2147483647]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.int();
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(0);
-                expect(result).to.be.lte(4294967295);
-            }
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(-2147483648);
+                    expect(result).to.be.lte(2147483647);
+                }
+            });
+            it("int - throws an error if the minValue is less than -2147483648", () => {
+                expect(() => {
+                    AnyRandom.int(-2147483649, 20);
+                }).to.throw();
+            });
+            it("int - throws an error if the maxValue is greater than 2147483647", () => {
+                expect(() => {
+                    AnyRandom.int(0, 2147483648);
+                }).to.throw();
+            });
+            it("int - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.int(0, 12.5);
+                }).to.throw();
+            });
+            it("int - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.int(3.14, 12);
+                }).to.throw();
+            });
+
+            it("int32 - returns a signed int32 on the interval [-2147483648, 2147483647]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.int32();
+
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(-2147483648);
+                    expect(result).to.be.lte(2147483647);
+                }
+            });
+            it("int32 - throws an error if the minValue is less than -2147483648", () => {
+                expect(() => {
+                    AnyRandom.int32(-2147483649, 20);
+                }).to.throw();
+            });
+            it("int32 - throws an error if the maxValue is greater than 2147483647", () => {
+                expect(() => {
+                    AnyRandom.int32(0, 2147483648);
+                }).to.throw();
+            });
+            it("int32 - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.int32(0, 12.5);
+                }).to.throw();
+            });
+            it("int32 - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.int32(3.14, 12);
+                }).to.throw();
+            });
         });
-        it("uint32 - throws an error if the minValue is less than zero", () => {
-            expect(() => {
-                AnyRandom.uint32(-1, 20);
-            }).to.throw();
-        });
-        it("uint32 - throws an error if the maxValue is greater than 4294967295", () => {
-            expect(() => {
-                AnyRandom.uint32(0, 4294967296);
-            }).to.throw();
-        });
-        it("uint32 - throws an error if the maxValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.uint32(0, 12.5);
-            }).to.throw();
-        });
-        it("uint32 - throws an error if the minValue is not an integer", () => {
-            expect(() => {
-                AnyRandom.uint32(3.14, 12);
-            }).to.throw();
+        describe("uint32", () => {
+            it("uint - returns an unsigned int32 on the interval [0, 4294967295]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.uint();
+
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(0);
+                    expect(result).to.be.lte(4294967295);
+                }
+            });
+            it("uint - throws an error if the minValue is less than zero", () => {
+                expect(() => {
+                    AnyRandom.uint(-1, 20);
+                }).to.throw();
+            });
+            it("uint - throws an error if the maxValue is greater than 4294967295", () => {
+                expect(() => {
+                    AnyRandom.uint(0, 4294967296);
+                }).to.throw();
+            });
+            it("uint - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.uint(0, 12.5);
+                }).to.throw();
+            });
+            it("uint - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.uint(3.14, 12);
+                }).to.throw();
+            });
+
+            it("uint32 - returns an unsigned int32 on the interval [0, 4294967295]", () => {
+                // do this 1000 times, to be sure!
+                for (let int = 0; int < 1000; int++) {
+                    const result = AnyRandom.uint32();
+
+                    expect(result).not.to.be.null;
+                    expect(result).not.to.be.undefined;
+                    expect(typeof result === "number").to.be.true;
+                    expect(result).to.be.gte(0);
+                    expect(result).to.be.lte(4294967295);
+                }
+            });
+            it("uint32 - throws an error if the minValue is less than zero", () => {
+                expect(() => {
+                    AnyRandom.uint32(-1, 20);
+                }).to.throw();
+            });
+            it("uint32 - throws an error if the maxValue is greater than 4294967295", () => {
+                expect(() => {
+                    AnyRandom.uint32(0, 4294967296);
+                }).to.throw();
+            });
+            it("uint32 - throws an error if the maxValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.uint32(0, 12.5);
+                }).to.throw();
+            });
+            it("uint32 - throws an error if the minValue is not an integer", () => {
+                expect(() => {
+                    AnyRandom.uint32(3.14, 12);
+                }).to.throw();
+            });
         });
     });
 
@@ -675,7 +686,8 @@ describe("AnyRandom Implementation", () => {
         ].forEach(({ key, value }) => {
             it(`char - throws an error when the character set is ${key}`, () => {
                 expect(() => {
-                    AnyRandom.char(value);
+                    let val: string = <string>value;
+                    AnyRandom.char(val);
                 }).to.throw();
             });
         });
