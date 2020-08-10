@@ -44,12 +44,15 @@ if (!fs.existsSync(resolvedTargetFolder)) {
 trim(resolvedSource, resolvedTarget, [
     "author",
     "bugs",
+    "browser",
     "dependencies",
     "description",
     "engines", // The version(s) of node (or whatever runtime) that your stuff works on
     "engineStrict", // If you are sure that your module will definitely not run properly on versions of Node/npm other than those specified in the engines object
     "exports",
     "files",
+    "homepage",
+    "jsnext:main",
     "license",
     "main",
     "module",
