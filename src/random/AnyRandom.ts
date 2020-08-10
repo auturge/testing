@@ -35,9 +35,15 @@ export class AnyRandom {
     static date(): Date;
 
     /**
+     * Returns a random `Date` within the range defined by `earliest` and `now`.
+     * @param {Date} earliest The earliest date that the result could take.
+     */
+    static date(earliest: Date): Date;
+
+    /**
      * Returns a random `Date` within the range defined by `earliest` and `latest`.
      * @param {Date} earliest The earliest date that the result could take.
-     * @param {number} latest The latest date that the result could take.
+     * @param {Date} latest The latest date that the result could take.
      */
     static date(earliest: Date, latest: Date): Date;
     static date(
@@ -423,6 +429,13 @@ export class AnyRandom {
     static charArray(): string[];
 
     /**
+     * Returns an array of characters, between 0 and 32 characters long,
+     * where the elements are taken from the given `characterSet`.
+     * @param {string | CharacterSet} characterSet The characters from which to sample.
+     */
+    static charArray(characterSet: string | CharacterSet): string[];
+
+    /**
      *  Returns a random array of characters, between `minLength` and `maxLength` characters long,
      * where the elements are taken from the ATOM CharacterSet.
      * @param {number} minLength The minimum length of the character array.
@@ -442,11 +455,23 @@ export class AnyRandom {
         maxLength: number,
         characterSet: string | CharacterSet
     ): string[];
+
     static charArray(
-        minLength: number = 0,
+        arg1: number | string | undefined = undefined,
         maxLength: number = 32,
         characterSet: string | CharacterSet = CharacterSet.ATOM
     ): string[] {
+        let minLength: number;
+        if (typeof arg1 === "number") {
+            minLength = arg1;
+        } else if (typeof arg1 === "string") {
+            characterSet = arg1;
+            minLength = 0;
+        } else {
+            characterSet = CharacterSet.ATOM;
+            minLength = 0;
+        }
+
         return this.random.charArray(minLength, maxLength, characterSet);
     }
 
@@ -455,6 +480,13 @@ export class AnyRandom {
      * where the elements are taken from the ATOM CharacterSet.
      */
     static string(): string;
+
+    /**
+     * Returns a random string, between 0 and 32 characters long,
+     * where the elements are taken from the given `characterSet`.
+     * @param {string | CharacterSet} characterSet The characters from which to sample.
+     */
+    static string(characterSet: string | CharacterSet): string;
 
     /**
      * Returns a random string, between `minLength` and `maxLength` characters long,
@@ -477,10 +509,21 @@ export class AnyRandom {
         characterSet: string | CharacterSet
     ): string;
     static string(
-        minLength: number = 0,
+        arg1: number | string | undefined = undefined,
         maxLength: number = 32,
         characterSet: string | CharacterSet = CharacterSet.ATOM
     ): string {
+        let minLength: number;
+        if (typeof arg1 === "number") {
+            minLength = arg1;
+        } else if (typeof arg1 === "string") {
+            characterSet = arg1;
+            minLength = 0;
+        } else {
+            characterSet = CharacterSet.ATOM;
+            minLength = 0;
+        }
+
         return this.random.string(minLength, maxLength, characterSet);
     }
 }

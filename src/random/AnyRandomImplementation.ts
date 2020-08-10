@@ -9,7 +9,7 @@ import {
     Int32,
     UInt32,
     Double,
-    Single
+    Single,
 } from "@testing/random/numbers/__public_api";
 import { RandomDate } from "@testing/random/dates/__public_api";
 import { CharacterSet, RandomChar, RandomString } from "@testing/random/strings/__public_api";
@@ -58,10 +58,10 @@ export class AnyRandomImplementation implements RandomObjectGenerator {
     char(characterSet: string | CharacterSet): string {
         return RandomChar.char(characterSet);
     }
-    charArray(minLength: number, maxLength: number, characterSet: string | CharacterSet): string[] {
+    charArray(minLength: number, maxLength: number, characterSet: string): string[] {
         return RandomChar.charArray(minLength, maxLength, characterSet);
     }
-    string(minLength: number, maxLength: number, characterSet: string | CharacterSet): string {
+    string(minLength: number, maxLength: number, characterSet: string): string {
         return RandomString.string(minLength, maxLength, characterSet);
     }
 }

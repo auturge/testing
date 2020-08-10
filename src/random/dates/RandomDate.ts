@@ -10,7 +10,7 @@ export class RandomDate {
         }
 
         const lhs = new Date(date1).getTime();
-        const rhs = new Date(date1).getTime();
+        const rhs = new Date(date2).getTime();
 
         const between = Double.next(lhs, rhs);
 

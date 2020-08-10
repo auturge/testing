@@ -1,870 +1,642 @@
-import { expect } from "chai";
+import { assert } from "chai";
+import * as sinon from "sinon";
 
-import { AnyRandom, CharacterSet, Scale } from "../../dist";
+// need to import from the source in order to get coverage
+// import { AnyRandom, Scale } from "../../dist";
 
-function getSubInterval(min: number, max: number) {
-    const range = max - min + 1;
-    let minimum = min + Math.floor(Math.random() * range);
-    let maximum = min + Math.floor(Math.random() * range);
+import { unwrap, randoMinMax } from "test/helpers";
 
-    if (minimum > maximum) {
-        [minimum, maximum] = [maximum, minimum];
-    }
+import { AnyRandom } from "@testing/random/AnyRandom";
+import { Scale } from "@testing/random/numbers/Scale";
+import { CharacterSet } from "@testing/random/strings/CharacterSets";
 
-    return [minimum, maximum];
-}
+describe("AnyRandom", () => {
+    let stub;
 
-describe("AnyRandom Implementation", () => {
+    function setup() {}
+
     describe("boolean", () => {
-        it("boolean - returns either true or false", () => {
+        let expected: boolean;
+        beforeEach(() => {
+            setup();
+            expected = Math.random() >= 0.5;
+            stub = sinon.stub(AnyRandom["random"], "boolean").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(<any>AnyRandom["random"].boolean);
+        });
+
+        it("boolean - calls the wrapped implementation", () => {
             const result = AnyRandom.boolean();
 
-            expect(result).not.to.be.null;
-            expect(result).not.to.be.undefined;
-            expect(typeof result === "boolean").to.be.true;
+            sinon.assert.calledOnce(stub);
+            assert.equal(result, expected);
         });
 
-        it("bool - returns either true or false", () => {
+        it("bool - calls the wrapped implementation", () => {
             const result = AnyRandom.bool();
 
-            expect(result).not.to.be.null;
-            expect(result).not.to.be.undefined;
-            expect(typeof result === "boolean").to.be.true;
-        });
-    });
-
-    describe("date", () => {
-        it("date - given no dates, will return a date between 01-01-1970 and today", () => {
-            const earliest = new Date("01-01-1970");
-            const latest = new Date(Date.now());
-
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1; int++) {
-                const result = AnyRandom.date();
-
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "object").to.be.true;
-                expect(result instanceof Date).to.be.true;
-                expect(result >= earliest).to.be.true;
-                expect(result <= latest).to.be.true;
-            }
-        });
-
-        it("date - returns a date between two provided dates", () => {
-            const earliest: Date = new Date();
-            const latest: Date = new Date();
-            latest.setFullYear(earliest.getFullYear() + 1);
-
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1; int++) {
-                const result = AnyRandom.date(earliest, latest);
-
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "object").to.be.true;
-                expect(result instanceof Date).to.be.true;
-                expect(result >= earliest).to.be.true;
-                expect(result <= latest).to.be.true;
-            }
-        });
-
-        it("date - if earliest and latest are the same, returns that date", () => {
-            const earliest: Date = new Date();
-
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1; int++) {
-                const result = AnyRandom.date(earliest, earliest);
-
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "object").to.be.true;
-                expect(result instanceof Date).to.be.true;
-                expect(result).to.equal(earliest);
-            }
+            sinon.assert.calledOnce(stub);
+            assert.equal(result, expected);
         });
     });
 
     describe("sign", () => {
-        it("sign - returns either +1 or -1", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.sign();
+        let expected: number;
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result === -1 || result === +1).to.be.true;
-            }
+        beforeEach(() => {
+            setup();
+            expected = Math.random() >= 0.5 ? 1 : -1;
+            stub = sinon.stub(AnyRandom["random"], "sign").returns(expected);
         });
 
-        it("sign - when includeZero is true, returns either +1, zero, or -1", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.sign(true);
+        afterEach(() => {
+            unwrap(AnyRandom["random"].sign);
+        });
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result === -1 || result === 0 || result === +1).to.be.true;
-            }
+        it("sign - when called without argument - calls the wrapped implementation", () => {
+            const result = AnyRandom.sign();
+
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, false);
+            assert.equal(result, expected);
+        });
+
+        [
+            { key: "true", arg: true },
+            { key: "false", arg: false },
+        ].forEach(({ key, arg }) => {
+            it(`sign - when called with argument [${key}] - calls the wrapped implementation`, () => {
+                const result = AnyRandom.sign(arg);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, arg);
+                assert.equal(result, expected);
+            });
         });
     });
 
-    describe("integers", () => {
-        describe("int8", () => {
-            it("sbyte - throws an error if you try to generate a number larger than 53 bits", () => {
-                const maxValue = Number.MAX_SAFE_INTEGER + 25;
-                const minValue = 0;
-                const range = maxValue - minValue + 1;
-                const bits_needed = Math.ceil(Math.log2(range));
-                expect(bits_needed).to.be.greaterThan(53);
-                expect(() => {
-                    AnyRandom.sbyte(Number.MAX_SAFE_INTEGER, maxValue);
-                }).to.throw();
-            });
+    describe("date", () => {
+        let expected: Date;
+        let dateStub;
 
-            it("sbyte - when provided a range, returns an integer in that interval", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const [min, max] = getSubInterval(-128, 127);
-
-                    const result = AnyRandom.sbyte(min, max);
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(min);
-                    expect(result).to.be.lte(min);
-                }
-            });
-            it("sbyte - returns n signed int8 on the interval [-128, 127]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 100; int++) {
-                    const result = AnyRandom.sbyte();
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(-128);
-                    expect(result).to.be.lte(127);
-                }
-            });
-            it("sbyte - throws an error if the minValue is less than -128", () => {
-                expect(() => {
-                    AnyRandom.sbyte(-129, 20);
-                }).to.throw();
-            });
-            it("sbyte - throws an error if the maxValue is greater than 127", () => {
-                expect(() => {
-                    AnyRandom.sbyte(0, 128);
-                }).to.throw();
-            });
-            it("sbyte - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.sbyte(0, 12.5);
-                }).to.throw();
-            });
-            it("sbyte - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.sbyte(3.14, 12);
-                }).to.throw();
-            });
-
-            it("int8 - when provided a range, returns an integer in that interval", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const [min, max] = getSubInterval(-128, 127);
-
-                    const result = AnyRandom.int8(min, max);
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(min);
-                    expect(result).to.be.lte(min);
-                }
-            });
-            it("int8 - returns n signed int8 on the interval [-128, 127]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 100; int++) {
-                    const result = AnyRandom.int8();
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(-128);
-                    expect(result).to.be.lte(127);
-                }
-            });
-            it("int8 - throws an error if the minValue is less than -128", () => {
-                expect(() => {
-                    AnyRandom.int8(-129, 20);
-                }).to.throw();
-            });
-            it("int8 - throws an error if the maxValue is greater than 127", () => {
-                expect(() => {
-                    AnyRandom.int8(0, 128);
-                }).to.throw();
-            });
-            it("int8 - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.int8(0, 12.5);
-                }).to.throw();
-            });
-            it("int8 - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.int8(3.14, 12);
-                }).to.throw();
-            });
-        });
-        describe("uint8", () => {
-            it("byte - when provided a range, returns an integer in that interval", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const [min, max] = getSubInterval(0, 255);
-
-                    const result = AnyRandom.byte(min, max);
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(min);
-                    expect(result).to.be.lte(min);
-                }
-            });
-            it("byte - returns an integer on the interval [0, 255]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.byte();
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(0);
-                    expect(result).to.be.lte(255);
-                }
-            });
-            it("byte - throws an error if the minValue is less than zero", () => {
-                expect(() => {
-                    AnyRandom.byte(-12, 20);
-                }).to.throw();
-            });
-            it("byte - throws an error if the maxValue is greater than 255", () => {
-                expect(() => {
-                    AnyRandom.byte(0, 256);
-                }).to.throw();
-            });
-            it("byte - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.byte(0, 12.5);
-                }).to.throw();
-            });
-            it("byte - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.byte(3.14, 12);
-                }).to.throw();
-            });
-
-            it("uint8 - when provided a range, returns an integer in that interval", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const [min, max] = getSubInterval(0, 255);
-
-                    const result = AnyRandom.uint8(min, max);
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(min);
-                    expect(result).to.be.lte(min);
-                }
-            });
-            it("uint8 - returns an integer on the interval [0, 255]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.uint8();
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(0);
-                    expect(result).to.be.lte(255);
-                }
-            });
-            it("uint8 - throws an error if the minValue is less than zero", () => {
-                expect(() => {
-                    AnyRandom.uint8(-12, 20);
-                }).to.throw();
-            });
-            it("uint8 - throws an error if the maxValue is greater than 255", () => {
-                expect(() => {
-                    AnyRandom.uint8(0, 256);
-                }).to.throw();
-            });
-            it("uint8 - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.uint8(0, 12.5);
-                }).to.throw();
-            });
-            it("uint8 - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.uint8(3.14, 12);
-                }).to.throw();
-            });
+        beforeEach(() => {
+            setup();
+            expected = new Date();
+            stub = sinon.stub(AnyRandom["random"], "date").returns(expected);
+            dateStub = sinon.stub(Date, "now").returns(expected.getTime());
         });
 
-        describe("int16", () => {
-            it("short - returns n signed int16 on the interval [-32768, 32767]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.short();
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(-32768);
-                    expect(result).to.be.lte(32767);
-                }
-            });
-            it("short - throws an error if the minValue is less than -32768", () => {
-                expect(() => {
-                    AnyRandom.short(-32769, 20);
-                }).to.throw();
-            });
-            it("short - throws an error if the maxValue is greater than 32767", () => {
-                expect(() => {
-                    AnyRandom.short(0, 32768);
-                }).to.throw();
-            });
-            it("short - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.short(0, 12.5);
-                }).to.throw();
-            });
-            it("short - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.short(3.14, 12);
-                }).to.throw();
-            });
-            it("short - throws an error if the minValue is greater than the maxValue", () => {
-                expect(() => {
-                    AnyRandom.short(-2, -12);
-                }).to.throw();
-            });
-
-            it("int16 - returns n signed int16 on the interval [-32768, 32767]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.int16();
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(-32768);
-                    expect(result).to.be.lte(32767);
-                }
-            });
-            it("int16 - throws an error if the minValue is less than -32768", () => {
-                expect(() => {
-                    AnyRandom.int16(-32769, 20);
-                }).to.throw();
-            });
-            it("int16 - throws an error if the maxValue is greater than 32767", () => {
-                expect(() => {
-                    AnyRandom.int16(0, 32768);
-                }).to.throw();
-            });
-            it("int16 - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.int16(0, 12.5);
-                }).to.throw();
-            });
-            it("int16 - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.int16(3.14, 12);
-                }).to.throw();
-            });
-            it("int16 - throws an error if the minValue is greater than the maxValue", () => {
-                expect(() => {
-                    AnyRandom.int16(-2, -12);
-                }).to.throw();
-            });
-        });
-        describe("uint16", () => {
-            it("ushort - returns an unsigned int16 on the interval [0, 65535]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.ushort();
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(0);
-                    expect(result).to.be.lte(65535);
-                }
-            });
-            it("ushort - throws an error if the minValue is less than zero", () => {
-                expect(() => {
-                    AnyRandom.ushort(-12, 20);
-                }).to.throw();
-            });
-            it("ushort - throws an error if the maxValue is greater than 65535", () => {
-                expect(() => {
-                    AnyRandom.ushort(0, 65536);
-                }).to.throw();
-            });
-            it("ushort - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.ushort(0, 12.5);
-                }).to.throw();
-            });
-            it("ushort - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.ushort(3.14, 12);
-                }).to.throw();
-            });
-
-            it("uint16 - returns an unsigned int16 on the interval [0, 65535]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.uint16();
-
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(0);
-                    expect(result).to.be.lte(65535);
-                }
-            });
-            it("uint16 - throws an error if the minValue is less than zero", () => {
-                expect(() => {
-                    AnyRandom.uint16(-12, 20);
-                }).to.throw();
-            });
-            it("uint16 - throws an error if the maxValue is greater than 65535", () => {
-                expect(() => {
-                    AnyRandom.uint16(0, 65536);
-                }).to.throw();
-            });
-            it("uint16 - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.uint16(0, 12.5);
-                }).to.throw();
-            });
-            it("uint16 - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.uint16(3.14, 12);
-                }).to.throw();
-            });
+        afterEach(() => {
+            unwrap(AnyRandom["random"].date);
+            unwrap(Date.now);
         });
 
-        describe("int32", () => {
-            it("int - returns a signed int32 on the interval [-2147483648, 2147483647]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.int();
+        it("date - when called without argument - calls the wrapped implementation", () => {
+            const earliest = new Date("01-01-1970");
+            const now = new Date(Date.now());
 
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(-2147483648);
-                    expect(result).to.be.lte(2147483647);
-                }
-            });
-            it("int - throws an error if the minValue is less than -2147483648", () => {
-                expect(() => {
-                    AnyRandom.int(-2147483649, 20);
-                }).to.throw();
-            });
-            it("int - throws an error if the maxValue is greater than 2147483647", () => {
-                expect(() => {
-                    AnyRandom.int(0, 2147483648);
-                }).to.throw();
-            });
-            it("int - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.int(0, 12.5);
-                }).to.throw();
-            });
-            it("int - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.int(3.14, 12);
-                }).to.throw();
+            const result = AnyRandom.date();
+
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, earliest, now);
+            assert.equal(result, expected);
+        });
+
+        it("date - when called with an `earliest` argument - calls the wrapped implementation", () => {
+            const earliest = new Date("01-01-1970");
+            const now = new Date(Date.now());
+
+            const result = AnyRandom.date(earliest);
+
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, earliest, now);
+            assert.equal(result, expected);
+        });
+
+        it("date - when called with `earliest` and `latest` arguments - calls the wrapped implementation", () => {
+            const earliest = new Date("01-01-1970");
+            const latest = new Date(Date.now());
+
+            const result = AnyRandom.date(earliest, latest);
+
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, earliest, latest);
+            assert.equal(result, expected);
+        });
+    });
+
+    describe("uint8", () => {
+        let expected: number;
+        const MIN_VALUE = 0;
+        const MAX_VALUE = 255;
+
+        beforeEach(() => {
+            setup();
+            expected = 42;
+            stub = sinon.stub(AnyRandom["random"], "uint8").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].uint8);
+        });
+
+        [{ method: "uint8" }, { method: "byte" }].forEach(({ method }) => {
+            it(`${method} - when called without argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom[method]();
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE);
+                assert.equal(result, expected);
             });
 
-            it("int32 - returns a signed int32 on the interval [-2147483648, 2147483647]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.int32();
+            it(`${method} - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
+                const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
 
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(-2147483648);
-                    expect(result).to.be.lte(2147483647);
-                }
-            });
-            it("int32 - throws an error if the minValue is less than -2147483648", () => {
-                expect(() => {
-                    AnyRandom.int32(-2147483649, 20);
-                }).to.throw();
-            });
-            it("int32 - throws an error if the maxValue is greater than 2147483647", () => {
-                expect(() => {
-                    AnyRandom.int32(0, 2147483648);
-                }).to.throw();
-            });
-            it("int32 - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.int32(0, 12.5);
-                }).to.throw();
-            });
-            it("int32 - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.int32(3.14, 12);
-                }).to.throw();
+                const result = AnyRandom[method](minValue, maxValue);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, minValue, maxValue);
+                assert.equal(result, expected);
             });
         });
-        describe("uint32", () => {
-            it("uint - returns an unsigned int32 on the interval [0, 4294967295]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.uint();
+    });
 
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(0);
-                    expect(result).to.be.lte(4294967295);
-                }
-            });
-            it("uint - throws an error if the minValue is less than zero", () => {
-                expect(() => {
-                    AnyRandom.uint(-1, 20);
-                }).to.throw();
-            });
-            it("uint - throws an error if the maxValue is greater than 4294967295", () => {
-                expect(() => {
-                    AnyRandom.uint(0, 4294967296);
-                }).to.throw();
-            });
-            it("uint - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.uint(0, 12.5);
-                }).to.throw();
-            });
-            it("uint - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.uint(3.14, 12);
-                }).to.throw();
+    describe("int8", () => {
+        let expected: number;
+        const MIN_VALUE = -128;
+        const MAX_VALUE = 127;
+
+        beforeEach(() => {
+            setup();
+            expected = 42;
+            stub = sinon.stub(AnyRandom["random"], "int8").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].int8);
+        });
+
+        [{ method: "int8" }, { method: "sbyte" }].forEach(({ method }) => {
+            it(`${method} - when called without argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom[method]();
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE);
+                assert.equal(result, expected);
             });
 
-            it("uint32 - returns an unsigned int32 on the interval [0, 4294967295]", () => {
-                // do this 1000 times, to be sure!
-                for (let int = 0; int < 1000; int++) {
-                    const result = AnyRandom.uint32();
+            it(`${method} - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
+                const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
 
-                    expect(result).not.to.be.null;
-                    expect(result).not.to.be.undefined;
-                    expect(typeof result === "number").to.be.true;
-                    expect(result).to.be.gte(0);
-                    expect(result).to.be.lte(4294967295);
-                }
+                const result = AnyRandom[method](minValue, maxValue);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, minValue, maxValue);
+                assert.equal(result, expected);
             });
-            it("uint32 - throws an error if the minValue is less than zero", () => {
-                expect(() => {
-                    AnyRandom.uint32(-1, 20);
-                }).to.throw();
+        });
+    });
+
+    describe("uint16", () => {
+        let expected: number;
+        const MIN_VALUE = 0;
+        const MAX_VALUE = 65535;
+
+        beforeEach(() => {
+            setup();
+            expected = 42;
+            stub = sinon.stub(AnyRandom["random"], "uint16").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].uint16);
+        });
+
+        [{ method: "uint16" }, { method: "ushort" }].forEach(({ method }) => {
+            it(`${method} - when called without argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom[method]();
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE);
+                assert.equal(result, expected);
             });
-            it("uint32 - throws an error if the maxValue is greater than 4294967295", () => {
-                expect(() => {
-                    AnyRandom.uint32(0, 4294967296);
-                }).to.throw();
+
+            it(`${method} - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
+                const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
+
+                const result = AnyRandom[method](minValue, maxValue);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, minValue, maxValue);
+                assert.equal(result, expected);
             });
-            it("uint32 - throws an error if the maxValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.uint32(0, 12.5);
-                }).to.throw();
+        });
+    });
+
+    describe("int16", () => {
+        let expected: number;
+        const MIN_VALUE: number = -32768;
+        const MAX_VALUE: number = 32767;
+
+        beforeEach(() => {
+            setup();
+            expected = 42;
+            stub = sinon.stub(AnyRandom["random"], "int16").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].int16);
+        });
+
+        [{ method: "int16" }, { method: "short" }].forEach(({ method }) => {
+            it(`${method} - when called without argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom[method]();
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE);
+                assert.equal(result, expected);
             });
-            it("uint32 - throws an error if the minValue is not an integer", () => {
-                expect(() => {
-                    AnyRandom.uint32(3.14, 12);
-                }).to.throw();
+
+            it(`${method} - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
+                const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
+
+                const result = AnyRandom[method](minValue, maxValue);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, minValue, maxValue);
+                assert.equal(result, expected);
+            });
+        });
+    });
+
+    describe("uint32", () => {
+        let expected: number;
+        let MIN_VALUE: number = 0;
+        let MAX_VALUE: number = 4294967295;
+
+        beforeEach(() => {
+            setup();
+            expected = 42;
+            stub = sinon.stub(AnyRandom["random"], "uint32").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].uint32);
+        });
+
+        [{ method: "uint32" }, { method: "uint" }].forEach(({ method }) => {
+            it(`${method} - when called without argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom[method]();
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE);
+                assert.equal(result, expected);
+            });
+
+            it(`${method} - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
+                const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
+
+                const result = AnyRandom[method](minValue, maxValue);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, minValue, maxValue);
+                assert.equal(result, expected);
+            });
+        });
+    });
+
+    describe("int32", () => {
+        let expected: number;
+        const MIN_VALUE = -2147483648;
+        const MAX_VALUE = 2147483647;
+
+        beforeEach(() => {
+            setup();
+            expected = 42;
+            stub = sinon.stub(AnyRandom["random"], "int32").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].int32);
+        });
+
+        [{ method: "int32" }, { method: "int" }].forEach(({ method }) => {
+            it(`${method} - when called without argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom[method]();
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE);
+                assert.equal(result, expected);
+            });
+
+            it(`${method} - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
+                const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
+
+                const result = AnyRandom[method](minValue, maxValue);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, minValue, maxValue);
+                assert.equal(result, expected);
             });
         });
     });
 
     describe("double", () => {
-        it("number - returns a 64-bit floating point number", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.number();
+        let expected: number;
+        const MIN_VALUE = -Infinity;
+        const MAX_VALUE = Infinity;
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(Number.NEGATIVE_INFINITY);
-                expect(result).to.be.lte(Number.POSITIVE_INFINITY);
-            }
-        });
-        it("number - throws an error if minValue is greater than maxValue", () => {
-            expect(() => {
-                AnyRandom.number(12, -4);
-            }).to.throw();
-        });
-        it("number - returns a number when Unscaled", () => {
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.number(0, Number.MAX_VALUE, Scale.Unscaled);
-
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(Number.NEGATIVE_INFINITY);
-                expect(result).to.be.lte(Number.POSITIVE_INFINITY);
-            }
+        beforeEach(() => {
+            setup();
+            expected = 42;
+            stub = sinon.stub(AnyRandom["random"], "double").returns(expected);
         });
 
-        it("double - returns a 64-bit floating point number", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.double();
-
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(Number.NEGATIVE_INFINITY);
-                expect(result).to.be.lte(Number.POSITIVE_INFINITY);
-            }
+        afterEach(() => {
+            unwrap(AnyRandom["random"].double);
         });
-        it("double - throws an error if minValue is greater than maxValue", () => {
-            expect(() => {
-                AnyRandom.double(12, -4);
-            }).to.throw();
+
+        [{ method: "double" }, { method: "number" }].forEach(({ method }) => {
+            it(`${method} - when called without argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom[method]();
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE, Scale.Unscaled);
+                assert.equal(result, expected);
+            });
+
+            it(`${method} - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
+                const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
+
+                const result = AnyRandom[method](minValue, maxValue);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, minValue, maxValue, Scale.Unscaled);
+                assert.equal(result, expected);
+            });
+
+            [
+                { key: "Unscaled", scale: Scale.Unscaled },
+                { key: "Exponential", scale: Scale.Exponential },
+                { key: "Flat", scale: Scale.Flat },
+            ].forEach(({ key, scale }) => {
+                it(`${method} - when called with 'minValue', 'maxValue', and Scale.${key} arguments - calls the wrapped implementation`, () => {
+                    const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
+
+                    const result = AnyRandom[method](minValue, maxValue, scale);
+
+                    sinon.assert.calledOnce(stub);
+                    sinon.assert.calledWith(stub, minValue, maxValue, scale);
+                    assert.equal(result, expected);
+                });
+            });
         });
     });
+
     describe("single", () => {
-        it("float - returns a single-precision 32-bit floating point number", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.float();
+        let expected: number;
+        const MIN_VALUE = -Infinity;
+        const MAX_VALUE = Infinity;
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(Number.NEGATIVE_INFINITY);
-                expect(result).to.be.lte(Number.POSITIVE_INFINITY);
-            }
+        beforeEach(() => {
+            setup();
+            expected = 42;
+            stub = sinon.stub(AnyRandom["random"], "single").returns(expected);
         });
-        it("single - returns a single-precision 32-bit floating point number", () => {
-            // do this 1000 times, to be sure!
-            for (let int = 0; int < 1000; int++) {
-                const result = AnyRandom.single();
 
-                expect(result).not.to.be.null;
-                expect(result).not.to.be.undefined;
-                expect(typeof result === "number").to.be.true;
-                expect(result).to.be.gte(Number.NEGATIVE_INFINITY);
-                expect(result).to.be.lte(Number.POSITIVE_INFINITY);
-            }
+        afterEach(() => {
+            unwrap(AnyRandom["random"].single);
+        });
+
+        [{ method: "single" }, { method: "float" }].forEach(({ method }) => {
+            it(`${method} - when called without argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom[method]();
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE, Scale.Unscaled);
+                assert.equal(result, expected);
+            });
+
+            it(`${method} - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
+                const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
+
+                const result = AnyRandom[method](minValue, maxValue);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, minValue, maxValue, Scale.Unscaled);
+                assert.equal(result, expected);
+            });
+
+            [
+                { key: "Unscaled", scale: Scale.Unscaled },
+                { key: "Exponential", scale: Scale.Exponential },
+                { key: "Flat", scale: Scale.Flat },
+            ].forEach(({ key, scale }) => {
+                it(`${method} - when called with 'minValue', 'maxValue', and Scale.${key} arguments - calls the wrapped implementation`, () => {
+                    const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
+
+                    const result = AnyRandom[method](minValue, maxValue, scale);
+
+                    sinon.assert.calledOnce(stub);
+                    sinon.assert.calledWith(stub, minValue, maxValue, scale);
+                    assert.equal(result, expected);
+                });
+            });
         });
     });
 
     describe("char", () => {
-        it(`char - given no inputs, returns a single character from the ATOM CharacterSet`, () => {
+        let expected: string;
+        const CHAR_SET = CharacterSet.ATOM;
+
+        beforeEach(() => {
+            setup();
+            expected = "q";
+            stub = sinon.stub(AnyRandom["random"], "char").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].char);
+        });
+
+        it(`char - when called without argument - calls the wrapped implementation`, () => {
             const result = AnyRandom.char();
 
-            expect(result).not.to.be.false;
-            expect(typeof result === "string").to.be.true;
-            expect(result.length).to.equal(1);
-            expect(CharacterSet.ATOM.includes(result)).to.be.true;
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, CHAR_SET);
+            assert.equal(result, expected);
         });
 
-        [
-            { key: "null", value: null },
-            { key: "empty string", value: "" },
-        ].forEach(({ key, value }) => {
-            it(`char - throws an error when the character set is ${key}`, () => {
-                expect(() => {
-                    let val: string = <string>value;
-                    AnyRandom.char(val);
-                }).to.throw();
-            });
-        });
+        it(`char - when called with a string argument - calls the wrapped implementation`, () => {
+            const set = "LAKSJFHLKASJDHFfdsgsdfghsdfhhfds";
 
-        [
-            { key: "alphabetical characters", value: CharacterSet.ALPHA.toString() },
-            { key: "alphanumeric characters", value: CharacterSet.ALPHANUMERIC.toString() },
-            { key: "atomic characters", value: CharacterSet.ATOM.toString() },
-            { key: "numbers", value: CharacterSet.NUMERIC.toString() },
-            { key: "url-safe symbols", value: CharacterSet.SYMBOLS.toString() },
-        ].forEach(({ key, value }) => {
-            it(`char - given a string input composed of ${key}, returns a single character from that string`, () => {
-                const characterSet: string = value;
+            const result = AnyRandom.char(set);
 
-                const result = AnyRandom.char(characterSet);
-
-                expect(result).not.to.be.false;
-                expect(typeof result === "string").to.be.true;
-                expect(result.length).to.equal(1);
-                expect(characterSet.includes(result)).to.be.true;
-            });
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, set);
+            assert.equal(result, expected);
         });
 
         [
             { key: "ALPHA", set: CharacterSet.ALPHA },
             { key: "ALPHANUMERIC", set: CharacterSet.ALPHANUMERIC },
             { key: "ATOM", set: CharacterSet.ATOM },
+            { key: "GREEK", set: CharacterSet.GREEK },
             { key: "NUMERIC", set: CharacterSet.NUMERIC },
             { key: "SYMBOLS", set: CharacterSet.SYMBOLS },
         ].forEach(({ key, set }) => {
-            it(`char - given the CharacterSet [${key}], returns a single character from that CharacterSet`, () => {
-                const characterSet: CharacterSet = set;
+            it(`char - when called with the CharacterSet.${key} argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom.char(set);
 
-                const result = AnyRandom.char(characterSet);
-
-                expect(result).not.to.be.false;
-                expect(typeof result === "string").to.be.true;
-                expect(result.length).to.equal(1);
-                expect(characterSet.includes(result)).to.be.true;
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, set);
+                assert.equal(result, expected);
             });
         });
     });
 
     describe("charArray", () => {
-        it(`charArray - given no inputs, returns an array of characters, between 0 and 32 characters long, taken from the ATOM CharacterSet`, () => {
+        let expected: string[];
+        const MIN_LENGTH = 0;
+        const MAX_LENGTH = 32;
+        const CHAR_SET = CharacterSet.ATOM;
+
+        beforeEach(() => {
+            setup();
+            expected = ["a", "s", "d", "f"];
+            stub = sinon.stub(AnyRandom["random"], "charArray").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].charArray);
+        });
+
+        it(`charArray - when called without argument - calls the wrapped implementation`, () => {
             const result = AnyRandom.charArray();
 
-            expect(result).not.to.be.false;
-            expect(result instanceof Array).to.be.true;
-            expect(result.length).to.be.gte(0);
-            expect(result.length).to.be.lte(32);
-
-            const goodChars = result.filter((it) => CharacterSet.ATOM.includes(it));
-            expect(goodChars.length).to.equal(result.length);
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, MIN_LENGTH, MAX_LENGTH, CHAR_SET);
+            assert.equal(result, expected);
         });
 
-        it(`charArray - given a range of lengths, returns an array of characters, some length in the given range, taken from the ATOM CharacterSet`, () => {
-            const minLength = Math.floor(Math.random() * 32);
-            const maxLength = minLength + Math.floor(Math.random() * 32);
+        it(`charArray - when called with 'minLength' and 'maxLength' arguments - calls the wrapped implementation`, () => {
+            const [min, max] = randoMinMax(MIN_LENGTH, MAX_LENGTH);
 
-            const result = AnyRandom.charArray(minLength, maxLength);
+            const result = AnyRandom.charArray(min, max);
 
-            expect(result).not.to.be.false;
-            expect(result instanceof Array).to.be.true;
-            expect(result.length).to.be.gte(minLength);
-            expect(result.length).to.be.lte(maxLength);
-
-            const goodChars = result.filter((it) => CharacterSet.ATOM.includes(it));
-            expect(goodChars.length).to.equal(result.length);
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, min, max, CHAR_SET);
+            assert.equal(result, expected);
         });
 
-        it(`charArray - given a range of lengths, and a string of characters, returns an array of characters, some length in the given range, taken from the given string`, () => {
-            const characterSet = "Mexico!";
-            const minLength = Math.floor(Math.random() * 32);
-            const maxLength = minLength + Math.floor(Math.random() * 32);
+        it(`charArray - when called with a string argument - calls the wrapped implementation`, () => {
+            const set = "LAKSJFHLKASJDHFfdsgsdfghsdfhhfds";
 
-            const result = AnyRandom.charArray(minLength, maxLength, characterSet);
+            const result = AnyRandom.charArray(set);
 
-            expect(result).not.to.be.false;
-            expect(result instanceof Array).to.be.true;
-            expect(result.length).to.be.gte(minLength);
-            expect(result.length).to.be.lte(maxLength);
-
-            const goodChars = result.filter((it) => characterSet.includes(it));
-            expect(goodChars.length).to.equal(result.length);
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, MIN_LENGTH, MAX_LENGTH, set);
+            assert.equal(result, expected);
         });
 
         [
             { key: "ALPHA", set: CharacterSet.ALPHA },
             { key: "ALPHANUMERIC", set: CharacterSet.ALPHANUMERIC },
             { key: "ATOM", set: CharacterSet.ATOM },
+            { key: "GREEK", set: CharacterSet.GREEK },
             { key: "NUMERIC", set: CharacterSet.NUMERIC },
             { key: "SYMBOLS", set: CharacterSet.SYMBOLS },
         ].forEach(({ key, set }) => {
-            it(`charArray - given a range of lengths, and the CharacterSet ${key}, returns an array of characters, some length in the given range, taken from the given CharacterSet`, () => {
-                const characterSet = set;
-                const minLength = Math.floor(Math.random() * 32);
-                const maxLength = minLength + Math.floor(Math.random() * 32);
+            it(`charArray - when called with the 'minLength', 'maxLength', and CharacterSet.${key} argument - calls the wrapped implementation`, () => {
+                const [min, max] = randoMinMax(MIN_LENGTH, MAX_LENGTH);
 
-                const result = AnyRandom.charArray(minLength, maxLength, characterSet);
+                const result = AnyRandom.charArray(min, max, set);
 
-                expect(result).not.to.be.false;
-                expect(result instanceof Array).to.be.true;
-                expect(result.length).to.be.gte(minLength);
-                expect(result.length).to.be.lte(maxLength);
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, min, max, set);
+                assert.equal(result, expected);
+            });
 
-                const goodChars = result.filter((it) => characterSet.includes(it));
-                expect(goodChars.length).to.equal(result.length);
+            it(`charArray - when called with the CharacterSet.${key} argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom.charArray(set);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_LENGTH, MAX_LENGTH, set);
+                assert.equal(result, expected);
             });
         });
     });
 
     describe("string", () => {
-        it(`string - given no inputs, returns a string, between 0 and 32 characters long, taken from the ATOM CharacterSet`, () => {
+        let expected: string;
+        const MIN_LENGTH = 0;
+        const MAX_LENGTH = 32;
+        const CHAR_SET = CharacterSet.ATOM;
+
+        beforeEach(() => {
+            setup();
+            expected = "asdfq";
+            stub = sinon.stub(AnyRandom["random"], "string").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(AnyRandom["random"].string);
+        });
+
+        it(`string - when called without argument - calls the wrapped implementation`, () => {
             const result = AnyRandom.string();
 
-            expect(result == null).to.be.false;
-            expect(typeof result === "string").to.be.true;
-            expect(result.length).to.be.gte(0);
-            expect(result.length).to.be.lte(32);
-            for (let i = 0; i < result.length; i++) {
-                expect(CharacterSet.ATOM.includes(result[i]));
-            }
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, MIN_LENGTH, MAX_LENGTH, CHAR_SET);
+            assert.equal(result, expected);
         });
 
-        it(`string - given a range of lengths, returns a string, some length in the given range, taken from the ATOM CharacterSet`, () => {
-            const minLength = Math.floor(Math.random() * 32);
-            const maxLength = minLength + Math.floor(Math.random() * 32);
+        it(`string - when called with 'minLength' and 'maxLength' arguments - calls the wrapped implementation`, () => {
+            const [min, max] = randoMinMax(MIN_LENGTH, MAX_LENGTH);
 
-            const result = AnyRandom.string(minLength, maxLength);
+            const result = AnyRandom.string(min, max);
 
-            expect(result == null).to.be.false;
-            expect(typeof result === "string").to.be.true;
-            expect(result.length).to.be.gte(minLength);
-            expect(result.length).to.be.lte(maxLength);
-            for (let i = 0; i < result.length; i++) {
-                expect(CharacterSet.ATOM.includes(result[i]));
-            }
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, min, max, CHAR_SET);
+            assert.equal(result, expected);
         });
 
-        it(`string - given a range of lengths, and a string of characters, returns a string, some length in the given range, taken from the given string`, () => {
-            const characterSet = "Mexico!";
-            const minLength = Math.floor(Math.random() * 32);
-            const maxLength = minLength + Math.floor(Math.random() * 32);
+        it(`string - when called with a string argument - calls the wrapped implementation`, () => {
+            const set = "LAKSJFHLKASJDHFfdsgsdfghsdfhhfds";
 
-            const result = AnyRandom.string(minLength, maxLength, characterSet);
+            const result = AnyRandom.string(set);
 
-            expect(result == null).to.be.false;
-            expect(typeof result === "string").to.be.true;
-            expect(result.length).to.be.gte(minLength);
-            expect(result.length).to.be.lte(maxLength);
-            for (let i = 0; i < result.length; i++) {
-                expect(characterSet.includes(result[i]));
-            }
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, MIN_LENGTH, MAX_LENGTH, set);
+            assert.equal(result, expected);
         });
 
         [
             { key: "ALPHA", set: CharacterSet.ALPHA },
             { key: "ALPHANUMERIC", set: CharacterSet.ALPHANUMERIC },
             { key: "ATOM", set: CharacterSet.ATOM },
+            { key: "GREEK", set: CharacterSet.GREEK },
             { key: "NUMERIC", set: CharacterSet.NUMERIC },
             { key: "SYMBOLS", set: CharacterSet.SYMBOLS },
         ].forEach(({ key, set }) => {
-            it(`string - given a range of lengths, and the CharacterSet ${key}, returns a string, some length in the given range, taken from the given CharacterSet`, () => {
-                const characterSet = set;
-                const minLength = Math.floor(Math.random() * 32);
-                const maxLength = minLength + Math.floor(Math.random() * 32);
+            it(`string - when called with the 'minLength', 'maxLength', and CharacterSet.${key} argument - calls the wrapped implementation`, () => {
+                const [min, max] = randoMinMax(MIN_LENGTH, MAX_LENGTH);
 
-                const result = AnyRandom.string(minLength, maxLength, characterSet);
+                const result = AnyRandom.string(min, max, set);
 
-                expect(result == null).to.be.false;
-                expect(typeof result === "string").to.be.true;
-                expect(result.length).to.be.gte(minLength);
-                expect(result.length).to.be.lte(maxLength);
-                for (let i = 0; i < result.length; i++) {
-                    expect(characterSet.includes(result[i]));
-                }
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, min, max, set);
+                assert.equal(result, expected);
+            });
+
+            it(`string - when called with the CharacterSet.${key} argument - calls the wrapped implementation`, () => {
+                const result = AnyRandom.string(set);
+
+                sinon.assert.calledOnce(stub);
+                sinon.assert.calledWith(stub, MIN_LENGTH, MAX_LENGTH, set);
+                assert.equal(result, expected);
             });
         });
     });
