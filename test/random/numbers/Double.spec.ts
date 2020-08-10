@@ -2,45 +2,28 @@ import { assert } from "chai";
 import { randoMinMax } from "test/helpers";
 import { RandomDate } from "@testing/random/dates/RandomDate";
 import { Double } from "@testing/random/numbers/Double";
+import { Scale } from "@testing/random/numbers/Scale";
 
 describe("Double", () => {
-    let double: Double;
-    function setup() {
-        double = new Double();
-    }
+    function setup() {}
 
     describe("next", () => {
-        beforeEach(setup);
-
-        it("next - validates the range, then gets a random value in the range", () => {
-            const earliest = new Date("01-01-1970");
-            const latest = new Date(Date.now());
-
-            const result = RandomDate.next();
-
-            assert.isAtLeast(result.getTime(), earliest.getTime());
-            assert.isAtMost(result.getTime(), latest.getTime());
+        beforeEach(() => {
+            setup();
         });
 
-        it("next - when called with two dates, gets a date between them", () => {
-            const low = new Date("01-01-1970").getTime();
-            const high = new Date(Date.now()).getTime();
-            let [min, max] = randoMinMax(low, high);
-            let earliest = new Date(min);
-            let latest = new Date(max);
+        // it("next - when called with no parameters, uses -infinity, +infinity, and Scale.EXPONENTIAL", () => {
+        //     let [low, high] = randoMinMax(0, 100);
+        //     let scale: Scale = Scale.Flat;
 
-            const result = RandomDate.next(earliest, latest);
+        //     const result = Double.next();
+        // });
 
-            assert.isAtLeast(result.getTime(), earliest.getTime());
-            assert.isAtMost(result.getTime(), latest.getTime());
-        });
+        // it("next - validates the range, then gets a random value in the range", () => {
+        //     let [low, high] = randoMinMax(0, 100);
+        //     let scale: Scale = Scale.Flat;
 
-        it("next - if the two dates are the same, return that date", () => {
-            const date = new Date("01-01-1970");
-
-            const result = RandomDate.next(date, date);
-
-            assert.equal(result, date);
-        });
+        //     const result = Double.next(low, high, scale);
+        // });
     });
 });
