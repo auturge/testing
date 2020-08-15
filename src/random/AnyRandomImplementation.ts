@@ -13,6 +13,7 @@ import {
 } from "@testing/random/numbers/__public_api";
 import { RandomDate } from "@testing/random/dates/__public_api";
 import { CharacterSet, RandomChar, RandomString } from "@testing/random/strings/__public_api";
+import { RandomEnum } from "@testing/random/objects/__public_api";
 
 export class AnyRandomImplementation implements RandomObjectGenerator {
     boolean(): boolean {
@@ -21,6 +22,10 @@ export class AnyRandomImplementation implements RandomObjectGenerator {
 
     date(earliest: Date, latest: Date): Date {
         return RandomDate.next(earliest, latest);
+    }
+
+    enum<T>(enumeration: T): T[keyof T] {
+        return RandomEnum.enum(enumeration);
     }
 
     sign(includeZero: boolean): number {

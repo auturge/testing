@@ -25,5 +25,7 @@ export interface RandomObjectGenerator {
 
     date(earliest: Date, latest: Date): Date;
 
+    enum<T>(enumeration: T): T[keyof T];
+
     string(minLength: number, maxLength: number, characterSet: string | CharacterSet): string;
 }

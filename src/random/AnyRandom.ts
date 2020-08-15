@@ -9,39 +9,45 @@ import { Scale } from "@testing/random/numbers/Scale";
 export class AnyRandom {
     private static random: RandomObjectGenerator = new AnyRandomImplementation();
 
-    /**
-     * Returns a random boolean value (`true` or `false`).
-     */
+    /** Returns a random boolean value (`true` or `false`). */
     static bool(): boolean {
         return this.random.boolean();
     }
 
-    /**
-     * Returns a random boolean value (`true` or `false`).
-     */
+    /** Returns a random boolean value (`true` or `false`). */
     static boolean(): boolean {
         return this.random.boolean();
     }
 
+    /** Returns a randomly chosen integer that indicates the sign of a number.
+     *> -1 = value is less than zero
+     *>
+     *> 1 = value is less than zero
+     */
     static sign(): number;
+
+    /** Returns a randomly chosen integer that indicates the sign of a number (including possibly zero).
+     *> -1 = value is less than zero
+     *>
+     *> 0 = value is zero
+     *>
+     *> 1 = value is less than zero
+     * @param {boolean} includeZero Whether to include zero in the possible outputs.
+     */
     static sign(includeZero: boolean): number;
     static sign(includeZero: boolean = false): number {
         return this.random.sign(includeZero);
     }
 
-    /**
-     * Returns a random `Date` between `01-JAN-1970` and `now`.
-     */
+    /** Returns a random `Date` between `01-JAN-1970` and `now`. */
     static date(): Date;
 
-    /**
-     * Returns a random `Date` within the range defined by `earliest` and `now`.
+    /** Returns a random `Date` within the range defined by `earliest` and `now`.
      * @param {Date} earliest The earliest date that the result could take.
      */
     static date(earliest: Date): Date;
 
-    /**
-     * Returns a random `Date` within the range defined by `earliest` and `latest`.
+    /** Returns a random `Date` within the range defined by `earliest` and `latest`.
      * @param {Date} earliest The earliest date that the result could take.
      * @param {Date} latest The latest date that the result could take.
      */
@@ -51,6 +57,14 @@ export class AnyRandom {
         latest: Date = new Date(Date.now())
     ): Date {
         return this.random.date(earliest, latest);
+    }
+
+    /** Returns a randomly-chosen entry from an `enum`.
+     * @warning This only works for enums that have keys of type `string`.
+     * @param enumeration The enumeration from which to choose an entry.
+     */
+    static enum<T>(enumeration: T): T[keyof T] {
+        return this.random.enum(enumeration);
     }
 
     /** 8-bit integers */
@@ -304,7 +318,7 @@ export class AnyRandom {
     static double(
         minValue: number = -Infinity,
         maxValue: number = Infinity,
-        scale: Scale = Scale.Unscaled
+        scale: Scale = Scale.EXPONENTIAL
     ): number {
         return this.random.double(minValue, maxValue, scale);
     }
@@ -336,7 +350,7 @@ export class AnyRandom {
     static number(
         minValue: number = -Infinity,
         maxValue: number = Infinity,
-        scale: Scale = Scale.Unscaled
+        scale: Scale = Scale.EXPONENTIAL
     ): number {
         return this.random.double(minValue, maxValue, scale);
     }
@@ -370,7 +384,7 @@ export class AnyRandom {
     static float(
         minValue: number = -Infinity,
         maxValue: number = Infinity,
-        scale: Scale = Scale.Unscaled
+        scale: Scale = Scale.EXPONENTIAL
     ): number {
         return this.random.single(minValue, maxValue, scale);
     }
@@ -402,7 +416,7 @@ export class AnyRandom {
     static single(
         minValue: number = -Infinity,
         maxValue: number = Infinity,
-        scale: Scale = Scale.Unscaled
+        scale: Scale = Scale.EXPONENTIAL
     ): number {
         return this.random.single(minValue, maxValue, scale);
     }

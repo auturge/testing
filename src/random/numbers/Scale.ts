@@ -6,10 +6,10 @@
  */
 export enum Scale {
     /** The trivial non-scale. */
-    Unscaled,
+    UNSCALED = "UNSCALED",
 
     /** The normal scale, where most values will have large magnitude. */
-    Flat,
+    FLAT = "FLAT",
 
     /**
      * A scale where values span the entire range, but spike exponentially around
@@ -17,5 +17,5 @@ export enum Scale {
      * large values, this is much more likely than the Flat scale to generate
      * numbers that humans are 'familiar' with.
      */
-    Exponential
+    EXPONENTIAL = "EXPONENTIAL",
 }

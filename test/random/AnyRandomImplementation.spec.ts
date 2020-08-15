@@ -279,9 +279,9 @@ describe("AnyRandomImplementation", () => {
         });
 
         [
-            { key: "Unscaled", scale: Scale.Unscaled },
-            { key: "Exponential", scale: Scale.Exponential },
-            { key: "Flat", scale: Scale.Flat },
+            { key: "Unscaled", scale: Scale.UNSCALED },
+            { key: "Exponential", scale: Scale.EXPONENTIAL },
+            { key: "Flat", scale: Scale.FLAT },
         ].forEach(({ key, scale }) => {
             it(`double - when called with 'minValue', 'maxValue', and Scale.${key} arguments - calls the wrapped implementation`, () => {
                 const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
@@ -311,9 +311,9 @@ describe("AnyRandomImplementation", () => {
         });
 
         [
-            { key: "Unscaled", scale: Scale.Unscaled },
-            { key: "Exponential", scale: Scale.Exponential },
-            { key: "Flat", scale: Scale.Flat },
+            { key: "Unscaled", scale: Scale.UNSCALED },
+            { key: "Exponential", scale: Scale.EXPONENTIAL },
+            { key: "Flat", scale: Scale.FLAT },
         ].forEach(({ key, scale }) => {
             it(`double - when called with 'minValue', 'maxValue', and Scale.${key} arguments - calls the wrapped implementation`, () => {
                 const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);

@@ -17,7 +17,7 @@ export class Double extends RandomScaledNumber {
         }
     }
 
-    protected getRandomValueInRange(minValue: number, maxValue: number, scale: Scale): number {
+    public getRandomValueInRange(minValue: number, maxValue: number, scale: Scale): number {
         let minScale = Math.log10(minValue);
         let maxScale = Math.log10(maxValue);
         const sign = this.getSign(minValue, maxValue);
@@ -27,7 +27,7 @@ export class Double extends RandomScaledNumber {
         switch (scale) {
             default:
                 return this.randomDouble(minValue, maxValue);
-            case Scale.Exponential:
+            case Scale.EXPONENTIAL:
                 if (!this.validBounds(minValue, maxValue)) {
                     return Number.MIN_VALUE;
                 }
@@ -56,16 +56,16 @@ export class Double extends RandomScaledNumber {
 
     private randomDouble(minValue: number, maxValue: number): number {
         if (!Number.isFinite(minValue) && minValue < 0) {
-            minValue = Number.MIN_VALUE;
+            minValue = Number.NEGATIVE_INFINITY;
         }
         if (!Number.isFinite(maxValue) && maxValue < 0) {
-            minValue = Number.MIN_VALUE;
+            minValue = Number.NEGATIVE_INFINITY;
         }
         if (!Number.isFinite(minValue) && minValue > 0) {
-            minValue = Number.MAX_VALUE;
+            minValue = Number.POSITIVE_INFINITY;
         }
         if (!Number.isFinite(maxValue) && maxValue > 0) {
-            minValue = Number.MAX_VALUE;
+            minValue = Number.POSITIVE_INFINITY;
         }
 
         const scalar = Math.random();
@@ -74,10 +74,10 @@ export class Double extends RandomScaledNumber {
         let output = minValue + p1 - p2;
 
         if (!Number.isFinite(output) && output < 0) {
-            output = Number.MIN_VALUE;
+            output = Number.NEGATIVE_INFINITY;
         }
         if (!Number.isFinite(output) && output > 0) {
-            output = Number.MAX_VALUE;
+            output = Number.POSITIVE_INFINITY;
         }
 
         return output;

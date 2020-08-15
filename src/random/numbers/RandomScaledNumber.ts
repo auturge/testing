@@ -17,7 +17,7 @@ export abstract class RandomScaledNumber {
     public static next(
         minValue: number = this.MIN_VALUE,
         maxValue: number = this.MAX_VALUE,
-        scale: Scale = Scale.Exponential
+        scale: Scale = Scale.EXPONENTIAL
     ): number {
         return this.singleton.next(minValue, maxValue, scale);
     }

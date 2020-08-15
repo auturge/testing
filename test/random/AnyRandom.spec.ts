@@ -363,7 +363,7 @@ describe("AnyRandom", () => {
                 const result = AnyRandom[method]();
 
                 sinon.assert.calledOnce(stub);
-                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE, Scale.Unscaled);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE, Scale.EXPONENTIAL);
                 assert.equal(result, expected);
             });
 
@@ -373,14 +373,14 @@ describe("AnyRandom", () => {
                 const result = AnyRandom[method](minValue, maxValue);
 
                 sinon.assert.calledOnce(stub);
-                sinon.assert.calledWith(stub, minValue, maxValue, Scale.Unscaled);
+                sinon.assert.calledWith(stub, minValue, maxValue, Scale.EXPONENTIAL);
                 assert.equal(result, expected);
             });
 
             [
-                { key: "Unscaled", scale: Scale.Unscaled },
-                { key: "Exponential", scale: Scale.Exponential },
-                { key: "Flat", scale: Scale.Flat },
+                { key: "Unscaled", scale: Scale.UNSCALED },
+                { key: "Exponential", scale: Scale.EXPONENTIAL },
+                { key: "Flat", scale: Scale.FLAT },
             ].forEach(({ key, scale }) => {
                 it(`${method} - when called with 'minValue', 'maxValue', and Scale.${key} arguments - calls the wrapped implementation`, () => {
                     const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
@@ -415,7 +415,7 @@ describe("AnyRandom", () => {
                 const result = AnyRandom[method]();
 
                 sinon.assert.calledOnce(stub);
-                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE, Scale.Unscaled);
+                sinon.assert.calledWith(stub, MIN_VALUE, MAX_VALUE, Scale.EXPONENTIAL);
                 assert.equal(result, expected);
             });
 
@@ -425,14 +425,14 @@ describe("AnyRandom", () => {
                 const result = AnyRandom[method](minValue, maxValue);
 
                 sinon.assert.calledOnce(stub);
-                sinon.assert.calledWith(stub, minValue, maxValue, Scale.Unscaled);
+                sinon.assert.calledWith(stub, minValue, maxValue, Scale.EXPONENTIAL);
                 assert.equal(result, expected);
             });
 
             [
-                { key: "Unscaled", scale: Scale.Unscaled },
-                { key: "Exponential", scale: Scale.Exponential },
-                { key: "Flat", scale: Scale.Flat },
+                { key: "Unscaled", scale: Scale.UNSCALED },
+                { key: "Exponential", scale: Scale.EXPONENTIAL },
+                { key: "Flat", scale: Scale.FLAT },
             ].forEach(({ key, scale }) => {
                 it(`${method} - when called with 'minValue', 'maxValue', and Scale.${key} arguments - calls the wrapped implementation`, () => {
                     const [minValue, maxValue] = randoMinMax(MIN_VALUE, MAX_VALUE);
