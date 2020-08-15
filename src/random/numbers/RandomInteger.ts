@@ -38,7 +38,6 @@ export abstract class RandomInteger extends RandomNumber {
     }
 
     protected getRandomValueInRange(minValue: number, maxValue: number): number {
-        let rval = 0;
         const max_range = maxValue - minValue + 1;
 
         const bits_needed = Math.ceil(Math.log2(max_range));
@@ -46,23 +45,9 @@ export abstract class RandomInteger extends RandomNumber {
             throw new Error("We cannot generate numbers larger than 53 bits.");
         }
 
-        const bytes_needed = Math.ceil(bits_needed / 8);
-        const mask = Math.pow(2, bits_needed) - 1;
-
-        let p = (bytes_needed - 1) * 8;
-        for (let i = 0; i < bytes_needed; i++) {
-            rval += this.BYTE_ARRAY[i] * Math.pow(2, p);
-            p -= 8;
-        }
-
-        // Use & to apply the mask and reduce the number of recursive lookups
-        rval = rval & mask;
-        if (rval >= max_range) {
-            // Integer out of acceptable range
-            return this.getRandomValueInRange(minValue, maxValue);
-        }
-
-        // Return an integer that falls within the range
-        return minValue + rval;
+        let target = Math.random() * max_range;
+        let offset = Math.floor(target);
+        let result = minValue + offset;
+        return result;
     }
 }

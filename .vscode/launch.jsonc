@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        // Press F5 to launch the currently-focused TS/JS file
+        {
+            "name": "Current TS File",
+            "type": "node",
+            "request": "launch",
+            "args": ["${relativeFile}"],
+            "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+            "sourceMaps": true,
+            "cwd": "${workspaceRoot}",
+            "protocol": "inspector"
+        }
+    ]
+}
