@@ -6,7 +6,6 @@ import * as sinon from "sinon";
 
 import { unwrap, randoMinMax } from "test/helpers";
 
-import { AnyRandom } from "@testing/random/AnyRandom";
 import { Scale } from "@testing/random/numbers/Scale";
 import { CharacterSet } from "@testing/random/strings/CharacterSets";
 import { AnyRandomImplementation } from "@testing/random/AnyRandomImplementation";
@@ -187,8 +186,8 @@ describe("AnyRandomImplementation", () => {
 
     describe("int16", () => {
         let expected: number;
-        const MIN_VALUE: number = -32768;
-        const MAX_VALUE: number = 32767;
+        const MIN_VALUE = -32768;
+        const MAX_VALUE = 32767;
 
         beforeEach(() => {
             setup();
@@ -213,8 +212,8 @@ describe("AnyRandomImplementation", () => {
 
     describe("uint32", () => {
         let expected: number;
-        let MIN_VALUE: number = 0;
-        let MAX_VALUE: number = 4294967295;
+        const MIN_VALUE = 0;
+        const MAX_VALUE = 4294967295;
 
         beforeEach(() => {
             setup();
@@ -329,7 +328,6 @@ describe("AnyRandomImplementation", () => {
 
     describe("char", () => {
         let expected: string;
-        const CHAR_SET = CharacterSet.ATOM;
 
         beforeEach(() => {
             setup();

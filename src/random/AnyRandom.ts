@@ -3,9 +3,7 @@ import { RandomObjectGenerator } from "@testing/random/RandomObjectGenerator";
 import { CharacterSet } from "@testing/random/strings/CharacterSets";
 import { Scale } from "@testing/random/numbers/Scale";
 
-/**
- * Generates pseudo-random entities for testing purposes.
- */
+/** Generates pseudo-random entities for testing purposes. */
 export class AnyRandom {
     private static random: RandomObjectGenerator = new AnyRandomImplementation();
 
@@ -35,7 +33,7 @@ export class AnyRandom {
      * @param {boolean} includeZero Whether to include zero in the possible outputs.
      */
     static sign(includeZero: boolean): number;
-    static sign(includeZero: boolean = false): number {
+    static sign(includeZero = false): number {
         return this.random.sign(includeZero);
     }
 
@@ -59,12 +57,98 @@ export class AnyRandom {
         return this.random.date(earliest, latest);
     }
 
-    /** Returns a randomly-chosen entry from an `enum`.
+    /** Returns a randomly-chosen entry from the given `enum`.
      * @warning This only works for enums that have keys of type `string`.
      * @param enumeration The enumeration from which to choose an entry.
      */
     static enum<T>(enumeration: T): T[keyof T] {
         return this.random.enum(enumeration);
+    }
+
+    /** Returns a randomly-chosen entry from the given array.
+     * @param {Array} array The `Array` from which to choose an entry.
+     */
+    static oneOf<T>(array: T[]): T {
+        return this.random.oneOf(array);
+    }
+
+    /** Returns an array of between 5 any 10 elements, using the specified generator function.
+     * @param generator The function used to generate an element of the array.
+     * @example
+     * // get between 5 and 10 elements
+     * let array = AnyRandom.arrayOf( ()=> {
+     *   return { id: AnyRandom.uuid(), name: AnyRandom.string() }
+     * });
+     *
+     * // example results:
+     * [
+     *     {id: 'afde8dd2-36ff-40e6-bca0-1fccbdbae52a', name: 'cHxQdokoPmX&Qi5E''},
+     *     {id: '959b9090-d17a-4ab0-80f5-f29e1772c0f5', name: 'F4B=ceczy51/~SJ#YS'$'},
+     *     {id: '3b2bb4d6-4809-4797-8c1c-30ab96a360e5', name: 'tyyy*9&XnUM5lO'},
+     *     {id: '7763a1f4-1af7-4be0-96e3-4756f815dd51', name: 'o8gucB&jgMqEtSfPoO~%Lc2Bc'},
+     *     {id: '96821aa2-45c4-49a3-8e5f-89ba2b0e092c', name: 'A0O'},
+     *     {id: '9a4d06b9-f930-46a7-9a55-f30d668aef20', name: '+kT'aBFkHSp'},
+     *     {id: 'a1633f34-5f14-4eeb-82a1-32f1739f93bd', name: 'Ua{{XngNHoLcKmyW9dZm?'},
+     *     {id: '4aaffda4-e284-4288-b9b1-cb93d8f79ec1', name: 'VRf7'x-'},
+     *     {id: '3db9eb2a-c93b-4484-83f2-b763fa67aaa6', name: 'd'}
+     * ]
+     */
+    static arrayOf<T>(generator: () => T): T[];
+
+    /** Returns an array of _count_ elements, using the specified generator function.
+     * @param generator The function used to generate an element of the array.
+     * @param count The specific number of elements to create.
+     * @example
+     * // get 2 elements
+     * let array = AnyRandom.arrayOf( ()=> {
+     *   return { id: AnyRandom.uuid(), name: AnyRandom.string() }
+     * }, 2);
+     *
+     * // example results:
+     * [
+     *     {id: '93edda23-a7dd-49f5-a5c2-6a39aa4b06e6', name: 'l34b4'},
+     *     {id: '2123da0d-f4db-42d0-8ab5-ff565bf8ee98', name: '_rx9#M$Z^{K--B'}
+     * ]
+     */
+    static arrayOf<T>(generator: () => T, count: number): T[];
+
+    /** Returns an array with a number of elements between _minCount_ and _maxCount_, using the specified generator function.
+     * @param generator The function used to generate an element of the array.
+     * @param minCount The minimum number of elements to create.
+     * @param maxCount The maximum number of elements to create.
+     * @example
+     * // get between 1 and 5 elements
+     * let array = AnyRandom.arrayOf( ()=> {
+     *   return { id: AnyRandom.uuid(), name: AnyRandom.string() }
+     * }, 1, 5);
+     *
+     * // example results:
+     * [
+     *     {id: '22577696-bbba-4119-a11e-7315c5c21752', name: 'M=RyfYB+g^y8A'},
+     *     {id: '36de6dfa-b005-47e0-8686-e226d6313c42', name: 'OA_6IdW&Wkq?Ub{|i'},
+     *     {id: '3982d672-daec-4f7d-9eb5-606bb147a7ab', name: 'tffXLlWDx#M'},
+     *     {id: '556c738a-2472-48f8-a884-7a425ea6065b', name: 'fI2pwm8cyJ!n'}
+     * ]
+     */
+    static arrayOf<T>(generator: () => T, minCount: number, maxCount: number): T[];
+    static arrayOf<T>(generator: () => T, minCount?: number, maxCount?: number): T[] {
+        return this.random.arrayOf(generator, minCount, maxCount);
+    }
+
+    /** Returns a quasi-random (v4) UUID as a string.
+     * @warning Randomness and uniqueness are NOT guaranteed!
+     * DO NOT use this method to produce UUIDs in production code!
+     */
+    static guid(): string {
+        return this.random.uuid();
+    }
+
+    /** Returns a quasi-random (v4) UUID as a string.
+     * @warning Randomness and uniqueness are NOT guaranteed!
+     * DO NOT use this method to produce UUIDs in production code!
+     */
+    static uuid(): string {
+        return this.random.uuid();
     }
 
     /** 8-bit integers */
@@ -83,7 +167,7 @@ export class AnyRandom {
      * @see byte
      * */
     static uint8(minValue: number, maxValue: number): number;
-    static uint8(minValue: number = 0, maxValue: number = 255): number {
+    static uint8(minValue = 0, maxValue = 255): number {
         return this.random.uint8(minValue, maxValue);
     }
 
@@ -101,7 +185,7 @@ export class AnyRandom {
      * @see uint8
      */
     static byte(minValue: number, maxValue: number): number;
-    static byte(minValue: number = 0, maxValue: number = 255): number {
+    static byte(minValue = 0, maxValue = 255): number {
         return this.uint8(minValue, maxValue);
     }
 
@@ -119,7 +203,7 @@ export class AnyRandom {
      * @see sbyte
      */
     static int8(minValue: number, maxValue: number): number;
-    static int8(minValue: number = -128, maxValue: number = 127): number {
+    static int8(minValue = -128, maxValue = 127): number {
         return this.random.int8(minValue, maxValue);
     }
 
@@ -137,7 +221,7 @@ export class AnyRandom {
      * @see int8
      */
     static sbyte(minValue: number, maxValue: number): number;
-    static sbyte(minValue: number = -128, maxValue: number = 127): number {
+    static sbyte(minValue = -128, maxValue = 127): number {
         return this.random.int8(minValue, maxValue);
     }
 
@@ -157,7 +241,7 @@ export class AnyRandom {
      * @see short
      */
     static int16(minValue: number, maxValue: number): number;
-    static int16(minValue: number = -32768, maxValue: number = 32767): number {
+    static int16(minValue = -32768, maxValue = 32767): number {
         return this.random.int16(minValue, maxValue);
     }
 
@@ -175,7 +259,7 @@ export class AnyRandom {
      * @see ushort
      */
     static uint16(minValue: number, maxValue: number): number;
-    static uint16(minValue: number = 0, maxValue: number = 65535): number {
+    static uint16(minValue = 0, maxValue = 65535): number {
         return this.random.uint16(minValue, maxValue);
     }
 
@@ -193,7 +277,7 @@ export class AnyRandom {
      * @see int16
      */
     static short(minValue: number, maxValue: number): number;
-    static short(minValue: number = -32768, maxValue: number = 32767): number {
+    static short(minValue = -32768, maxValue = 32767): number {
         return this.random.int16(minValue, maxValue);
     }
 
@@ -211,7 +295,7 @@ export class AnyRandom {
      * @see uint16
      */
     static ushort(minValue: number, maxValue: number): number;
-    static ushort(minValue: number = 0, maxValue: number = 65535): number {
+    static ushort(minValue = 0, maxValue = 65535): number {
         return this.random.uint16(minValue, maxValue);
     }
 
@@ -231,7 +315,7 @@ export class AnyRandom {
      * @see int
      */
     static int32(minValue: number, maxValue: number): number;
-    static int32(minValue: number = -2147483648, maxValue: number = 2147483647): number {
+    static int32(minValue = -2147483648, maxValue = 2147483647): number {
         return this.random.int32(minValue, maxValue);
     }
 
@@ -249,7 +333,7 @@ export class AnyRandom {
      * @see int
      */
     static int(minValue: number, maxValue: number): number;
-    static int(minValue: number = -2147483648, maxValue: number = 2147483647): number {
+    static int(minValue = -2147483648, maxValue = 2147483647): number {
         return this.random.int32(minValue, maxValue);
     }
 
@@ -267,7 +351,7 @@ export class AnyRandom {
      * @see uint32
      */
     static uint(minValue: number, maxValue: number): number;
-    static uint(minValue: number = 0, maxValue: number = 4294967295): number {
+    static uint(minValue = 0, maxValue = 4294967295): number {
         return this.random.uint32(minValue, maxValue);
     }
 
@@ -285,7 +369,7 @@ export class AnyRandom {
      * @see uint32
      */
     static uint32(minValue: number, maxValue: number): number;
-    static uint32(minValue: number = 0, maxValue: number = 4294967295): number {
+    static uint32(minValue = 0, maxValue = 4294967295): number {
         return this.random.uint32(minValue, maxValue);
     }
 
@@ -315,11 +399,7 @@ export class AnyRandom {
      * @see number
      */
     static double(minValue: number, maxValue: number, scale: Scale): number;
-    static double(
-        minValue: number = -Infinity,
-        maxValue: number = Infinity,
-        scale: Scale = Scale.EXPONENTIAL
-    ): number {
+    static double(minValue = -Infinity, maxValue = Infinity, scale = Scale.EXPONENTIAL): number {
         return this.random.double(minValue, maxValue, scale);
     }
 
@@ -347,11 +427,7 @@ export class AnyRandom {
      * @see double
      */
     static number(minValue: number, maxValue: number, scale: Scale): number;
-    static number(
-        minValue: number = -Infinity,
-        maxValue: number = Infinity,
-        scale: Scale = Scale.EXPONENTIAL
-    ): number {
+    static number(minValue = -Infinity, maxValue = Infinity, scale = Scale.EXPONENTIAL): number {
         return this.random.double(minValue, maxValue, scale);
     }
 
@@ -381,11 +457,7 @@ export class AnyRandom {
      * @see single
      */
     static float(minValue: number, maxValue: number, scale: Scale): number;
-    static float(
-        minValue: number = -Infinity,
-        maxValue: number = Infinity,
-        scale: Scale = Scale.EXPONENTIAL
-    ): number {
+    static float(minValue = -Infinity, maxValue = Infinity, scale = Scale.EXPONENTIAL): number {
         return this.random.single(minValue, maxValue, scale);
     }
 
@@ -413,11 +485,7 @@ export class AnyRandom {
      * @see float
      */
     static single(minValue: number, maxValue: number, scale: Scale): number;
-    static single(
-        minValue: number = -Infinity,
-        maxValue: number = Infinity,
-        scale: Scale = Scale.EXPONENTIAL
-    ): number {
+    static single(minValue = -Infinity, maxValue = Infinity, scale = Scale.EXPONENTIAL): number {
         return this.random.single(minValue, maxValue, scale);
     }
 
@@ -432,8 +500,8 @@ export class AnyRandom {
      *  Returns a single random character, taken from the given `characterSet`.
      * @param {string | CharacterSet} characterSet The characters from which to sample.
      */
-    static char(characterSet: string | CharacterSet): string;
-    static char(characterSet: string | CharacterSet = CharacterSet.ATOM): string {
+    static char(characterSet: string): string;
+    static char(characterSet: string = CharacterSet.ATOM): string {
         return this.random.char(characterSet);
     }
 
@@ -445,9 +513,9 @@ export class AnyRandom {
     /**
      * Returns an array of characters, between 0 and 32 characters long,
      * where the elements are taken from the given `characterSet`.
-     * @param {string | CharacterSet} characterSet The characters from which to sample.
+     * @param {string} characterSet The characters from which to sample.
      */
-    static charArray(characterSet: string | CharacterSet): string[];
+    static charArray(characterSet: string): string[];
 
     /**
      *  Returns a random array of characters, between `minLength` and `maxLength` characters long,
@@ -462,18 +530,14 @@ export class AnyRandom {
      * where the elements are taken from the given `characterSet`.
      * @param {number} minLength The minimum length of the character array.
      * @param {number} maxLength The maximum length of the character array.
-     * @param {string | CharacterSet} characterSet The characters from which to sample.
+     * @param {string} characterSet The characters from which to sample.
      */
-    static charArray(
-        minLength: number,
-        maxLength: number,
-        characterSet: string | CharacterSet
-    ): string[];
+    static charArray(minLength: number, maxLength: number, characterSet: string): string[];
 
     static charArray(
         arg1: number | string | undefined = undefined,
-        maxLength: number = 32,
-        characterSet: string | CharacterSet = CharacterSet.ATOM
+        maxLength = 32,
+        characterSet: string = CharacterSet.ATOM
     ): string[] {
         let minLength: number;
         if (typeof arg1 === "number") {
@@ -515,29 +579,42 @@ export class AnyRandom {
      * where the elements are taken from the given `characterSet`.
      * @param {number} minLength The minimum length of the character array.
      * @param {number} maxLength The maximum length of the character array.
-     * @param {string | CharacterSet} characterSet The characters from which to sample.
+     * @param {string} characterSet The characters from which to sample.
      */
-    static string(
-        minLength: number,
-        maxLength: number,
-        characterSet: string | CharacterSet
-    ): string;
+    static string(minLength: number, maxLength: number, characterSet: string): string;
     static string(
         arg1: number | string | undefined = undefined,
-        maxLength: number = 32,
-        characterSet: string | CharacterSet = CharacterSet.ATOM
+        maxLength = 32,
+        characterSet: string = CharacterSet.ATOM
     ): string {
         let minLength: number;
         if (typeof arg1 === "number") {
             minLength = arg1;
-        } else if (typeof arg1 === "string") {
-            characterSet = arg1;
-            minLength = 0;
         } else {
-            characterSet = CharacterSet.ATOM;
             minLength = 0;
+            if (typeof arg1 === "string") {
+                characterSet = arg1;
+            }
         }
 
         return this.random.string(minLength, maxLength, characterSet);
+    }
+
+    /** Returns a quasi-random URL, with an empty path, no query, and no fragment(s).
+     * (valid per RFC-3986)
+     * @see https://tools.ietf.org/html/rfc3986#section-3
+     */
+    static url(): string;
+
+    /** Returns a quasi-random URL, including the specified parts.
+     * (valid per RFC-3986)
+     * @see https://tools.ietf.org/html/rfc3986#section-3
+     * @param {boolean} includePath When `true`, will include a path with the URL (e.g., "http://example.com/foo/bar").
+     * @param {boolean} includeQuery When `true`, will include a query with the URL (e.g., "?foo=bar").
+     * @param {boolean} includeFragment When `true`, will include a fragment with the URL (e.g., "#foobar").
+     */
+    static url(includePath: boolean, includeQuery: boolean, includeFragment: boolean): string;
+    static url(includePath = false, includeQuery = false, includeFragment = false): string {
+        return this.random.url(includePath, includeQuery, includeFragment);
     }
 }

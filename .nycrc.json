@@ -4,10 +4,10 @@
     "all": true,
     "check-coverage": true,
     "extension": [".ts"],
-    "statements": 60,
-    "functions": 60,
-    "branches": 65,
-    "lines": 60,
+    "statements": 10,
+    "functions": 10,
+    "branches": 10,
+    "lines": 10,
     "reporter": ["html", "lcov", "text"],
     "include": ["src/**/*.ts"]
 }

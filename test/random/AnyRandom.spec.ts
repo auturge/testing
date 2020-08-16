@@ -13,17 +13,15 @@ import { CharacterSet } from "@testing/random/strings/CharacterSets";
 describe("AnyRandom", () => {
     let stub;
 
-    function setup() {}
-
     describe("boolean", () => {
         let expected: boolean;
         beforeEach(() => {
-            setup();
             expected = Math.random() >= 0.5;
             stub = sinon.stub(AnyRandom["random"], "boolean").returns(expected);
         });
 
         afterEach(() => {
+            // eslint-disable-next-line
             unwrap(<any>AnyRandom["random"].boolean);
         });
 
@@ -46,7 +44,6 @@ describe("AnyRandom", () => {
         let expected: number;
 
         beforeEach(() => {
-            setup();
             expected = Math.random() >= 0.5 ? 1 : -1;
             stub = sinon.stub(AnyRandom["random"], "sign").returns(expected);
         });
@@ -79,13 +76,11 @@ describe("AnyRandom", () => {
 
     describe("date", () => {
         let expected: Date;
-        let dateStub;
 
         beforeEach(() => {
-            setup();
             expected = new Date();
             stub = sinon.stub(AnyRandom["random"], "date").returns(expected);
-            dateStub = sinon.stub(Date, "now").returns(expected.getTime());
+            sinon.stub(Date, "now").returns(expected.getTime());
         });
 
         afterEach(() => {
@@ -133,7 +128,6 @@ describe("AnyRandom", () => {
         const MAX_VALUE = 255;
 
         beforeEach(() => {
-            setup();
             expected = 42;
             stub = sinon.stub(AnyRandom["random"], "uint8").returns(expected);
         });
@@ -169,7 +163,6 @@ describe("AnyRandom", () => {
         const MAX_VALUE = 127;
 
         beforeEach(() => {
-            setup();
             expected = 42;
             stub = sinon.stub(AnyRandom["random"], "int8").returns(expected);
         });
@@ -205,7 +198,6 @@ describe("AnyRandom", () => {
         const MAX_VALUE = 65535;
 
         beforeEach(() => {
-            setup();
             expected = 42;
             stub = sinon.stub(AnyRandom["random"], "uint16").returns(expected);
         });
@@ -237,11 +229,10 @@ describe("AnyRandom", () => {
 
     describe("int16", () => {
         let expected: number;
-        const MIN_VALUE: number = -32768;
-        const MAX_VALUE: number = 32767;
+        const MIN_VALUE = -32768;
+        const MAX_VALUE = 32767;
 
         beforeEach(() => {
-            setup();
             expected = 42;
             stub = sinon.stub(AnyRandom["random"], "int16").returns(expected);
         });
@@ -273,11 +264,10 @@ describe("AnyRandom", () => {
 
     describe("uint32", () => {
         let expected: number;
-        let MIN_VALUE: number = 0;
-        let MAX_VALUE: number = 4294967295;
+        const MIN_VALUE = 0;
+        const MAX_VALUE = 4294967295;
 
         beforeEach(() => {
-            setup();
             expected = 42;
             stub = sinon.stub(AnyRandom["random"], "uint32").returns(expected);
         });
@@ -313,7 +303,6 @@ describe("AnyRandom", () => {
         const MAX_VALUE = 2147483647;
 
         beforeEach(() => {
-            setup();
             expected = 42;
             stub = sinon.stub(AnyRandom["random"], "int32").returns(expected);
         });
@@ -349,7 +338,6 @@ describe("AnyRandom", () => {
         const MAX_VALUE = Infinity;
 
         beforeEach(() => {
-            setup();
             expected = 42;
             stub = sinon.stub(AnyRandom["random"], "double").returns(expected);
         });
@@ -401,7 +389,6 @@ describe("AnyRandom", () => {
         const MAX_VALUE = Infinity;
 
         beforeEach(() => {
-            setup();
             expected = 42;
             stub = sinon.stub(AnyRandom["random"], "single").returns(expected);
         });
@@ -452,7 +439,6 @@ describe("AnyRandom", () => {
         const CHAR_SET = CharacterSet.ATOM;
 
         beforeEach(() => {
-            setup();
             expected = "q";
             stub = sinon.stub(AnyRandom["random"], "char").returns(expected);
         });
@@ -504,7 +490,6 @@ describe("AnyRandom", () => {
         const CHAR_SET = CharacterSet.ATOM;
 
         beforeEach(() => {
-            setup();
             expected = ["a", "s", "d", "f"];
             stub = sinon.stub(AnyRandom["random"], "charArray").returns(expected);
         });
@@ -576,7 +561,6 @@ describe("AnyRandom", () => {
         const CHAR_SET = CharacterSet.ATOM;
 
         beforeEach(() => {
-            setup();
             expected = "asdfq";
             stub = sinon.stub(AnyRandom["random"], "string").returns(expected);
         });

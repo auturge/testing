@@ -1,7 +1,9 @@
 /** Unwraps a Sinon spy/stub, releasing the spy/stub to be spied/stubbed again. */
-export function unwrap(sinonStub) {
+/* eslint-disable */
+export function unwrap(sinonStub: any): void {
     (<any>sinonStub).restore();
 }
+/* eslint-enable */
 
 /** Gets a random number between `MIN_VALUE` and `MAX_VALUE`
  * @param MIN_VALUE
@@ -12,10 +14,10 @@ export function getNumberBetween(MIN_VALUE: number, MAX_VALUE: number): number {
     // but (max - min) might be too big for the poor computer :)
     // so do it like this
     // min + [ (random * max) - (random * min) ]
-    let randoMax = Math.random() * MAX_VALUE;
-    let randoMin = Math.random() * MIN_VALUE;
-    let offset = randoMax - randoMin;
-    let result = MIN_VALUE + offset;
+    const randoMax = Math.random() * MAX_VALUE;
+    const randoMin = Math.random() * MIN_VALUE;
+    const offset = randoMax - randoMin;
+    const result = MIN_VALUE + offset;
     return result;
 }
 

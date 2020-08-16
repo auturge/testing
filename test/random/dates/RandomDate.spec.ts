@@ -17,9 +17,9 @@ describe("RandomDate", () => {
         it("next - when called with two dates, gets a date between them", () => {
             const low = new Date("01-01-1970").getTime();
             const high = new Date(Date.now()).getTime();
-            let [min, max] = randoMinMax(low, high);
-            let earliest = new Date(min);
-            let latest = new Date(max);
+            const [min, max] = randoMinMax(low, high);
+            const earliest = new Date(min);
+            const latest = new Date(max);
 
             const result = RandomDate.next(earliest, latest);
 

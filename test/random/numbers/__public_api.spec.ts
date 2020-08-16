@@ -11,7 +11,7 @@ import {
     UInt32,
     Double,
     Single,
-} from "@testing/random/numbers/__public_api";
+} from "@testing/random/numbers";
 
 describe("numbers __public_api", () => {
     it("__public_api - loads all the things!", () => {

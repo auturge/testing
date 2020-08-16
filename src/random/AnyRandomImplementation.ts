@@ -10,10 +10,11 @@ import {
     UInt32,
     Double,
     Single,
-} from "@testing/random/numbers/__public_api";
-import { RandomDate } from "@testing/random/dates/__public_api";
-import { CharacterSet, RandomChar, RandomString } from "@testing/random/strings/__public_api";
-import { RandomEnum } from "@testing/random/objects/__public_api";
+} from "@testing/random/numbers";
+import { RandomDate } from "@testing/random/dates";
+import { CharacterSet, RandomChar, RandomString, RandomUUID } from "@testing/random/strings";
+import { RandomEnum, Arrays } from "@testing/random/objects";
+import { RandomURL } from "@testing/random/URLs";
 
 export class AnyRandomImplementation implements RandomObjectGenerator {
     boolean(): boolean {
@@ -26,6 +27,18 @@ export class AnyRandomImplementation implements RandomObjectGenerator {
 
     enum<T>(enumeration: T): T[keyof T] {
         return RandomEnum.enum(enumeration);
+    }
+
+    oneOf<T>(array: T[]): T {
+        return Arrays.oneOf(array);
+    }
+
+    arrayOf<T>(generator: () => T, minCount: number, maxCount: number): T[] {
+        return Arrays.arrayOf(generator, minCount, maxCount);
+    }
+
+    uuid(): string {
+        return RandomUUID.uuid();
     }
 
     sign(includeZero: boolean): number {
@@ -68,5 +81,9 @@ export class AnyRandomImplementation implements RandomObjectGenerator {
     }
     string(minLength: number, maxLength: number, characterSet: string): string {
         return RandomString.string(minLength, maxLength, characterSet);
+    }
+
+    url(includePath: boolean, includeQuery: boolean, includeFragment: boolean): string {
+        return RandomURL.url(includePath, includeQuery, includeFragment);
     }
 }

@@ -19,6 +19,11 @@
       - [Character](#character)
       - [Character Array](#character-array)
       - [String](#string)
+      - [UUID](#uuid)
+      - [enum](#enum)
+      - [oneOf](#oneof)
+      - [arrayOf](#arrayof)
+      - [URL](#url)
   - [License](#license)
 
 ## Installation
@@ -293,6 +298,86 @@ Returns a random string, between `minLength` and `maxLength` characters long, wh
 > ```
 
 Returns a random string, between `minLength` and `maxLength` characters long, where the characters are taken from the given `characterSet`.
+
+---
+
+#### UUID
+
+> ```javascript
+> AnyRandom.uuid(): string;
+> ```
+
+or
+
+> ```javascript
+> AnyRandom.guid(): string;
+> ```
+
+Returns a quasi-random (v4) UUID as a `string`.
+
+> _WARNING_: Randomness and/or uniqueness are not guaranteed!
+>
+> DO NOT use this method to produce UUIDs in production code!
+
+---
+
+#### enum
+
+> ```javascript
+> AnyRandom.enum<T>(enumeration: T): T[keyof T];
+> ```
+
+Returns a randomly-chosen entry from the given `enum`.
+
+> _WARNING_: This only works for enums with keys of type `string`.
+
+---
+
+#### oneOf
+
+> ```javascript
+> AnyRandom.oneOf<T>(array: T[]): T;
+> ```
+
+Returns a randomly-chosen entry from the given array.
+
+---
+
+#### arrayOf
+
+> ```javascript
+> AnyRandom.arrayOf<T>(generator: () => T): T[];
+> ```
+
+Returns an array of between 5 any 10 elements, using the specified generator function.
+
+> ```javascript
+> AnyRandom.arrayOf<T>(generator: () => T, count: number): T[];
+> ```
+
+Returns an array of _count_ elements, using the specified generator function.
+
+> ```javascript
+> AnyRandom.arrayOf<T>(generator: () => T, minCount: number, maxCount: number): T[];
+> ```
+
+Returns an array with a number of elements between _minCount_ and _maxCount_, using the specified generator function.
+
+---
+
+#### URL
+
+> ```javascript
+> AnyRandom.url(): string;
+> ```
+
+Returns a quasi-random URL, with an empty path, no query, and no fragment(s).
+
+> ```javascript
+> AnyRandom.url(includePath: boolean, includeQuery: boolean, includeFragment: boolean): string;
+> ```
+
+Returns a quasi-random URL, including the specified parts.
 
 ---
 

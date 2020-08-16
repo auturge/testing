@@ -71,8 +71,6 @@
         "copy:readme": "shx cp ./README.md ./dist",
         "copy:license": "shx cp ./LICENSE.txt ./dist",
         "lint": "yarn eslint . --ext .ts,.tsx",
-        "package": "npm-run-all pack:clean pack:cp:commonjs pack:cp:es6 pack:cp:root",
-        "pack:clean": "shx rm -rf dist && shx mkdir -p ./dist",
         "preinstall": "node ./scripts/yarn/check-yarn.js",
         "prepare": "npm-run-all build test",
         "prepublishOnly": "cd ./dist",

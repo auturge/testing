@@ -80,15 +80,11 @@
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
         "**/node_modules/**": true,
-        "**/build/**": true,
-        "**/dist": true,
-        "**/temp/**": true
+        "**/built/**": true
     },
     "search.exclude": {
         "**/node_modules": true,
-        "**/build": true,
-        "**/dist": true,
-        "**/temp/**": true
+        "**/built": true
     },
 
     //
@@ -96,10 +92,14 @@
     // ======================================================================================================
     "html.format.preserveNewLines": true,
 
-    "[json]": {},
-
     "[javascript]": {
+        "editor.defaultFormatter": null,
         "editor.formatOnSave": true
+    },
+
+    "[json, jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnPaste": false
     },
 
     "[typescript]": {
@@ -109,13 +109,13 @@
 
     "[markdown]": {
         "editor.formatOnSave": true,
+        "editor.tabSize": 4,
         "editor.wordWrap": "on",
         "editor.renderWhitespace": "all",
         "editor.acceptSuggestionOnEnter": "off"
     },
 
     "typescript.tsdk": "node_modules\\typescript\\lib",
-
     "git.ignoreLimitWarning": true,
 
     //

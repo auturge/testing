@@ -45,8 +45,8 @@ export abstract class RandomInteger extends RandomNumber {
             throw new Error("We cannot generate numbers larger than 53 bits.");
         }
 
-        let offset = Math.floor(Math.random() * max_range);
-        let result = minValue + offset;
+        const offset = Math.floor(Math.random() * max_range);
+        const result = minValue + offset;
         return result;
     }
 }

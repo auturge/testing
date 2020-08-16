@@ -27,5 +27,12 @@ export interface RandomObjectGenerator {
 
     enum<T>(enumeration: T): T[keyof T];
 
+    uuid(): string;
+
+    oneOf<T>(array: T[]): T;
+    arrayOf<T>(generator: () => T, minCount?: number, maxCount?: number): T[];
+
     string(minLength: number, maxLength: number, characterSet: string | CharacterSet): string;
+
+    url(includePath: boolean, includeQuery: boolean, includeFragment: boolean): string;
 }

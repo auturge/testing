@@ -2,6 +2,12 @@
  * Sets of characters for testing string-handling methods.
  */
 export enum CharacterSet {
+    /** Lowercase English letters. */
+    LOWERCASE = "abcdefghijklmnopqrstuvwxyz",
+
+    /** Uppercase English letters. */
+    UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+
     /** Upper- and lower-case English letters. */
     ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
 
@@ -23,5 +29,5 @@ export enum CharacterSet {
     ATOM = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&'*+-/=?^_`{|}~",
 
     /** Upper- and lower-case Greek letters. */
-    GREEK = "ΑαΒβΓγΔδΕεΖζΗηΘθΙιΚκΛλΜμΝνΞξΟοΠπΡρΣσςϹϲΤτΥυΦφΧχΨψΩω"
+    GREEK = "ΑαΒβΓγΔδΕεΖζΗηΘθΙιΚκΛλΜμΝνΞξΟοΠπΡρΣσςϹϲΤτΥυΦφΧχΨψΩω",
 }
