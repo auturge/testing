@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { RandomUInt8 } from "@testing/random/numbers/RandomUInt8";
+import { RandomUInt8 } from "@src/random/numbers/RandomUInt8";
 
 describe("UInt8", () => {
     // const generator: UInt8 = UInt8["singleton"];

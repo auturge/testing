@@ -1,4 +1,4 @@
-import { RandomInt8 } from "@testing/random/numbers/RandomInt8";
+import { RandomInt8 } from "@src/random/numbers/RandomInt8";
 
 export class RandomSign {
     private static singleton: RandomSign = new RandomSign();

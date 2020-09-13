@@ -1,1 +1,1 @@
-export { RandomDate } from "@testing/random/dates/RandomDate";
+export { RandomDate } from "@src/random/dates/RandomDate";

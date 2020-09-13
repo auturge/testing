@@ -1,5 +1,5 @@
-import { CharacterSet } from "@testing/random/strings/CharacterSets";
-import { RandomInt32 } from "@testing/random/numbers/RandomInt32";
+import { CharacterSet } from "@src/random/strings/CharacterSets";
+import { RandomInt32 } from "@src/random/numbers/RandomInt32";
 
 export abstract class RandomChar {
     public static char(characterSet: string | CharacterSet = CharacterSet.ATOM): string {

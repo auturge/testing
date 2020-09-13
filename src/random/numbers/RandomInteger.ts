@@ -1,4 +1,4 @@
-import { RandomNumber } from "@testing/random/numbers/RandomNumber";
+import { RandomNumber } from "@src/random/numbers/RandomNumber";
 
 export abstract class RandomInteger extends RandomNumber {
     protected abstract readonly BYTE_ARRAY:

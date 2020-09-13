@@ -1,4 +1,4 @@
-export { CharacterSet } from "@testing/random/strings/CharacterSets";
-export { RandomChar } from "@testing/random/strings/RandomChar";
-export { RandomString } from "@testing/random/strings/RandomString";
-export { RandomUUID } from "@testing/random/strings/RandomUUID";
+export { CharacterSet } from "@src/random/strings/CharacterSets";
+export { RandomChar } from "@src/random/strings/RandomChar";
+export { RandomString } from "@src/random/strings/RandomString";
+export { RandomUUID } from "@src/random/strings/RandomUUID";

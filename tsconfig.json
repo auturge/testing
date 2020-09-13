@@ -17,7 +17,7 @@
         "noImplicitAny": false,
         "baseUrl": "./",
         "paths": {
-            "@testing/*": ["./src/*"],
+            "@src/*": ["./src/*"],
             "@test/*": ["./test/*"]
         },
         "types": ["mocha"]

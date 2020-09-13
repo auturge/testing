@@ -1,5 +1,5 @@
-import { CharacterSet } from "@testing/random/strings/CharacterSets";
-import { Scale } from "@testing/random/numbers/Scale";
+import { CharacterSet } from "@src/random/strings/CharacterSets";
+import { Scale } from "@src/random/numbers/Scale";
 
 export interface RandomObjectGenerator {
     boolean(): boolean;

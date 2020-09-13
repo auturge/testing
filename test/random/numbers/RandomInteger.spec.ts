@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { RandomInteger } from "@testing/random/numbers/RandomInteger";
+import { RandomInteger } from "@src/random/numbers/RandomInteger";
 
 class FakeInt32 extends RandomInteger {
     public readonly BYTE_ARRAY = new Uint32Array(1);

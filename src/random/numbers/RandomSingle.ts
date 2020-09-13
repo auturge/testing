@@ -1,6 +1,6 @@
-import { RandomScaledNumber } from "@testing/random/numbers/RandomScaledNumber";
-import { Scale } from "@testing/random/numbers/Scale";
-import { RandomDouble } from "@testing/random/numbers/RandomDouble";
+import { RandomScaledNumber } from "@src/random/numbers/RandomScaledNumber";
+import { Scale } from "@src/random/numbers/Scale";
+import { RandomDouble } from "@src/random/numbers/RandomDouble";
 
 /** Single-precision floating-point number */
 export class RandomSingle extends RandomScaledNumber {

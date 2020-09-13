@@ -3,7 +3,7 @@ import * as sinon from "sinon";
 
 import { unwrap, randoMinMax } from "@test/helpers";
 
-import { NumberComparator } from "@testing/random/numbers/NumberComparator";
+import { NumberComparator } from "@src/random/numbers/NumberComparator";
 
 describe("NumberComparator", () => {
     describe("relativelyEqual", () => {

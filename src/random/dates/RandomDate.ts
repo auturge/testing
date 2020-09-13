@@ -1,4 +1,4 @@
-import { RandomDouble } from "@testing/random/numbers/RandomDouble";
+import { RandomDouble } from "@src/random/numbers/RandomDouble";
 
 export class RandomDate {
     public static next(earliest?: Date, latest?: Date): Date {

@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import { randoMinMax } from "test/helpers";
-import { RandomDate } from "@testing/random/dates/RandomDate";
+import { RandomDate } from "@src/random/dates/RandomDate";
 
 describe("RandomDate", () => {
     describe("next", () => {

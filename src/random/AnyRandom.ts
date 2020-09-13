@@ -1,7 +1,7 @@
-import { AnyRandomImplementation } from "@testing/random/AnyRandomImplementation";
-import { RandomObjectGenerator } from "@testing/random/RandomObjectGenerator";
-import { CharacterSet } from "@testing/random/strings/CharacterSets";
-import { Scale } from "@testing/random/numbers/Scale";
+import { AnyRandomImplementation } from "@src/random/AnyRandomImplementation";
+import { RandomObjectGenerator } from "@src/random/RandomObjectGenerator";
+import { CharacterSet } from "@src/random/strings/CharacterSets";
+import { Scale } from "@src/random/numbers/Scale";
 
 /** Generates pseudo-random entities for testing purposes. */
 export class AnyRandom {

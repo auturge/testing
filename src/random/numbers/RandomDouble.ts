@@ -1,6 +1,6 @@
-import { RandomScaledNumber } from "@testing/random/numbers/RandomScaledNumber";
-import { RandomSign } from "@testing/random/numbers/RandomSign";
-import { Scale } from "@testing/random/numbers/Scale";
+import { RandomScaledNumber } from "@src/random/numbers/RandomScaledNumber";
+import { RandomSign } from "@src/random/numbers/RandomSign";
+import { Scale } from "@src/random/numbers/Scale";
 import { NumberComparator } from "./NumberComparator";
 
 export class RandomDouble extends RandomScaledNumber {
