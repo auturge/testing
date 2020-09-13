@@ -72,7 +72,6 @@
         "copy:license": "shx cp ./LICENSE.txt ./dist",
         "lint": "yarn eslint . --ext .ts,.tsx",
         "preinstall": "node ./scripts/yarn/check-yarn.js",
-        "prepare": "npm-run-all build test",
         "prepublishOnly": "cd ./dist",
         "publish": "npm publish --access public",
         "postpublish": "git push origin --all; git push origin --tags",
