@@ -4,8 +4,8 @@ import { RandomInteger } from "@testing/random/numbers/RandomInteger";
 
 class FakeInt32 extends RandomInteger {
     public readonly BYTE_ARRAY = new Uint32Array(1);
-    public MIN_VALUE: number;
-    public MAX_VALUE: number;
+    public MIN_VALUE!: number;
+    public MAX_VALUE!: number;
 
     protected getRandomValueInRange(minValue: number, maxValue: number): number {
         return super.getRandomValueInRange(minValue, maxValue);

@@ -1,6 +1,7 @@
 import { RandomScaledNumber } from "@testing/random/numbers/RandomScaledNumber";
 import { Scale } from "@testing/random/numbers/Scale";
 import { Sign } from "@testing/random/numbers/Sign";
+import { Int64 } from "@testing/types/Int64";
 
 export class Double extends RandomScaledNumber {
     protected next(minValue: number, maxValue: number, scale: Scale): number {
@@ -18,27 +19,22 @@ export class Double extends RandomScaledNumber {
     }
 
     public getRandomValueInRange(minValue: number, maxValue: number, scale: Scale): number {
-        let minScale = Math.log10(minValue);
-        let maxScale = Math.log10(maxValue);
-        const sign = this.getSign(minValue, maxValue);
-        const exponent = this.randomDouble(minScale, maxScale);
-        const output = sign * Math.pow(10, exponent);
-
         switch (scale) {
-            default:
-                return this.randomDouble(minValue, maxValue);
             case Scale.EXPONENTIAL:
                 if (!this.validBounds(minValue, maxValue)) {
                     return Number.MIN_VALUE;
                 }
-                if (Math.abs(minValue - maxValue) < Number.EPSILON) {
+
+                if (Int64.relativelyEqual(minValue, maxValue)) {
                     return minValue;
                 }
 
+                let minScale = Math.log10(minValue);
                 if (Number.isNaN(minScale) || minScale == Number.NEGATIVE_INFINITY) {
                     minScale = -100;
                 }
 
+                let maxScale = Math.log10(maxValue);
                 if (
                     Number.isNaN(maxScale) ||
                     maxScale == Number.POSITIVE_INFINITY ||
@@ -47,11 +43,15 @@ export class Double extends RandomScaledNumber {
                     maxScale = 308;
                 }
 
+                const sign = this.getSign(minValue, maxValue);
+                const exponent = this.randomDouble(minScale, maxScale);
+                const output = sign * Math.pow(10, exponent);
                 if (this.validValue(minValue, maxValue, output)) {
                     return output;
                 }
+            default:
+                return this.randomDouble(minValue, maxValue);
         }
-        return minValue + Math.random() * (maxValue - minValue);
     }
 
     private randomDouble(minValue: number, maxValue: number): number {

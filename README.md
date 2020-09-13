@@ -1,6 +1,6 @@
 # auturge/testing
 
-> Auturge/testing is a set of helpful Typescript functions for (Unit) testing.
+> Auturge/testing is a set of helpful Typescript functions for automated testing.
 
 [![License][license-image]][license-url] [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
