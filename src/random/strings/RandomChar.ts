@@ -1,5 +1,5 @@
 import { CharacterSet } from "@testing/random/strings/CharacterSets";
-import { Int32 } from "@testing/random/numbers/Int32";
+import { RandomInt32 } from "@testing/random/numbers/RandomInt32";
 
 export abstract class RandomChar {
     public static char(characterSet: string | CharacterSet = CharacterSet.ATOM): string {
@@ -11,7 +11,7 @@ export abstract class RandomChar {
             throw new Error("Argument [characterSet] has zero length (no characters).");
         }
 
-        const index = Int32.next(0, characterSet.length - 1);
+        const index = RandomInt32.next(0, characterSet.length - 1);
         return characterSet[index];
     }
 
@@ -20,7 +20,7 @@ export abstract class RandomChar {
         maxLength = 32,
         characterSet: string | CharacterSet = CharacterSet.ATOM
     ): string[] {
-        const arrayLength = Int32.next(minLength, maxLength);
+        const arrayLength = RandomInt32.next(minLength, maxLength);
         const result = new Array<string>(arrayLength);
         for (let index = 0; index < arrayLength; index++) {
             result[index] = this.char(characterSet);

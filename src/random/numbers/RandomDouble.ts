@@ -1,14 +1,14 @@
 import { RandomScaledNumber } from "@testing/random/numbers/RandomScaledNumber";
+import { RandomSign } from "@testing/random/numbers/RandomSign";
 import { Scale } from "@testing/random/numbers/Scale";
-import { Sign } from "@testing/random/numbers/Sign";
-import { Int64 } from "@testing/types/Int64";
+import { NumberComparator } from "./NumberComparator";
 
-export class Double extends RandomScaledNumber {
+export class RandomDouble extends RandomScaledNumber {
     protected next(minValue: number, maxValue: number, scale: Scale): number {
         this.validateRange(minValue, maxValue);
         return this.getRandomValueInRange(minValue, maxValue, scale);
     }
-    protected static readonly singleton: Double = new Double();
+    protected static readonly singleton: RandomDouble = new RandomDouble();
     public readonly MIN_VALUE: number = Number.NEGATIVE_INFINITY;
     public readonly MAX_VALUE: number = Number.POSITIVE_INFINITY;
 
@@ -25,7 +25,7 @@ export class Double extends RandomScaledNumber {
                     return Number.MIN_VALUE;
                 }
 
-                if (Int64.relativelyEqual(minValue, maxValue)) {
+                if (NumberComparator.relativelyEqual(minValue, maxValue)) {
                     return minValue;
                 }
 
@@ -129,7 +129,7 @@ export class Double extends RandomScaledNumber {
             case 0: // same sign
                 return signMin;
             case 2: // different signs
-                return Sign.next(false);
+                return RandomSign.next(false);
             case 1: // one is zero
                 return sum;
             default:

@@ -1,15 +1,15 @@
 import { RandomScaledNumber } from "@testing/random/numbers/RandomScaledNumber";
 import { Scale } from "@testing/random/numbers/Scale";
-import { Double } from "@testing/random/numbers/Double";
+import { RandomDouble } from "@testing/random/numbers/RandomDouble";
 
 /** Single-precision floating-point number */
-export class Single extends RandomScaledNumber {
+export class RandomSingle extends RandomScaledNumber {
     protected next(minValue: number, maxValue: number, scale: Scale): number {
-        const double = Double.next(minValue, maxValue, scale);
-        const fround = Math.fround || Single.fround;
+        const double = RandomDouble.next(minValue, maxValue, scale);
+        const fround = Math.fround || RandomSingle.fround;
         return fround(double);
     }
-    protected static readonly singleton: Single = new Single();
+    protected static readonly singleton: RandomSingle = new RandomSingle();
     public readonly MIN_VALUE: number = Number.NEGATIVE_INFINITY;
     public readonly MAX_VALUE: number = Number.POSITIVE_INFINITY;
 

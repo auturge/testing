@@ -1,15 +1,17 @@
 import * as sinon from "sinon";
 import { expect, assert } from "chai";
+
 import { unwrap, randoMinMax } from "test/helpers";
-import { Double } from "@testing/random/numbers/Double";
+
+import { RandomDouble } from "@testing/random/numbers/RandomDouble";
 import { Scale } from "@testing/random/numbers/Scale";
 import { AnyRandom } from "@testing/random/AnyRandom";
-import { Int64 } from "@testing/types/Int64";
+import { NumberComparator } from "@testing/random/numbers/NumberComparator";
 
 describe("Double", () => {
     let sut;
     function setupTestSuite() {
-        sut = new Double();
+        sut = new RandomDouble();
     }
 
     describe("next", () => {
@@ -17,12 +19,12 @@ describe("Double", () => {
         beforeEach(() => {
             expected = 42;
             getRandomValueInRange = sinon
-                .stub(Double["singleton"], "getRandomValueInRange")
+                .stub(RandomDouble["singleton"], "getRandomValueInRange")
                 .returns(expected);
         });
 
         afterEach(() => {
-            unwrap(Double["singleton"].getRandomValueInRange);
+            unwrap(RandomDouble["singleton"].getRandomValueInRange);
         });
 
         it(`next - given no parameters, uses [-Infinity, +Infinity], and Scale.EXPONENTIAL`, () => {
@@ -30,7 +32,7 @@ describe("Double", () => {
             const maxUsed = Number.POSITIVE_INFINITY;
             const scaleUsed = Scale.EXPONENTIAL;
 
-            const result = Double.next(minUsed);
+            const result = RandomDouble.next(minUsed);
 
             sinon.assert.calledOnce(getRandomValueInRange);
             sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
@@ -41,7 +43,7 @@ describe("Double", () => {
             const maxUsed = Number.POSITIVE_INFINITY;
             const scaleUsed = Scale.EXPONENTIAL;
 
-            const result = Double.next(minUsed);
+            const result = RandomDouble.next(minUsed);
 
             sinon.assert.calledOnce(getRandomValueInRange);
             sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
@@ -52,7 +54,7 @@ describe("Double", () => {
             const maxUsed = 5 + 5 * Math.random();
             const scaleUsed = Scale.EXPONENTIAL;
 
-            const result = Double.next(minUsed, maxUsed);
+            const result = RandomDouble.next(minUsed, maxUsed);
 
             sinon.assert.calledOnce(getRandomValueInRange);
             sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
@@ -63,7 +65,7 @@ describe("Double", () => {
             const maxUsed = 5 + 5 * Math.random();
             const scaleUsed: Scale = AnyRandom.enum(Scale);
 
-            const result = Double.next(minUsed, maxUsed, scaleUsed);
+            const result = RandomDouble.next(minUsed, maxUsed, scaleUsed);
 
             sinon.assert.calledOnce(getRandomValueInRange);
             sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
@@ -73,7 +75,7 @@ describe("Double", () => {
         it("next - validates the range, then gets a random value in the range", () => {
             // const [low, high] = randoMinMax(0, 100);
             // const scale: Scale = Scale.FLAT;
-            // const result = Double.next(low, high, scale);
+            // const result = RandomDouble.next(low, high, scale);
         });
     });
 
@@ -111,7 +113,7 @@ describe("Double", () => {
             { key: "FLAT", scale: Scale.FLAT },
             { key: "UNDEFINED", scale: Scale.UNSCALED },
         ].forEach(({ key, scale }) => {
-            it(`getRandomValueInRange - when using the ${key} scale, returns a random double`, () => {
+            it(`getRandomValueInRange - when using the ${key} scale, returns a random RandomDouble`, () => {
                 const [min, max] = randoMinMax(-100, 100);
                 const expected = min + Math.random() * (max - min);
                 const spy = sinon.stub(sut, "randomDouble").returns(expected);
@@ -143,11 +145,11 @@ describe("Double", () => {
             var spy;
             beforeEach(() => {
                 setupTestSuite();
-                spy = sinon.stub(Int64, "relativelyEqual");
+                spy = sinon.stub(NumberComparator, "relativelyEqual");
             });
 
             afterEach(() => {
-                unwrap(Int64.relativelyEqual);
+                unwrap(NumberComparator.relativelyEqual);
             });
 
             it("getRandomValueInRange [EXPONENTIAL] - returns MIN_VALUE when bounds are invalid", () => {

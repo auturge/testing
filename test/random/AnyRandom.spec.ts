@@ -1,14 +1,13 @@
 import { assert } from "chai";
 import * as sinon from "sinon";
 
-// need to import from the source in order to get coverage
-// import { AnyRandom, Scale } from "../../dist";
+// need to import from ../../src (without ts paths) in order to get coverage
 
 import { unwrap, randoMinMax } from "test/helpers";
 
-import { AnyRandom } from "@testing/random/AnyRandom";
-import { Scale } from "@testing/random/numbers/Scale";
-import { CharacterSet } from "@testing/random/strings/CharacterSets";
+import { AnyRandom } from "../../src/random/AnyRandom";
+import { Scale } from "../../src/random/numbers/Scale";
+import { CharacterSet } from "../../src/random/strings/CharacterSets";
 
 describe("AnyRandom", () => {
     let stub;

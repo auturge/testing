@@ -9,16 +9,16 @@ import { unwrap, randoMinMax } from "test/helpers";
 import { Scale } from "@testing/random/numbers/Scale";
 import { CharacterSet } from "@testing/random/strings/CharacterSets";
 import { AnyRandomImplementation } from "@testing/random/AnyRandomImplementation";
-import { Sign } from "@testing/random/numbers/Sign";
+import { RandomSign } from "@testing/random/numbers/RandomSign";
 import { RandomDate } from "@testing/random/dates/RandomDate";
-import { Int8 } from "@testing/random/numbers/Int8";
-import { UInt8 } from "@testing/random/numbers/UInt8";
-import { UInt16 } from "@testing/random/numbers/UInt16";
-import { Int16 } from "@testing/random/numbers/Int16";
-import { UInt32 } from "@testing/random/numbers/UInt32";
-import { Int32 } from "@testing/random/numbers/Int32";
-import { Double } from "@testing/random/numbers/Double";
-import { Single } from "@testing/random/numbers/Single";
+import { RandomInt8 } from "@testing/random/numbers/RandomInt8";
+import { RandomUInt8 } from "@testing/random/numbers/RandomUInt8";
+import { RandomUInt16 } from "@testing/random/numbers/RandomUInt16";
+import { RandomInt16 } from "@testing/random/numbers/RandomInt16";
+import { RandomUInt32 } from "@testing/random/numbers/RandomUInt32";
+import { RandomInt32 } from "@testing/random/numbers/RandomInt32";
+import { RandomDouble } from "@testing/random/numbers/RandomDouble";
+import { RandomSingle } from "@testing/random/numbers/RandomSingle";
 import { RandomChar } from "@testing/random/strings/RandomChar";
 import { RandomString } from "@testing/random/strings/RandomString";
 
@@ -60,11 +60,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = Math.random() >= 0.5 ? 1 : -1;
-            stub = sinon.stub(Sign, "next").returns(expected);
+            stub = sinon.stub(RandomSign, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(Sign.next);
+            unwrap(RandomSign.next);
         });
 
         [
@@ -114,11 +114,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = 42;
-            stub = sinon.stub(UInt8, "next").returns(expected);
+            stub = sinon.stub(RandomUInt8, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(UInt8.next);
+            unwrap(RandomUInt8.next);
         });
 
         it(`uint8 - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
@@ -140,11 +140,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = 42;
-            stub = sinon.stub(Int8, "next").returns(expected);
+            stub = sinon.stub(RandomInt8, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(Int8.next);
+            unwrap(RandomInt8.next);
         });
 
         it(`int8 - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
@@ -166,11 +166,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = 42;
-            stub = sinon.stub(UInt16, "next").returns(expected);
+            stub = sinon.stub(RandomUInt16, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(UInt16.next);
+            unwrap(RandomUInt16.next);
         });
 
         it(`uint16 - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
@@ -192,11 +192,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = 42;
-            stub = sinon.stub(Int16, "next").returns(expected);
+            stub = sinon.stub(RandomInt16, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(Int16.next);
+            unwrap(RandomInt16.next);
         });
 
         it(`int16 - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
@@ -218,11 +218,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = 42;
-            stub = sinon.stub(UInt32, "next").returns(expected);
+            stub = sinon.stub(RandomUInt32, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(UInt32.next);
+            unwrap(RandomUInt32.next);
         });
 
         it(`uint32 - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
@@ -244,11 +244,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = 42;
-            stub = sinon.stub(Int32, "next").returns(expected);
+            stub = sinon.stub(RandomInt32, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(Int32.next);
+            unwrap(RandomInt32.next);
         });
 
         it(`int32 - when called with 'minValue' and 'maxValue' arguments - calls the wrapped implementation`, () => {
@@ -270,11 +270,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = 42;
-            stub = sinon.stub(Double, "next").returns(expected);
+            stub = sinon.stub(RandomDouble, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(Double.next);
+            unwrap(RandomDouble.next);
         });
 
         [
@@ -302,11 +302,11 @@ describe("AnyRandomImplementation", () => {
         beforeEach(() => {
             setup();
             expected = 42;
-            stub = sinon.stub(Single, "next").returns(expected);
+            stub = sinon.stub(RandomSingle, "next").returns(expected);
         });
 
         afterEach(() => {
-            unwrap(Single.next);
+            unwrap(RandomSingle.next);
         });
 
         [

@@ -1,5 +1,5 @@
-import { UInt8 } from "@testing/random/numbers/UInt8";
-import { UInt32 } from "@testing/random/numbers/UInt32";
+import { RandomUInt8 } from "@testing/random/numbers/RandomUInt8";
+import { RandomUInt32 } from "@testing/random/numbers/RandomUInt32";
 
 export abstract class Arrays {
     public static oneOf<T>(array: T[]): T {
@@ -21,11 +21,11 @@ export abstract class Arrays {
 
         let count: number;
         if (minCount == null && maxCount == null) {
-            count = UInt8.next(5, 10);
+            count = RandomUInt8.next(5, 10);
         } else if (minCount != null && maxCount == null) {
             count = minCount;
         } else {
-            count = UInt32.next(minCount, maxCount);
+            count = RandomUInt32.next(minCount, maxCount);
         }
 
         const array: T[] = [];

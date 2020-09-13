@@ -1,4 +1,4 @@
-import { Double } from "@testing/random/numbers/Double";
+import { RandomDouble } from "@testing/random/numbers/RandomDouble";
 
 export class RandomDate {
     public static next(earliest?: Date, latest?: Date): Date {
@@ -12,7 +12,7 @@ export class RandomDate {
         const lhs = new Date(date1).getTime();
         const rhs = new Date(date2).getTime();
 
-        const between = Double.next(lhs, rhs);
+        const between = RandomDouble.next(lhs, rhs);
 
         return new Date(between);
     }
