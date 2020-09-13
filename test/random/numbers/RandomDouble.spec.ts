@@ -1,5 +1,5 @@
-import { assert, expect } from "chai";
 import * as sinon from "sinon";
+import { expect, assert } from "chai";
 
 import { unwrap, randoMinMax } from "test/helpers";
 
