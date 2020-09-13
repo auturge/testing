@@ -1,14 +1,14 @@
+import { assert, expect } from "chai";
 import * as sinon from "sinon";
-import { expect, assert } from "chai";
 
 import { unwrap, randoMinMax } from "test/helpers";
 
-import { RandomDouble } from "@testing/random/numbers/RandomDouble";
-import { Scale } from "@testing/random/numbers/Scale";
-import { AnyRandom } from "@testing/random/AnyRandom";
-import { NumberComparator } from "@testing/random/numbers/NumberComparator";
+import { RandomDouble } from "../../../src/random/numbers/RandomDouble";
+import { Scale } from "../../../src/random/numbers/Scale";
+import { AnyRandom } from "../../../src/random/AnyRandom";
+import { NumberComparator } from "../../../src/random/numbers/NumberComparator";
 
-describe("Double", () => {
+describe("RandomDouble", () => {
     let sut;
     function setupTestSuite() {
         sut = new RandomDouble();
