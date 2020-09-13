@@ -17,10 +17,11 @@
         "noImplicitAny": false,
         "baseUrl": "./",
         "paths": {
-            "@testing/*": ["./src/*"]
+            "@testing/*": ["./src/*"],
+            "@test/*": ["./test/*"]
         },
         "types": ["mocha"]
     },
     "include": ["./src/**/*.ts", "./test/**/*.ts"],
-    "exclude": ["node_modules", "**/*.d.ts", "temp/**/*", "build/**/*"]
+    "exclude": ["node_modules", "**/*.d.ts", "temp/**/*"]
 }
