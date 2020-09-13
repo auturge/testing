@@ -1,5 +1,5 @@
 import * as sinon from "sinon";
-import { expect, assert } from "chai";
+import { assert } from "chai";
 
 import { unwrap, randoMinMax } from "test/helpers";
 
@@ -36,7 +36,7 @@ describe("RandomDouble", () => {
 
             sinon.assert.calledOnce(getRandomValueInRange);
             sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
-            expect(result).equals(expected);
+            assert.equal(result, expected);
         });
         it(`next - given only a minimum parameter, uses [minimum, +Infinity], and Scale.EXPONENTIAL`, () => {
             const minUsed = Math.random();
@@ -47,7 +47,7 @@ describe("RandomDouble", () => {
 
             sinon.assert.calledOnce(getRandomValueInRange);
             sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
-            expect(result).equals(expected);
+            assert.equal(result, expected);
         });
         it(`next - given minimum and maximum parameters, uses [minimum, maximum], and Scale.EXPONENTIAL`, () => {
             const minUsed = 5 * Math.random();
@@ -58,7 +58,7 @@ describe("RandomDouble", () => {
 
             sinon.assert.calledOnce(getRandomValueInRange);
             sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
-            expect(result).equals(expected);
+            assert.equal(result, expected);
         });
         it(`next - given all parameters, uses all parameters`, () => {
             const minUsed = 5 * Math.random();
@@ -69,7 +69,7 @@ describe("RandomDouble", () => {
 
             sinon.assert.calledOnce(getRandomValueInRange);
             sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
-            expect(result).equals(expected);
+            assert.equal(result, expected);
         });
 
         it("next - validates the range, then gets a random value in the range", () => {
@@ -84,25 +84,25 @@ describe("RandomDouble", () => {
         it("validateRange - does not throw when minValue is less than the maxValue", () => {
             const [min, max] = randoMinMax(-100, 100);
 
-            expect(() => {
+            assert.doesNotThrow(() => {
                 sut["validateRange"](min, max);
-            }).not.to.throw();
+            });
         });
 
         it("validateRange - does not throw when minValue is equal to the maxValue", () => {
             const expected = Math.random() * 100;
 
-            expect(() => {
+            assert.doesNotThrow(() => {
                 sut["validateRange"](expected, expected);
-            }).not.to.throw();
+            });
         });
 
         it("validateRange - throws if the minValue is greater than the maxValue", () => {
             const [min, max] = randoMinMax(-100, 100);
 
-            expect(() => {
+            assert.throws(() => {
                 sut["validateRange"](max, min);
-            }).to.throw("minValue must be less than (or equal to) maxValue.");
+            }, "minValue must be less than (or equal to) maxValue.");
         });
     });
 
@@ -121,7 +121,7 @@ describe("RandomDouble", () => {
                 const result = sut.getRandomValueInRange(min, max, scale);
 
                 assert(spy.withArgs(min, max).calledOnce);
-                expect(result).equals(expected);
+                assert.equal(result, expected);
             });
         });
 
@@ -135,8 +135,8 @@ describe("RandomDouble", () => {
 
                 const result = sut.getRandomValueInRange(min, max, scale);
 
-                expect(result).gte(min);
-                expect(result).lte(max);
+                assert.isAtLeast(result, min);
+                assert.isAtMost(result, max);
             });
         });
 
@@ -160,7 +160,7 @@ describe("RandomDouble", () => {
                 const result = sut.getRandomValueInRange(min, max, scale);
 
                 assert(spy.withArgs(min, max).calledOnce);
-                expect(result).equals(expected);
+                assert.equal(result, expected);
             });
 
             it(`getRandomValueInRange [EXPONENTIAL] - if min == max (relatively), then return min`, () => {
@@ -170,7 +170,7 @@ describe("RandomDouble", () => {
                 const result = sut.getRandomValueInRange(min, max, scale);
 
                 assert(spy.withArgs(min, max).calledOnce);
-                expect(result).equals(min);
+                assert.equal(result, min);
             });
 
             it(`getRandomValueInRange [EXPONENTIAL] - sets the minScale to -100 when the minValue is NaN`, () => {
