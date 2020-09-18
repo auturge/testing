@@ -72,7 +72,7 @@ export class AnyRandom {
         return this.random.oneOf(array);
     }
 
-    /** Returns an array of between 5 any 10 elements, using the specified generator function.
+    /** Returns an array of between 5 and 10 elements, using the specified generator function.
      * @param generator The function used to generate an element of the array.
      * @example
      * // get between 5 and 10 elements
