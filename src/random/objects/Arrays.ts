@@ -1,5 +1,5 @@
-import { RandomUInt8 } from "@src/random/numbers/RandomUInt8";
-import { RandomUInt32 } from "@src/random/numbers/RandomUInt32";
+import { RandomUInt8 } from "@testing/random/numbers/RandomUInt8";
+import { RandomUInt32 } from "@testing/random/numbers/RandomUInt32";
 
 export abstract class Arrays {
     public static oneOf<T>(array: T[]): T {

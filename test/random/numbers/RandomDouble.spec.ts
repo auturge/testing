@@ -1,12 +1,13 @@
 import * as sinon from "sinon";
-import { assert } from "chai";
+import { assert, expect } from "chai";
 
-import { unwrap, randoMinMax } from "test/helpers";
+import { unwrap, randoMinMax } from "@test/helpers";
 
-import { RandomDouble } from "../../../src/random/numbers/RandomDouble";
-import { Scale } from "../../../src/random/numbers/Scale";
-import { AnyRandom } from "../../../src/random/AnyRandom";
-import { NumberComparator } from "../../../src/random/numbers/NumberComparator";
+import { RandomDouble } from "@testing/random/numbers/RandomDouble";
+import { Scale } from "@testing/random/numbers/Scale";
+import { AnyRandom } from "@testing/random/AnyRandom";
+import { NumberComparator } from "@testing/random/numbers/NumberComparator";
+import { RandomSign } from "@testing/random/numbers/RandomSign";
 
 describe("RandomDouble", () => {
     let sut;
@@ -194,6 +195,318 @@ describe("RandomDouble", () => {
 
                 assert(exponentSpy.withArgs(minScale, 300));
             });
+        });
+    });
+
+    describe("randomDouble", () => {
+        let random, normalize, scalar;
+        beforeEach(() => {
+            setupTestSuite();
+            scalar = Math.random();
+            random = sinon.stub(Math, "random").callsFake(() => {
+                return scalar;
+            });
+            normalize = sinon.stub(sut, "normalizeIfInfinite").callsFake((value: number) => {
+                return value;
+            });
+        });
+
+        afterEach(() => {
+            unwrap(Math.random);
+            unwrap(sut.normalizeIfInfinite);
+        });
+
+        it(`randomDouble - calculates a random number in the given range`, () => {
+            const [min, max] = randoMinMax(-100, 100);
+            const p1 = scalar * max;
+            const p2 = scalar * min;
+            const expected = min + p1 - p2;
+            // NOTE: don't reorganize or 'elegantify' this arithmetic;
+            // floating-point arithmetic is commutative, but is NOT associative,
+            // so changing the algorithm will very likely change the results.
+
+            const result = sut["randomDouble"](min, max);
+
+            // compare the floating point numbers
+            assert.equal(result, expected);
+        });
+    });
+
+    describe("normalizeIfInfinite", () => {
+        beforeEach(setupTestSuite);
+
+        it(`normalizeIfInfinite - returns negative infinity if value is negative and not finite`, () => {
+            const value = -Infinity;
+            const expected = Number.NEGATIVE_INFINITY;
+
+            const result = sut["normalizeIfInfinite"](value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`normalizeIfInfinite - returns positive infinity if value is positive and not finite`, () => {
+            const value = Infinity;
+            const expected = Number.POSITIVE_INFINITY;
+
+            const result = sut["normalizeIfInfinite"](value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`normalizeIfInfinite - returns the value unchanged if the value is finite`, () => {
+            const value = Math.random();
+
+            const result = sut["normalizeIfInfinite"](value);
+
+            assert.equal(result, value);
+        });
+    });
+
+    describe("validBounds", () => {
+        beforeEach(setupTestSuite);
+
+        it(`validBounds - returns false if the min and max are both -∞`, () => {
+            const value = -Infinity;
+            const expected = false;
+
+            const result = sut["validBounds"](value, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validBounds - returns false if the min and max are both +∞`, () => {
+            const value = Infinity;
+            const expected = false;
+
+            const result = sut["validBounds"](value, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validBounds - returns false if the min is NaN`, () => {
+            const min = NaN;
+            const max = Math.random();
+            const expected = false;
+
+            const result = sut["validBounds"](min, max);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validBounds - returns false if the man is NaN`, () => {
+            const min = Math.random();
+            const max = NaN;
+            const expected = false;
+
+            const result = sut["validBounds"](min, max);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validBounds - returns true if min and max are finite numbers`, () => {
+            const min = Math.random() * Number.MIN_SAFE_INTEGER;
+            const max = Math.random() * Number.MAX_SAFE_INTEGER;
+            const expected = true;
+
+            const result = sut["validBounds"](min, max);
+
+            assert.equal(result, expected);
+        });
+    });
+
+    describe("validValue", () => {
+        beforeEach(setupTestSuite);
+
+        it(`validValue - returns true if min is -∞ and max is +∞`, () => {
+            const value = Math.random();
+            const min = Number.NEGATIVE_INFINITY;
+            const max = Number.POSITIVE_INFINITY;
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validValue - returns true if min is -∞ and the value is less than the max`, () => {
+            const value = Math.random();
+            const min = Number.NEGATIVE_INFINITY;
+            const max = value + 100;
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+        it(`validValue - returns true if min is -∞ and the value is equal to the max`, () => {
+            const value = Math.random();
+            const min = Number.NEGATIVE_INFINITY;
+            const max = value;
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validValue - returns true if max is +∞ and the value is more than the min`, () => {
+            const value = Math.random();
+            const min = value - 100;
+            const max = Number.POSITIVE_INFINITY;
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validValue - returns true if max is +∞ and the value is equal to the min`, () => {
+            const value = Math.random();
+            const min = value;
+            const max = Number.POSITIVE_INFINITY;
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validValue - returns true if the value is equal to the min`, () => {
+            const min = Math.random();
+            const max = min + Math.random();
+            const value = min;
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+        it(`validValue - returns true if the value is between the min and max`, () => {
+            const min = Math.random();
+            const max = min + Math.random();
+            const value = min + Math.random() * (max - min);
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validValue - returns true if the value is equal to the min`, () => {
+            const min = Math.random();
+            const max = min + Math.random();
+            const value = min;
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validValue - returns true if the value is equal to the max`, () => {
+            const min = Math.random();
+            const max = min + Math.random();
+            const value = max;
+            const expected = true;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validValue - returns false if the value is more than the max`, () => {
+            const min = Math.random();
+            const max = min + Math.random();
+            const value = max + 1;
+            const expected = false;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+
+        it(`validValue - returns false if the value is less than the min`, () => {
+            const min = Math.random();
+            const max = min + Math.random();
+            const value = min - 1;
+            const expected = false;
+
+            const result = sut["validValue"](min, max, value);
+
+            assert.equal(result, expected);
+        });
+    });
+
+    describe("getSign", () => {
+        beforeEach(setupTestSuite);
+
+        it(`getSign - returns the sign of the numbers if the numbers have the same sign`, () => {
+            const expected = Math.random() > 0.5 ? -1 : 1;
+            const min = Math.random() * expected;
+            var max = (Math.abs(min) + Math.random()) * expected;
+
+            const result = sut["getSign"](min, max);
+
+            assert.equal(result, expected);
+        });
+
+        it(`getSign - returns a random sign if the numbers do not have the same sign`, () => {
+            const expected = Math.random() > 0.5 ? -1 : 1;
+            const min = -Math.random();
+            var max = Math.random();
+            const sign = sinon.stub(RandomSign, "next").returns(expected);
+
+            const result = sut["getSign"](min, max);
+
+            sinon.assert.calledWith(sign, false);
+            sinon.assert.calledOnce(sign);
+            assert.equal(result, expected);
+            unwrap(RandomSign.next);
+        });
+
+        it(`getSign - returns the sum of the signs if min is +0`, () => {
+            const min = 0;
+            var max = Math.random();
+            const expected = Math.sign(max) + Math.sign(min);
+
+            const result = sut["getSign"](min, max);
+
+            assert.equal(result, expected);
+        });
+        it(`getSign - returns the sum of the signs if min is -0`, () => {
+            const min = -0;
+            var max = Math.random();
+            const expected = Math.sign(max) + Math.sign(min);
+
+            const result = sut["getSign"](min, max);
+
+            assert.equal(result, expected);
+        });
+        it(`getSign - returns the sum of the signs if max is +0`, () => {
+            const min = -Math.random();
+            var max = +0;
+            const expected = Math.sign(max) + Math.sign(min);
+
+            const result = sut["getSign"](min, max);
+
+            assert.equal(result, expected);
+        });
+        it(`getSign - returns the sum of the signs if max is -0`, () => {
+            const min = -Math.random();
+            var max = -0;
+            const expected = Math.sign(max) + Math.sign(min);
+
+            const result = sut["getSign"](min, max);
+
+            assert.equal(result, expected);
+        });
+        it(`getSign - throws an error if max is less than min`, () => {
+            const min = Math.random();
+            const max = -Math.random();
+
+            assert.throws(() => {
+                sut["getSign"](min, max);
+            }, "maxValue is less than minValue.");
         });
     });
 });

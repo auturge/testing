@@ -1,7 +1,7 @@
-import { Arrays, RandomEnum } from "@src/random/objects";
-import { RandomString, CharacterSet } from "@src/random/strings";
-import { TOP_LEVEL_DOMAINS } from "@src/random/URLs/TOP_LEVEL_DOMAINS";
-import { SCHEMES } from "@src/random/URLs/SCHEMES";
+import { Arrays, RandomEnum } from "@testing/random/objects";
+import { RandomString, CharacterSet } from "@testing/random/strings";
+import { TOP_LEVEL_DOMAINS } from "@testing/random/URLs/TOP_LEVEL_DOMAINS";
+import { SCHEMES } from "@testing/random/URLs/SCHEMES";
 
 export abstract class RandomURL {
     private static readonly PATH_CHARS: string = CharacterSet.LOWERCASE + CharacterSet.NUMERIC;

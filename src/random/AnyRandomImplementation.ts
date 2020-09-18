@@ -1,4 +1,4 @@
-import { RandomObjectGenerator } from "@src/random/RandomObjectGenerator";
+import { RandomObjectGenerator } from "@testing/random/RandomObjectGenerator";
 import {
     Scale,
     RandomSign,
@@ -10,11 +10,11 @@ import {
     RandomUInt32,
     RandomDouble,
     RandomSingle,
-} from "@src/random/numbers";
-import { RandomDate } from "@src/random/dates";
-import { CharacterSet, RandomChar, RandomString, RandomUUID } from "@src/random/strings";
-import { RandomEnum, Arrays } from "@src/random/objects";
-import { RandomURL } from "@src/random/URLs";
+} from "@testing/random/numbers";
+import { RandomDate } from "@testing/random/dates";
+import { CharacterSet, RandomChar, RandomString, RandomUUID } from "@testing/random/strings";
+import { RandomEnum, Arrays } from "@testing/random/objects";
+import { RandomURL } from "@testing/random/URLs";
 
 export class AnyRandomImplementation implements RandomObjectGenerator {
     boolean(): boolean {

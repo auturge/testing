@@ -6,21 +6,21 @@ import * as sinon from "sinon";
 
 import { unwrap, randoMinMax } from "test/helpers";
 
-import { Scale } from "@src/random/numbers/Scale";
-import { CharacterSet } from "@src/random/strings/CharacterSets";
-import { AnyRandomImplementation } from "@src/random/AnyRandomImplementation";
-import { RandomSign } from "@src/random/numbers/RandomSign";
-import { RandomDate } from "@src/random/dates/RandomDate";
-import { RandomInt8 } from "@src/random/numbers/RandomInt8";
-import { RandomUInt8 } from "@src/random/numbers/RandomUInt8";
-import { RandomUInt16 } from "@src/random/numbers/RandomUInt16";
-import { RandomInt16 } from "@src/random/numbers/RandomInt16";
-import { RandomUInt32 } from "@src/random/numbers/RandomUInt32";
-import { RandomInt32 } from "@src/random/numbers/RandomInt32";
-import { RandomDouble } from "@src/random/numbers/RandomDouble";
-import { RandomSingle } from "@src/random/numbers/RandomSingle";
-import { RandomChar } from "@src/random/strings/RandomChar";
-import { RandomString } from "@src/random/strings/RandomString";
+import { Scale } from "@testing/random/numbers/Scale";
+import { CharacterSet } from "@testing/random/strings/CharacterSets";
+import { AnyRandomImplementation } from "@testing/random/AnyRandomImplementation";
+import { RandomSign } from "@testing/random/numbers/RandomSign";
+import { RandomDate } from "@testing/random/dates/RandomDate";
+import { RandomInt8 } from "@testing/random/numbers/RandomInt8";
+import { RandomUInt8 } from "@testing/random/numbers/RandomUInt8";
+import { RandomUInt16 } from "@testing/random/numbers/RandomUInt16";
+import { RandomInt16 } from "@testing/random/numbers/RandomInt16";
+import { RandomUInt32 } from "@testing/random/numbers/RandomUInt32";
+import { RandomInt32 } from "@testing/random/numbers/RandomInt32";
+import { RandomDouble } from "@testing/random/numbers/RandomDouble";
+import { RandomSingle } from "@testing/random/numbers/RandomSingle";
+import { RandomChar } from "@testing/random/strings/RandomChar";
+import { RandomString } from "@testing/random/strings/RandomString";
 
 describe("AnyRandomImplementation", () => {
     let stub;

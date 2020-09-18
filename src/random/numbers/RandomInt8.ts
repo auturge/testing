@@ -1,4 +1,4 @@
-import { RandomInteger } from "@src/random/numbers/RandomInteger";
+import { RandomInteger } from "@testing/random/numbers/RandomInteger";
 
 export class RandomInt8 extends RandomInteger {
     protected static readonly singleton: RandomInt8 = new RandomInt8();

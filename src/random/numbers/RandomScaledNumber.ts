@@ -1,4 +1,4 @@
-import { Scale } from "@src/random/numbers/Scale";
+import { Scale } from "@testing/random/numbers/Scale";
 
 export abstract class RandomScaledNumber {
     protected static readonly singleton: RandomScaledNumber;

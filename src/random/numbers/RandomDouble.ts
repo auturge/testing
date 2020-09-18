@@ -1,6 +1,6 @@
-import { RandomScaledNumber } from "@src/random/numbers/RandomScaledNumber";
-import { RandomSign } from "@src/random/numbers/RandomSign";
-import { Scale } from "@src/random/numbers/Scale";
+import { RandomScaledNumber } from "@testing/random/numbers/RandomScaledNumber";
+import { RandomSign } from "@testing/random/numbers/RandomSign";
+import { Scale } from "@testing/random/numbers/Scale";
 import { NumberComparator } from "./NumberComparator";
 
 export class RandomDouble extends RandomScaledNumber {
@@ -55,32 +55,27 @@ export class RandomDouble extends RandomScaledNumber {
     }
 
     private randomDouble(minValue: number, maxValue: number): number {
-        if (!Number.isFinite(minValue) && minValue < 0) {
-            minValue = Number.NEGATIVE_INFINITY;
-        }
-        if (!Number.isFinite(maxValue) && maxValue < 0) {
-            minValue = Number.NEGATIVE_INFINITY;
-        }
-        if (!Number.isFinite(minValue) && minValue > 0) {
-            minValue = Number.POSITIVE_INFINITY;
-        }
-        if (!Number.isFinite(maxValue) && maxValue > 0) {
-            minValue = Number.POSITIVE_INFINITY;
-        }
+        minValue = this.normalizeIfInfinite(minValue);
+        maxValue = this.normalizeIfInfinite(maxValue);
 
         const scalar = Math.random();
         const p1 = scalar * maxValue;
         const p2 = scalar * minValue;
         let output = minValue + p1 - p2;
 
-        if (!Number.isFinite(output) && output < 0) {
-            output = Number.NEGATIVE_INFINITY;
-        }
-        if (!Number.isFinite(output) && output > 0) {
-            output = Number.POSITIVE_INFINITY;
-        }
+        output = this.normalizeIfInfinite(output);
 
         return output;
+    }
+
+    private normalizeIfInfinite(value: number): number {
+        if (!Number.isFinite(value) && value < 0) {
+            return Number.NEGATIVE_INFINITY;
+        }
+        if (!Number.isFinite(value) && value > 0) {
+            return Number.POSITIVE_INFINITY;
+        }
+        return value;
     }
 
     private validBounds(minValue: number, maxValue: number): boolean {
