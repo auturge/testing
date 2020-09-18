@@ -195,6 +195,30 @@ describe("RandomDouble", () => {
 
                 assert(exponentSpy.withArgs(minScale, 300));
             });
+
+            it(`getRandomValueInRange [EXPONENTIAL] - returns a value if it is valid`, () => {
+                const validValue = sinon.stub(sut, "validValue").returns(true);
+                const [min, max] = randoMinMax(-100, 100);
+
+                const result = sut.getRandomValueInRange(min, max, scale);
+
+                sinon.assert.calledOnce(validValue);
+                sinon.assert.calledWith(validValue, min, max);
+                expect(result).not.to.be.null;
+                expect(result).not.to.be.undefined;
+            });
+
+            it(`getRandomValueInRange [EXPONENTIAL] - returns a value if the calculated one is not valid`, () => {
+                const validValue = sinon.stub(sut, "validValue").returns(false);
+                const [min, max] = randoMinMax(-100, 100);
+
+                const result = sut.getRandomValueInRange(min, max, scale);
+
+                sinon.assert.calledOnce(validValue);
+                sinon.assert.calledWith(validValue, min, max);
+                expect(result).not.to.be.null;
+                expect(result).not.to.be.undefined;
+            });
         });
     });
 

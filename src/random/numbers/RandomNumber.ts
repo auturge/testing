@@ -11,9 +11,11 @@ export abstract class RandomNumber {
         return this.singleton.MAX_VALUE;
     }
 
+    public static next(): number;
+    public static next(minValue: number, maxValue: number): number;
     public static next(
-        minValue: number = this.MIN_VALUE,
-        maxValue: number = this.MAX_VALUE
+        minValue: number = this.singleton.MIN_VALUE,
+        maxValue: number = this.singleton.MAX_VALUE
     ): number {
         return this.singleton.next(minValue, maxValue);
     }
