@@ -1,10 +1,7 @@
 import { assert } from "chai";
 import * as sinon from "sinon";
 
-// need to import from the source in order to get coverage
-// import { AnyRandom, Scale } from "../../dist";
-
-import { unwrap, randoMinMax } from "test/helpers";
+import { unwrap, randoMinMax } from "@test/helpers";
 
 import { Scale } from "@testing/random/numbers/Scale";
 import { CharacterSet } from "@testing/random/strings/CharacterSets";
@@ -21,6 +18,9 @@ import { RandomDouble } from "@testing/random/numbers/RandomDouble";
 import { RandomSingle } from "@testing/random/numbers/RandomSingle";
 import { RandomChar } from "@testing/random/strings/RandomChar";
 import { RandomString } from "@testing/random/strings/RandomString";
+import { Arrays } from "@testing/random/objects/Arrays";
+import { RandomUUID } from "@testing/random/strings";
+import { RandomURL } from "@testing/random/URLs";
 
 describe("AnyRandomImplementation", () => {
     let stub;
@@ -436,6 +436,100 @@ describe("AnyRandomImplementation", () => {
                 sinon.assert.calledWith(stub, min, max, set);
                 assert.equal(result, expected);
             });
+        });
+    });
+
+    describe("oneOf", () => {
+        let expected = "bar";
+        const array = ["foo", "bar", "baz"];
+
+        beforeEach(() => {
+            setup();
+            stub = sinon.stub(Arrays, "oneOf").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(Arrays.oneOf);
+        });
+
+        it(`oneOf - when called with an array argument - calls the wrapped implementation`, () => {
+            const result = impl.oneOf(array);
+
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, array);
+            assert.equal(result, expected);
+        });
+    });
+
+    describe("arrayOf", () => {
+        const generator = () => {
+            return "bar";
+        };
+        const expected = ["foo", "bar", "baz"];
+
+        beforeEach(() => {
+            setup();
+            stub = sinon.stub(Arrays, "arrayOf").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(Arrays.arrayOf);
+        });
+
+        it(`arrayOf - when given a generator, a min length, and a max length - calls the wrapped implementation`, () => {
+            const min = Math.floor(Math.random() * 100);
+            const max = min + Math.floor(Math.random() * 100);
+            const result = impl.arrayOf(generator, min, max);
+
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, generator, min, max);
+            assert.equal(result, expected);
+        });
+    });
+
+    describe("uuid", () => {
+        const expected = "<a uuid>";
+
+        beforeEach(() => {
+            setup();
+            stub = sinon.stub(RandomUUID, "uuid").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(RandomUUID.uuid);
+        });
+
+        it(`uuid - calls the wrapped implementation`, () => {
+            const result = impl.uuid();
+
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub);
+            assert.equal(result, expected);
+        });
+    });
+
+    describe("url", () => {
+        const expected = "<a url>";
+
+        beforeEach(() => {
+            setup();
+            stub = sinon.stub(RandomURL, "url").returns(expected);
+        });
+
+        afterEach(() => {
+            unwrap(RandomURL.url);
+        });
+
+        it(`url - when given arguments - calls the wrapped implementation`, () => {
+            const includePath = Math.random() > 0.5;
+            const includeQuery = Math.random() > 0.5;
+            const includeFragment = Math.random() > 0.5;
+
+            const result = impl.url(includePath, includeQuery, includeFragment);
+
+            sinon.assert.calledOnce(stub);
+            sinon.assert.calledWith(stub, includePath, includeQuery, includeFragment);
+            assert.equal(result, expected);
         });
     });
 });
