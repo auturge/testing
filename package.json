@@ -78,7 +78,7 @@
         "rollup": "rollup -c",
         "test": "yarn test:clean && yarn test:run",
         "test:clean": "shx rm -rf coverage",
-        "test:run": "nyc ts-mocha --paths -p ./tsconfig.json ./test/**/*.spec.ts",
+        "test:run": "nyc ts-mocha --paths -p ./tsconfig.json \"./test/**/*.spec.ts\"",
         "test:report": "nyc report --reporter=text-lcov | coveralls"
     }
 }
