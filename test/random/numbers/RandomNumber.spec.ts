@@ -1,8 +1,7 @@
 import * as sinon from "sinon";
-import { expect, assert } from "chai";
+import { expect } from "chai";
 
-import { RandomInteger } from "@testing/random/numbers/RandomInteger";
-import { randoMinMax, unwrap, randoIntMinMax } from "@test/helpers";
+import { randoMinMax, unwrap } from "@test/helpers";
 import { RandomNumber } from "@testing/random/numbers/RandomNumber";
 
 class FakeRandomNumber extends RandomNumber {

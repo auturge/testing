@@ -35,8 +35,7 @@ describe("RandomDouble", () => {
 
             const result = RandomDouble.next(minUsed);
 
-            sinon.assert.calledOnce(getRandomValueInRange);
-            sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
+            sinon.assert.calledOnceWithExactly(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
             assert.equal(result, expected);
         });
         it(`next - given only a minimum parameter, uses [minimum, +Infinity], and Scale.EXPONENTIAL`, () => {
@@ -46,8 +45,7 @@ describe("RandomDouble", () => {
 
             const result = RandomDouble.next(minUsed);
 
-            sinon.assert.calledOnce(getRandomValueInRange);
-            sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
+            sinon.assert.calledOnceWithExactly(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
             assert.equal(result, expected);
         });
         it(`next - given minimum and maximum parameters, uses [minimum, maximum], and Scale.EXPONENTIAL`, () => {
@@ -57,8 +55,7 @@ describe("RandomDouble", () => {
 
             const result = RandomDouble.next(minUsed, maxUsed);
 
-            sinon.assert.calledOnce(getRandomValueInRange);
-            sinon.assert.calledWith(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
+            sinon.assert.calledOnceWithExactly(getRandomValueInRange, minUsed, maxUsed, scaleUsed);
             assert.equal(result, expected);
         });
         it(`next - given all parameters, uses all parameters`, () => {

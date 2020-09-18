@@ -2,6 +2,8 @@ import { CharacterSet } from "@testing/random/strings/CharacterSets";
 import { RandomInt32 } from "@testing/random/numbers/RandomInt32";
 
 export abstract class RandomChar {
+    public static char(): string;
+    public static char(characterSet: string | CharacterSet): string;
     public static char(characterSet: string | CharacterSet = CharacterSet.ATOM): string {
         if (characterSet == null) {
             throw new Error("Argument [characterSet] must not be null or undefined.");
@@ -15,6 +17,12 @@ export abstract class RandomChar {
         return characterSet[index];
     }
 
+    public static charArray(): string[];
+    public static charArray(
+        minLength: number,
+        maxLength: number,
+        characterSet: string | CharacterSet
+    ): string[];
     public static charArray(
         minLength = 0,
         maxLength = 32,
