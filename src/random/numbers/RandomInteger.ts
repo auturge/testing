@@ -9,6 +9,8 @@ export abstract class RandomInteger extends RandomNumber {
         | Int32Array
         | Uint32Array;
 
+    public next(): number;
+    public next(minValue: number, maxValue: number): number;
     public next(minValue: number = this.MIN_VALUE, maxValue: number = this.MAX_VALUE): number {
         this.validateRange(minValue, maxValue);
         return this.getRandomValueInRange(minValue, maxValue);
@@ -24,7 +26,7 @@ export abstract class RandomInteger extends RandomNumber {
 
         if (minValue < this.MIN_VALUE) {
             throw new Error(
-                `maxValue must be in the interval [${this.MIN_VALUE}, ${this.MAX_VALUE}].`
+                `minValue must be in the interval [${this.MIN_VALUE}, ${this.MAX_VALUE}].`
             );
         }
         if (maxValue > this.MAX_VALUE) {
