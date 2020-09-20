@@ -52,11 +52,11 @@
         "nyc": "15.1.0",
         "puppeteer": "3.3.0",
         "shx": "0.3.2",
-        "sinon": "",
+        "sinon": "9.0.2",
         "source-map": "0.7.3",
         "source-map-support": "0.5.19",
         "tsconfig-paths": "3.9.0",
-        "tslib": "",
+        "tslib": "2.0.1",
         "ts-mocha": "7.0.0",
         "ts-node": "8.10.2",
         "typescript": "3.9.5"
