@@ -41,7 +41,7 @@ if (issues.length) {
     printWarning(issues);
     console.error(
         "Your environment doesn't provide the prerequisite dependencies.\n" +
-            "Please fix the issues listed above and then rerun the gulp command.\n" +
+            "Please fix the issues listed above and then rerun the command.\n" +
             "Check out https://github.com/auturge/auturge/blob/master/docs/DEVELOPER.md for more info."
     );
     process.exit(1);
