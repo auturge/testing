@@ -54,11 +54,12 @@ describe("RandomString", () => {
         it(`string - given a min, a max, and a character set, generates a string from that character set, with length on the interval [min, max]`, () => {
             const min = 5 + Math.floor(Math.random() * 100);
             const max = min + 5 + Math.floor(Math.random() * 100);
+            const charset = "abc1230)(#*$";
 
-            const result = RandomString.string(min, max);
+            const result = RandomString.string(min, max, charset);
 
             sinon.assert.calledOnceWithExactly(getLength, min, max);
-            sinon.assert.calledOnceWithExactly(charArray, min, max, CharacterSet.ATOM);
+            sinon.assert.calledOnceWithExactly(charArray, min, max, charset);
             expect(result).equals(expected);
         });
 
