@@ -1,14 +1,11 @@
-import { RandomInt8 } from "@testing/random/numbers/RandomInt8";
+import { Arrays } from "@testing/random//objects";
 
 export class RandomSign {
     private static singleton: RandomSign = new RandomSign();
 
     next(includeZero: boolean): number {
-        if (!includeZero) {
-            return Math.random() > 0.5 ? 1 : -1;
-        }
-
-        return Math.sign(RandomInt8.next(-1, 1));
+        let array = includeZero ? [-1, 0, 1] : [-1, 1];
+        return Arrays.oneOf(array);
     }
 
     public static next(includeZero = false): number {

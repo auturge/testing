@@ -36,11 +36,12 @@ describe("Arrays", () => {
         });
 
         it(`oneOf - returns a single element from the given array`, () => {
-            const expected = CharacterSet.ATOM[index];
+            const array = CharacterSet.ATOM.split("");
+            const expected = array[index];
 
-            const result = Arrays.oneOf(CharacterSet.ATOM.split(""));
+            const result = Arrays.oneOf(array);
 
-            sinon.assert.calledOnceWithExactly(randomUInt32, 0, CharacterSet.ATOM.length);
+            sinon.assert.calledOnceWithExactly(randomUInt32, 0, array.length);
             expect(result).equals(expected);
         });
     });

@@ -23,10 +23,7 @@ export abstract class RandomString {
         return chars.join("");
     }
 
-    private static getLength(
-        minLength: number | undefined,
-        maxLength: number | undefined
-    ): number[] {
+    private static getLength(minLength?: number, maxLength?: number): number[] {
         if (minLength == null && maxLength == null) {
             return [0, 32];
         }

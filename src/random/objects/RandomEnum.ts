@@ -1,3 +1,5 @@
+import { RandomUInt32 } from "@testing/random/numbers/RandomUInt32";
+
 interface IKeyValuePair<TValue> {
     key: string;
     value: TValue;
@@ -10,7 +12,7 @@ export abstract class RandomEnum {
         }
 
         const enumAsArray = this.getEnumAsArray(enumeration);
-        const randomIndex = Math.floor(Math.random() * enumAsArray.length);
+        const randomIndex = RandomUInt32.next(0, enumAsArray.length - 1);
         const randomElement = enumAsArray[randomIndex];
         const randomValue: T[keyof T] = randomElement.value;
         return randomValue;
