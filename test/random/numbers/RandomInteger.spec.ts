@@ -106,10 +106,9 @@ describe("RandomInteger", () => {
 
         it("validateRange - throws when min is less than MIN_VALUE", () => {
             sut.MIN_VALUE = Math.floor(Math.random() * 100);
-            sut.MAX_VALUE = sut.MIN_VALUE + Math.floor(Math.random() * 100);
-            const range = Math.abs(sut.MAX_VALUE - sut.MIN_VALUE);
-            const min = sut.MIN_VALUE - Math.floor(Math.random() * range);
-            const max = sut.MAX_VALUE - Math.floor(Math.random() * range);
+            sut.MAX_VALUE = sut.MIN_VALUE + 10 + Math.floor(Math.random() * 100);
+            const min = sut.MIN_VALUE - 1;
+            const max = sut.MAX_VALUE - 1;
 
             assert.throws(() => {
                 sut["validateRange"](min, max);
@@ -118,10 +117,9 @@ describe("RandomInteger", () => {
 
         it("validateRange - throws when max is more than MAX_VALUE", () => {
             sut.MIN_VALUE = Math.floor(Math.random() * 100);
-            sut.MAX_VALUE = sut.MIN_VALUE + Math.floor(Math.random() * 100);
-            const range = Math.abs(sut.MAX_VALUE - sut.MIN_VALUE);
-            const min = sut.MIN_VALUE + Math.floor(Math.random() * range);
-            const max = sut.MAX_VALUE + Math.floor(Math.random() * range);
+            sut.MAX_VALUE = sut.MIN_VALUE + 10 + Math.floor(Math.random() * 100);
+            const min = sut.MIN_VALUE + 1;
+            const max = sut.MAX_VALUE + 1;
 
             assert.throws(() => {
                 sut["validateRange"](min, max);

@@ -15,7 +15,7 @@ export class RandomSingle extends RandomScaledNumber {
 
     private static fround(value: number): number {
         const temp = new Float32Array(1);
-        temp[0] = +value;
+        temp[0] = value;
         return temp[0];
     }
 }
