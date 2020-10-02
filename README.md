@@ -55,7 +55,7 @@ Returns a random boolean (`true` or `false`).
 > AnyRandom.date(): Date;
 > ```
 
-Returns a random date between 01-JAN-1980 and now.
+Returns a random date between 01-JAN-1970 and now.
 
 > ```javascript
 > AnyRandom.date(earliest: Date, latest: Date): Date;
