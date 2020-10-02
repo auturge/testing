@@ -1,30 +1,30 @@
 # auturge/testing
 
-> Auturge/testing is a set of helpful Typescript functions for automated testing.
+> Auturge/testing is a set of helpful functions for automated testing.
 
 [![License][license-image]][license-url] [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
-- [auturge/testing](#auturgetesting)
-  - [Installation](#installation)
-  - [AnyRandom](#anyrandom)
-      - [Boolean](#boolean)
-      - [Date](#date)
-      - [Sign](#sign)
-      - [8-bit Integer (byte)](#8-bit-integer-byte)
-      - [16-bit Integer](#16-bit-integer)
-      - [32-bit Integer](#32-bit-integer)
-      - [64-bit Double-Precision Floating Point Number](#64-bit-double-precision-floating-point-number)
-      - [32-bit Single-Precision Floating Point Number](#32-bit-single-precision-floating-point-number)
-      - [Character Sets](#character-sets)
-      - [Character](#character)
-      - [Character Array](#character-array)
-      - [String](#string)
-      - [UUID](#uuid)
-      - [enum](#enum)
-      - [oneOf](#oneof)
-      - [arrayOf](#arrayof)
-      - [URL](#url)
-  - [License](#license)
+-   [auturge/testing](#auturgetesting)
+    -   [Installation](#installation)
+    -   [AnyRandom](#anyrandom)
+        -   [Boolean](#boolean)
+        -   [Date](#date)
+        -   [Sign](#sign)
+        -   [8-bit Integer (byte)](#8-bit-integer-byte)
+        -   [16-bit Integer](#16-bit-integer)
+        -   [32-bit Integer](#32-bit-integer)
+        -   [64-bit Double-Precision Floating Point Number](#64-bit-double-precision-floating-point-number)
+        -   [32-bit Single-Precision Floating Point Number](#32-bit-single-precision-floating-point-number)
+        -   [Character Sets](#character-sets)
+        -   [Character](#character)
+        -   [Character Array](#character-array)
+        -   [String](#string)
+        -   [UUID](#uuid)
+        -   [enum](#enum)
+        -   [oneOf](#oneof)
+        -   [arrayOf](#arrayof)
+        -   [URL](#url)
+    -   [License](#license)
 
 ## Installation
 
@@ -50,6 +50,12 @@ Returns a random boolean (`true` or `false`).
 ---
 
 #### Date
+
+> ```javascript
+> AnyRandom.date(): Date;
+> ```
+
+Returns a random date between 01-JAN-1980 and now.
 
 > ```javascript
 > AnyRandom.date(earliest: Date, latest: Date): Date;
@@ -385,7 +391,7 @@ Returns a quasi-random URL, including the specified parts.
 
 Distributed under the MIT license. See [`LICENSE`][license] for more information.
 
-[license]: LICENSE
+[license]: https://github.com/auturge/testing/blob/master/LICENSE
 [license-image]: http://img.shields.io/:license-mit-blue.svg?style=flat-square
 [license-url]: http://badges.mit-license.org
 [npm-image]: https://img.shields.io/npm/v/@auturge/testing.svg
