@@ -1,6 +1,6 @@
 {
     "name": "@auturge/testing",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "description": "auturge/testing - the testing library",
     "author": "auturge",
     "license": "MIT",
@@ -68,7 +68,7 @@
         "clean": "shx rm -rf dist build",
         "copy:package:json": "node ./scripts/copy-package-json/copy-trimmed-package-json.js ./package.json ./dist",
         "copy:readme": "shx cp ./README.md ./dist",
-        "copy:license": "shx cp ./LICENSE.txt ./dist",
+        "copy:license": "shx cp ./LICENSE ./dist",
         "lint": "yarn eslint . --ext .ts,.tsx",
         "preinstall": "node ./scripts/yarn/check-yarn.js",
         "prepublishOnly": "cd ./dist",

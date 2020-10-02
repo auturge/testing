@@ -2,7 +2,7 @@
 
 The only way to update npm is to release a new version, even if you’re just fixing a typo. npm will not allow you to re-publish to the same number.
 
-So let’s create a new release by bumping the version in your package.json. To do that, you can use edit the file manually or use
+So let’s create a new release by bumping the version in your package.json. To do that, you can edit the file manually or use
 
     npm version <update_type> -m "<message>"
 
