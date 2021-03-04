@@ -1,6 +1,6 @@
 {
     "name": "@auturge/testing",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "auturge/testing - the testing library",
     "author": "auturge",
     "license": "MIT",
@@ -27,6 +27,9 @@
         "node": ">=12.8.1",
         "yarn": ">=1.22.5",
         "npm": ">=6.10.2"
+    },
+    "dependencies": {
+        "tslib": "2.0.1"
     },
     "devDependencies": {
         "@types/chai": "4.2.11",
@@ -56,7 +59,6 @@
         "source-map": "0.7.3",
         "source-map-support": "0.5.19",
         "tsconfig-paths": "3.9.0",
-        "tslib": "2.0.1",
         "ts-mocha": "7.0.0",
         "ts-node": "8.10.2",
         "typescript": "3.9.5"
@@ -71,9 +73,6 @@
         "copy:license": "shx cp ./LICENSE ./dist",
         "lint": "yarn eslint . --ext .ts,.tsx",
         "preinstall": "node ./scripts/yarn/check-yarn.js",
-        "prepublishOnly": "cd ./dist",
-        "publish": "npm publish --access public",
-        "postpublish": "git push origin --all; git push origin --tags",
         "rollup": "rollup -c",
         "test": "yarn test:clean && yarn test:run",
         "test:clean": "shx rm -rf coverage",

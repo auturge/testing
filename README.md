@@ -1,8 +1,13 @@
-# auturge/testing
+# <h1 align="center">auturge/testing</h1>
 
-> Auturge/testing is a set of helpful functions for automated testing.
+<p align="center">
+  A set of helpful functions for automated testing.
+</p>
 
-[![License][license-image]][license-url] [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
+[![License][license-image]][license-url]
+[![NPM Version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
 
 -   [auturge/testing](#auturgetesting)
     -   [Installation](#installation)
@@ -187,7 +192,7 @@ NOTE that `minValue` and `maxValue` must both be on the interval `[-2147483648, 
 > ```
 
 Returns a random 64-bit double-precision floating-point number on the interval `[0, 1)`.
-NOTE: This is the same behavior as `Math.random()`.
+NOTE that this is the same behavior as `Math.random()`.
 
 > ```javascript
 > AnyRandom.double(minValue: number, maxValue: number): number;
