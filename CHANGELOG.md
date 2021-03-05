@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 -   Bump to v1 to declare the first major release, and to better adhere to semantic versioning.
 -   Moved tslib to 'dependencies' to enable using @auturge/testing in non-TypeScript libraries.
+-   Fixed oneOf() to not exceed the bounds of the array.
 
 ## [previous]
 
