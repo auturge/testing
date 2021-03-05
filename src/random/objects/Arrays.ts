@@ -8,7 +8,7 @@ export abstract class Arrays {
         if (array.length == 0) {
             throw new Error("Argument [array] must not be empty.");
         }
-        const index = RandomUInt32.next(0, array.length);
+        const index = RandomUInt32.next(0, array.length - 1);
         const entry = array[index];
         return entry;
     }
