@@ -41,7 +41,7 @@ describe("Arrays", () => {
 
             const result = Arrays.oneOf(array);
 
-            sinon.assert.calledOnceWithExactly(randomUInt32, 0, array.length);
+            sinon.assert.calledOnceWithExactly(randomUInt32, 0, array.length-1);
             expect(result).equals(expected);
         });
     });

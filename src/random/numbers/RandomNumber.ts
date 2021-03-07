@@ -12,6 +12,11 @@ export abstract class RandomNumber {
     }
 
     public static next(): number;
+    
+     /** Returns a random number within the range defined by [`minValue`, `maxValue`].
+     * @param {number} minValue The minimum value that the result could take.
+     * @param {number} maxValue The maximum value that the result could take.
+     */
     public static next(minValue: number, maxValue: number): number;
     public static next(
         minValue: number = this.singleton.MIN_VALUE,
