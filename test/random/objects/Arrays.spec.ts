@@ -44,6 +44,22 @@ describe("Arrays", () => {
             sinon.assert.calledOnceWithExactly(randomUInt32, 0, array.length-1);
             expect(result).equals(expected);
         });
+        
+        it(`oneOf - handles arrays with missing members`, () => {
+            const array = new Array(5);
+            array[0]='a';
+            array[1]='b';
+            array[4]='e';
+            randomUInt32.returns(2);
+            
+            const expected = array[index];
+
+            const result = Arrays.oneOf(array);
+
+            sinon.assert.calledOnceWithExactly(randomUInt32, 0, 2);
+            expect(result).equals('e');
+        });
+        
     });
 
     describe("arrayOf", () => {

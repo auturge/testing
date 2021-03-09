@@ -5,11 +5,20 @@ export abstract class Arrays {
         if (array == null) {
             throw new Error("Argument [array] must not be null or undefined.");
         }
-        if (array.length == 0) {
+        
+        var safeArray = new Array(0);
+        for (var i in array){
+            var itemIndex = safeArray.length;
+            safeArray.length++;
+            safeArray[itemIndex]=array[i];
+        }
+        
+        if (safeArray.length == 0) {
             throw new Error("Argument [array] must not be empty.");
         }
-        const index = RandomUInt32.next(0, array.length - 1);
-        const entry = array[index];
+      
+        const index = RandomUInt32.next(0, safeArray.length - 1);
+        const entry = safeArray[index];
         return entry;
     }
 
