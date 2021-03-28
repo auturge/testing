@@ -32,6 +32,7 @@
         "tslib": "2.0.1"
     },
     "devDependencies": {
+        "@auturge/json-trim": "1.0.0",
         "@types/chai": "4.2.11",
         "@types/mocha": "7.0.2",
         "@types/sinon": "9.0.2",
@@ -68,7 +69,7 @@
         "build:testing": "npm-run-all rollup copy:package:json copy:readme copy:license",
         "check-env": "node ./scripts/check-env/check-environment.js",
         "clean": "shx rm -rf dist build",
-        "copy:package:json": "node ./scripts/copy-package-json/copy-trimmed-package-json.js ./package.json ./dist",
+        "copy:package:json":"json-trim",
         "copy:readme": "shx cp ./README.md ./dist",
         "copy:license": "shx cp ./LICENSE ./dist",
         "lint": "yarn eslint . --ext .ts,.tsx",
