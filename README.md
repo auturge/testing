@@ -401,7 +401,7 @@ Distributed under the MIT license. See [`LICENSE`][license] for more information
 [license-url]: http://badges.mit-license.org
 [npm-image]: https://img.shields.io/npm/v/@auturge/testing.svg
 [npm-url]: https://www.npmjs.com/package/@auturge/testing
-[travis-image]: https://travis-ci.org/auturge/testing.svg?branch=master
-[travis-url]: https://travis-ci.org/auturge/testing
+[travis-image]: https://travis-ci.com/auturge/testing.svg?branch=master
+[travis-url]: https://travis-ci.com/github/auturge/testing
 [coveralls-image]: https://coveralls.io/repos/github/auturge/testing/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/auturge/testing?branch=master
