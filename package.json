@@ -74,6 +74,7 @@
         "copy:license": "shx cp ./LICENSE ./dist",
         "lint": "yarn eslint . --ext .ts,.tsx",
         "preinstall": "node ./scripts/yarn/check-yarn.js",
+        "prepublishOnly": "node preventPublish.js",
         "rollup": "rollup -c",
         "test": "yarn test:clean && yarn test:run",
         "test:clean": "shx rm -rf coverage",
